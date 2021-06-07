@@ -1,0 +1,45 @@
+{% set home = data.home %}
+{% set piece = data.piece %}
+{% set page = data.page %}
+{% set global = data.global %}
+{% set document = piece or page %}
+
+{# title #}
+{% set seoTitle = piece.seoTitle or page.seoTitle or home.seoTitle %}
+{% if seoTitle %}
+  <meta name="title" content="{{ seoTitle }}" />
+{% endif %}
+
+{# description #}
+{% set seoDescription = piece.seoDescription or page.seoDescription or home.seoDescription %}
+{% if seoDescription %}
+  <meta name="description" content="{{ seoDescription }}" />
+{% endif %}
+
+{# robots #}
+{% set seoRobots = document.seoRobots %}
+{% if seoRobots.length %}
+  <meta name="robots" content="{{ seoRobots }}" />
+{% endif %}
+
+{# Google Verification ID #}
+{% if global.seoGoogleVerificationId %}
+  <meta name="google-site-verification" content="{{ global.seoGoogleVerificationId }}" />
+{% endif %}
+
+{# canonical URL #}
+{% if document._seoCanonical and document._seoCanonical.length  %}
+	<link rel="canonical" href="{{ document._seoCanonical._url }}" />
+{% endif %}
+
+{# Google Tracking ID #}
+{% if global.seoGoogleTrackingId %}
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ global.seoGoogleTrackingId }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ global.seoGoogleTrackingId }}');
+</script>
+{% endif %}
