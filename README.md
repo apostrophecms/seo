@@ -7,15 +7,15 @@ SEO configuration for [ApostropheCMS](https://apostrophecms.com/).
 Add useful meta fields to all pages and pieces.
 
 ## Roadmap
-|Status |Feature  |
+|Feature |Status  |
 --- | ---
-|✅|SEO Meta fields for pages and pieces|
-|🚧|SEO Page Scanner|
+|SEO Meta fields for pages and pieces| ✅ Implemented 
+|SEO Page Scanner| 🚧 Under development
 
 ## Installation
 
 ```bash
-npm install @apostrophecms/seo --save
+npm install @apostrophecms/seo
 ```
 
 ## Use
