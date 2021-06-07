@@ -1,8 +1,8 @@
-[![CircleCI](https://circleci.com/gh/apostrophecms/seo/tree/master.svg?style=svg)](https://circleci.com/gh/apostrophecms/seo/tree/master)
+[![CircleCI](https://circleci.com/gh/apostrophecms/seo/tree/main.svg?style=svg)](https://circleci.com/gh/apostrophecms/seo/tree/master)
 
 # SEO
 
-SEO configuration for [ApostropheCMS](https://apostrophecms.com/).
+SEO tools for [ApostropheCMS](https://apostrophecms.com/).
 
 Add useful meta fields to all pages and pieces.
 
