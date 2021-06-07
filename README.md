@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/apostrophecms/seo/tree/main.svg?style=svg)](https://circleci.com/gh/apostrophecms/seo/tree/master)
+[![CircleCI](https://circleci.com/gh/apostrophecms/seo/tree/main.svg?style=svg)](https://circleci.com/gh/apostrophecms/seo/tree/main)
 
 # SEO
 
