@@ -41,7 +41,7 @@ It is important to set the `baseUrl` option on your ApostropheCMS application fo
 ```js
 require('apostrophe')({
   shortName: 'mysite',
-  baseUrl: 'http://mysite.com',
+  baseUrl: 'https://mysite.com',
   modules: {
     // ...
   }
@@ -50,14 +50,14 @@ require('apostrophe')({
 ##### As part of an environment configuration in `data/local.js`
 ```js
   module.exports = {
-    baseUrl: 'http://mysite.com',
+    baseUrl: 'https://mysite.com',
     modules: {
       // other module env configuration
     }
   };
 ```
 ### 2. Module configuration
-If you choose to disable fields for a piece type or page type you can do so by setting `seoFields: false` on the appropriate module. The following modules disable SEO field enhancements by default:
+If you choose to disable SEO fields for a piece type or page type you can do so by setting `seoFields: false` on the appropriate module. The following modules disable SEO field enhancements by default:
  - `@apostrophecms/global`
  - `@apostrophecms/user`
  - `@apostrophecms/group`
@@ -75,6 +75,19 @@ module.exports = {
   }
 };
 ```
+
+#### Fields
+The following are the fields that can be added to pieces, pages, and the global doc, as well as what flag enables them
+
+|Name |Description  | Module(s) Effected | Enabling Flag |
+--- | --- | --- | ---
+|`seoTitle`|Title attribute, populates `<meta name="title" />` tag|`@apostrophecms/doc-type` (Page types and piece types)|Enabled by default|
+|`seoDescription`|Description attribute, populates `<meta name="description" />` tag|`@apostrophecms/doc-type` (Page types and piece types)|Enabled by default|
+|`seoRobots`|Robots attribute, populates `<meta name="robots" />` tag|`@apostrophecms/doc-type` (Page types and piece types)|Enabled by default|
+|`_seoCanonical`|[Canonical URL](https://moz.com/learn/seo/canonicalization)populates `<link rel="canonical" />` tag|`@apostrophecms/page-type` (Page types)|Enabled by default|
+|`seoGoogleTagManager`|Google Tag Manager Container ID|`@apostrophecms/global`|seoTagManager|
+|`seoGoogleTrackingId`|Google Analytics ID|`@apostrophecms/global`|seoGoogleFields|
+|`seoGoogleVerificationId`|Google Verification ID, populates `<meta name="google-site-verification" />`|`@apostrophecms/global`|seoGoogleFields|
 
 #### Add Google Analytics, Google Tag Manager, and/or Google Site Verification
 
