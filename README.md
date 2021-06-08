@@ -76,18 +76,18 @@ module.exports = {
 };
 ```
 
-#### Fields
+#### Field Reference
 The following are the fields that can be added to pieces, pages, and the global doc, as well as what flag enables them
 
 |Name |Description  | Module(s) Effected | Enabling Flag |
 --- | --- | --- | ---
-|`seoTitle`|Title attribute, populates `<meta name="title" />` tag|`@apostrophecms/doc-type` (Page types and piece types)|Enabled by default|
-|`seoDescription`|Description attribute, populates `<meta name="description" />` tag|`@apostrophecms/doc-type` (Page types and piece types)|Enabled by default|
-|`seoRobots`|Robots attribute, populates `<meta name="robots" />` tag|`@apostrophecms/doc-type` (Page types and piece types)|Enabled by default|
-|`_seoCanonical`|[Canonical URL](https://moz.com/learn/seo/canonicalization)populates `<link rel="canonical" />` tag|`@apostrophecms/page-type` (Page types)|Enabled by default|
-|`seoGoogleTagManager`|Google Tag Manager Container ID|`@apostrophecms/global`|seoTagManager|
-|`seoGoogleTrackingId`|Google Analytics ID|`@apostrophecms/global`|seoGoogleFields|
-|`seoGoogleVerificationId`|Google Verification ID, populates `<meta name="google-site-verification" />`|`@apostrophecms/global`|seoGoogleFields|
+|`seoTitle`|Title attribute, populates `<meta name="title" />` tag|`@apostrophecms/doc-type`|_Enabled by default_|
+|`seoDescription`|Description attribute, populates `<meta name="description" />` tag|`@apostrophecms/doc-type`|_Enabled by default_|
+|`seoRobots`|Robots attribute, populates `<meta name="robots" />` tag|`@apostrophecms/doc-type`|_Enabled by default_|
+|`_seoCanonical`|[Canonical URL](https://moz.com/learn/seo/canonicalization), populates `<link rel="canonical" />` tag|`@apostrophecms/page-type`|_Enabled by default_|
+|`seoGoogleTagManager`|Google Tag Manager Container ID|`@apostrophecms/global`|`seoTagManager: true`|
+|`seoGoogleTrackingId`|Google Analytics ID|`@apostrophecms/global`|`seoGoogleFields: true`|
+|`seoGoogleVerificationId`|Google Verification ID, populates `<meta name="google-site-verification" />`|`@apostrophecms/global`|`seoGoogleFields: true`|
 
 #### Add Google Analytics, Google Tag Manager, and/or Google Site Verification
 
