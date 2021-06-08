@@ -16,7 +16,7 @@ module.exports = {
         last: true
       }
     };
-    if (options.seoTagMangerOnly || options.seoGoogleTagManager) {
+    if (options.seoTagManagerOnly || options.seoGoogleTagManager) {
       add.seoGoogleTagManager = {
         label: 'Google Tag Manager ID',
         type: 'string',

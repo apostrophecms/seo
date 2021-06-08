@@ -33,29 +33,31 @@ require('apostrophe')({
 });
 ```
 
-#### (TODO update) Setting the `baseUrl`
+#### Setting the `baseUrl`
 
-It is important to [set the `baseUrl` option](https://docs.apostrophecms.org/reference/core-server.html#baseurl) on your ApostropheCMS application for various reasons. In the SEO module it contributes to building the correct `canonical` link tag URL. This can be set on the main app configuration in `app.js` (statically or with an environment variable) or [in the `data/local.js` file](https://docs.apostrophecms.org/core-concepts/global-settings/settings.html#changing-the-value-for-a-specific-server-only) as that file will contain environment/server-specific configurations.
+It is important to set the `baseUrl` option on your ApostropheCMS application for various reasons. In the SEO module it contributes to building the correct `canonical` link tag URL. The `baseUrl` can be set two ways:
 
-```javascript
-// in app.js
+##### In `app.js` as part of your main Apostrophe app
+```js
 require('apostrophe')({
-  shortName: 'MYPROJECT',
-  baseUrl: 'https://myproject.com' // OR process.env.BASE_URL
-  modules: { ... },
-}
+  shortName: 'mysite',
+  baseUrl: 'http://mysite.com',
+  modules: {
+    // ...
+  }
+});
 ```
-
-```javascript
-// in data/local.js
-module.exports = {
-  baseUrl: 'https://example.com'
-  // or set to `http://localhost:3000` during development on your local machine.
-};
+##### As part of an environment configuration in `data/local.js`
+```js
+  module.exports = {
+    baseUrl: 'http://mysite.com',
+    modules: {
+      // other module env configuration
+    }
+  };
 ```
-
 ### 2. Module configuration
-If you choose to disable fields for a piece or page you can do so by setting `seoFields: false` on the appropriate module. The following modules disable SEO field enhancements by default:
+If you choose to disable fields for a piece type or page type you can do so by setting `seoFields: false` on the appropriate module. The following modules disable SEO field enhancements by default:
  - `@apostrophecms/global`
  - `@apostrophecms/user`
  - `@apostrophecms/group`
@@ -108,7 +110,7 @@ require('apostrophe')({
 });
 ```
 
-Finally, you may only want to use Google Tag Manager for all analytics and site verification needs. Set `seoTagMangerOnly: true` in `@apostrophecms/global` to do this. Doing so will override the other options, making their presence irrelevant if also set.
+Finally, you may only want to use Google Tag Manager for all analytics and site verification needs. Set `seoTagManagerOnly: true` in `@apostrophecms/global` to do this. Doing so will override the other options, making their presence irrelevant if also set.
 ```js
 require('apostrophe')({
   shortName: 'MYPROJECT',
@@ -116,7 +118,7 @@ require('apostrophe')({
     '@apostrophecms/seo': {},
     '@apostrophecms/global': {
       options: {
-        seoTagMangerOnly: true
+        seoTagManagerOnly: true
       }
     }
   }
