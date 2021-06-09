@@ -15,6 +15,9 @@
   "homepage": "https://github.com/apostrophecms/@apostrophecms/seo#readme",
   "author": "Apostrophe Technologies",
   "license": "MIT",
+  "peerDependencies": {
+    "apostrophe": "^3.0.0-beta.3"
+  },
   "devDependencies": {
     "eslint": "^7.9.0",
     "eslint-config-apostrophe": "^3.4.0",
