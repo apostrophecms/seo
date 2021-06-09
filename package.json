@@ -1,6 +1,6 @@
 {
   "name": "@apostrophecms/seo",
-  "version": "3.0.0",
+  "version": "1.0.0",
   "description": "SEO Tools for ApostropheCMS",
   "main": "index.js",
   "scripts": {
@@ -22,8 +22,6 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "stylelint": "^13.7.1",
-    "stylelint-config-apostrophe": "^1.0.0"
+    "eslint-plugin-standard": "^4.0.1"
   }
 }

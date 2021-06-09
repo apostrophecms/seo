@@ -1,3 +1,4 @@
 # Changelog
 
-## 3.0.0
+## 1.0.0
+Initial Apostrophe 3 Release
