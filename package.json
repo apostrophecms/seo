@@ -1,7 +1,7 @@
 {
   "name": "@apostrophecms/seo",
   "version": "1.0.0",
-  "description": "SEO Tools for ApostropheCMS",
+  "description": "SEO Tools for Apostrophe 3",
   "main": "index.js",
   "scripts": {
     "lint": "npm run eslint",

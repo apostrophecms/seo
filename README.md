@@ -1,9 +1,6 @@
 [![CircleCI](https://circleci.com/gh/apostrophecms/seo/tree/main.svg?style=svg)](https://circleci.com/gh/apostrophecms/seo/tree/main)
 [![Chat on Discord](https://img.shields.io/discord/517772094482677790.svg)](https://chat.apostrophecms.org)
-
-# SEO
-
-SEO tools for [ApostropheCMS](https://apostrophecms.com/).
+# SEO tools for Apostrophe 3
 
 Add useful meta fields to all pages and pieces.
 
