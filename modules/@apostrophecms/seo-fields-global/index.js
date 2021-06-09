@@ -36,11 +36,11 @@ module.exports = {
       };
       group.seo.fields.push('seoGoogleVerificationId');
     }
-    return Object.keys(add).length 
+    return Object.keys(add).length
       ? {
         add,
         group
       }
-      : null
+      : null;
   }
 };
