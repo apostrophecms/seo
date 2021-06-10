@@ -7,7 +7,7 @@ Add useful meta fields to all pages and pieces.
 ## Roadmap
 |Feature |Status  |
 --- | ---
-|SEO Meta fields for pages and pieces| ✅ Implemented 
+|SEO Meta fields for pages and pieces| ✅ Implemented
 |SEO Page Scanner| 🚧 Under development
 
 ## Installation
@@ -81,7 +81,7 @@ require('apostrophe')({
     '@apostrophecms/seo': {},
     '@apostrophecms/global': {
       options: {
-        seoGooglAnalytics: true
+        seoGoogleAnalytics: true
       }
     }
   }
