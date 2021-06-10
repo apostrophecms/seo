@@ -81,7 +81,7 @@ require('apostrophe')({
     '@apostrophecms/seo': {},
     '@apostrophecms/global': {
       options: {
-        seoGooglAnalytics: true
+        seoGoogleAnalytics: true
       }
     }
   }
