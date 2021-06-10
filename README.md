@@ -73,7 +73,7 @@ module.exports = {
 ```
 #### Add Google Analytics (GA)
 
-You can add Google Analytics tracking by enabling the `seoGooglAnalytics` flag and adding a Google Analytics tracking ID to your Global configuration:
+Setting `seoGoogleAnalytics: true` in `@apostrophecms/global` will add a Google Analytics tracking ID field to your Global configuration:
 ```js
 require('apostrophe')({
   shortName: 'MYPROJECT',
@@ -89,7 +89,8 @@ require('apostrophe')({
 ```
 #### Add Google Tag Manager (GTM)
 
-You can add Google Tag Manager tracking by enabling the `seoGoogleTagManager` flag and adding a Google Tag Manager ID to your Global configuration:
+Setting `seoGoogleTagManager: true` in `@apostrophecms/global` will add a Google Tag Manager ID field to your Global configuration:
+
 ```js
 require('apostrophe')({
   shortName: 'MYPROJECT',
@@ -105,7 +106,8 @@ require('apostrophe')({
 ```
 #### Add Google Site Verification
 
-You can add Google Site Verification tracking by enabling the `seoGoogleVerification` flag and adding a Google Site Verification ID to your Global configuration:
+Setting `seoGoogleVerification: true` in `@apostrophecms/global` will add a Google Site Verification ID field to your Global configuration:
+
 ```js
 require('apostrophe')({
   shortName: 'MYPROJECT',
@@ -146,14 +148,14 @@ If you already have an `extraBody` block in the `notFound.html` view file, you'l
 {% endblock %}
 ```
 #### Field Reference
-The following are the fields that can be added to pieces, pages, and the global doc, as well as what flag enables them
+The following are the fields that can be added to pieces, pages, and the global doc, as well as what module option enables them.
 
-|Name |Description  | Module Effected | Enabling Flag |
+|Name |Description  | Module Effected | Module Option |
 --- | --- | --- | ---
 |`seoTitle`|Title attribute, populates `<meta name="title" />` tag|`@apostrophecms/doc-type`|_Enabled by default_|
 |`seoDescription`|Description attribute, populates `<meta name="description" />` tag|`@apostrophecms/doc-type`|_Enabled by default_|
 |`seoRobots`|Robots attribute, populates `<meta name="robots" />` tag|`@apostrophecms/doc-type`|_Enabled by default_|
 |`_seoCanonical`|[Canonical URL](https://moz.com/learn/seo/canonicalization), populates `<link rel="canonical" />` tag|`@apostrophecms/page-type`|_Enabled by default_|
 |`seoGoogleTagManager`|Google Tag Manager Container ID|`@apostrophecms/global`|`seoGoogleTagManager: true`|
-|`seoGoogleTrackingId`|Google Analytics ID|`@apostrophecms/global`|`seoGooglAnalytics: true`|
+|`seoGoogleTrackingId`|Google Analytics ID|`@apostrophecms/global`|`seoGoogleAnalytics: true`|
 |`seoGoogleVerificationId`|Google Verification ID, populates `<meta name="google-site-verification" />`|`@apostrophecms/global`|`seoGoogleVerification: true`|

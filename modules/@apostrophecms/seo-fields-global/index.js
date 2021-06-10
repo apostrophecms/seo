@@ -20,7 +20,7 @@ module.exports = {
       };
       group.seo.fields.push('seoGoogleTagManager');
     }
-    if (options.seoGooglAnalytics) {
+    if (options.seoGoogleAnalytics) {
       add.seoGoogleTrackingId = {
         label: 'Google Tracking ID',
         type: 'string',
