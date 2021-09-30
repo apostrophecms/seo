@@ -7,32 +7,32 @@ module.exports = {
     const add = {};
     const group = {
       seo: {
-        label: 'SEO',
+        label: 'aposSeo:group',
         fields: [],
         last: true
       }
     };
     if (options.seoGoogleTagManager) {
       add.seoGoogleTagManager = {
-        label: 'Google Tag Manager ID',
+        label: 'aposSeo:gtmIdHelp',
         type: 'string',
-        help: 'Container ID provided in Google Tag Manager (e.g., GTM-RPCVDTN).'
+        help: 'aposSeo:gtmIdHelp'
       };
       group.seo.fields.push('seoGoogleTagManager');
     }
     if (options.seoGoogleAnalytics) {
       add.seoGoogleTrackingId = {
-        label: 'Google Tracking ID',
+        label: 'aposSeo:gaId',
         type: 'string',
-        help: 'Tracking ID provided by Google for Google Analytics.'
+        help: 'aposSeo:gaIdHelp'
       };
       group.seo.fields.push('seoGoogleTrackingId');
     }
     if (options.seoGoogleVerification) {
       add.seoGoogleVerificationId = {
-        label: 'Google Verification ID',
+        label: 'aposSeo:googleVerifyId',
         type: 'string',
-        help: 'Verification ID provided by Google for the HTML meta tag verification option.'
+        help: 'aposSeo:googleVerifyIdHelp'
       };
       group.seo.fields.push('seoGoogleVerificationId');
     }

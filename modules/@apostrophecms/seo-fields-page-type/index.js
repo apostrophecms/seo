@@ -5,11 +5,11 @@ module.exports = {
       return {
         add: {
           _seoCanonical: {
-            label: 'Canonical Link',
+            label: 'aposSeo:canonical',
             type: 'relationship',
             max: 1,
             withType: '@apostrophecms/page',
-            help: 'Is there a main version of this page that search engines should direct to?',
+            help: 'aposSeo:canonicalHelp',
             filters: {
               projection: {
                 title: 1,
@@ -21,7 +21,7 @@ module.exports = {
         },
         group: {
           seo: {
-            label: 'SEO',
+            label: 'aposSeo:group',
             fields: [ '_seoCanonical' ],
             last: true
           }

@@ -3,7 +3,11 @@ const path = require('path');
 
 module.exports = {
   options: {
-    alias: 'seo'
+    alias: 'seo',
+    i18n: {
+      ns: 'aposSeo',
+      browser: true
+    }
   },
   bundle: {
     directory: 'modules',
