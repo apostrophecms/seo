@@ -5,26 +5,26 @@ module.exports = {
       return {
         add: {
           seoTitle: {
-            label: 'Title',
+            label: 'aposSeo:title',
             type: 'string',
-            htmlHelp: 'Defines the title of the page in search results or on the page\'s tab. It should be <a href="https://moz.com/learn/seo/title-tag" target="_blank">under 60 characters</a>.'
+            htmlHelp: 'aposSeo:titleHtmlHelp'
           },
           seoDescription: {
-            label: 'Description',
+            label: 'aposSeo:description',
             type: 'string',
-            htmlHelp: 'A short and accurate summary of the content of the page used in search results. It should be <a href="https://moz.com/learn/seo/meta-description" target="_blank">between 50-160 characters</a>.'
+            htmlHelp: 'aposSeo:descriptionHtmlHelp'
           },
           seoRobots: {
-            label: 'Robots Tag',
-            htmlHelp: 'Search engine indexing setting. To let Google fully index and crawl your page, leave these UNCHECKED. <a href="https://moz.com/learn/seo/robots-meta-directives" data-toggle="tooltip" target="new_window" title="Learn More About Robots Meta Tag">Learn more about these options</a>',
+            label: 'aposSeo:robots',
+            htmlHelp: 'aposSeo:robotsHtmlHelp',
             type: 'checkboxes',
             choices: [
               {
-                label: 'Do not crawl links on page (No Follow)',
+                label: 'aposSeo:robotsNoFollow',
                 value: 'nofollow'
               },
               {
-                label: 'Stop Indexing Page (No Index)',
+                label: 'aposSeo:robotsNoIndex',
                 value: 'noindex'
               }
             ]
@@ -32,7 +32,7 @@ module.exports = {
         },
         group: {
           seo: {
-            label: 'SEO',
+            label: 'aposSeo:group',
             fields: [
               'seoTitle',
               'seoDescription',

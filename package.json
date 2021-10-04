@@ -10,13 +10,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/apostrophecms/@apostrophecms/seo.git"
+    "url": "git+https://github.com/apostrophecms/seo.git"
   },
-  "homepage": "https://github.com/apostrophecms/@apostrophecms/seo#readme",
+  "homepage": "https://github.com/apostrophecms/seo#readme",
   "author": "Apostrophe Technologies",
   "license": "MIT",
   "peerDependencies": {
-    "apostrophe": "^3.0.0-beta.3"
+    "apostrophe": "^3.6.0"
   },
   "devDependencies": {
     "eslint": "^7.9.0",
