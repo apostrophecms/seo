@@ -2,9 +2,15 @@
 
 ## UNRELEASED
 
+### Adds
+
 - Adds English (`en`) locale strings for static text.
 - Adds Spanisn (`es`) localization to static text.
 - Adds Slovak (`sk`) locale strings for static text.
+
+### Fixes
+
+* Fixes the `_seoCanonical` projection option property, previously using Apostrophe 2 syntax.
 
 ## 1.0.0 (2021-06-16)
 

@@ -10,8 +10,8 @@ module.exports = {
             max: 1,
             withType: '@apostrophecms/page',
             help: 'aposSeo:canonicalHelp',
-            filters: {
-              projection: {
+            builders: {
+              project: {
                 title: 1,
                 slug: 1,
                 _url: 1
