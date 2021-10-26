@@ -1,6 +1,6 @@
 {
   "name": "@apostrophecms/seo",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "SEO Tools for Apostrophe 3",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "author": "Apostrophe Technologies",
   "license": "MIT",
   "peerDependencies": {
-    "apostrophe": "^3.6.0"
+    "apostrophe": "^3.7.0"
   },
   "devDependencies": {
     "eslint": "^7.9.0",
