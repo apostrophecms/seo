@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.1 (2021-12-21)
+
+### Adds
+
+- Compatible with the `@apostrophecms/security-headers` module.
+
 ## 1.1.0 (2021-10-28)
 
 ### Adds
