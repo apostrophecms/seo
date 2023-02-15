@@ -1,5 +1,11 @@
 # Changelog
 
+## UNRELEASED
+
+### Fixes
+
+* Fixes Nunjucks syntax for accessing _seoCanonical URL.
+
 ## 1.1.1 (2021-12-21)
 
 ### Adds
