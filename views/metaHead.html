@@ -29,7 +29,7 @@
 
 {# canonical URL #}
 {% if document._seoCanonical and document._seoCanonical.length  %}
-	<link rel="canonical" href="{{ document._seoCanonical._url }}" />
+	<link rel="canonical" href="{{ document._seoCanonical[0]._url }}" />
 {% endif %}
 
 {# Google Tracking ID #}
