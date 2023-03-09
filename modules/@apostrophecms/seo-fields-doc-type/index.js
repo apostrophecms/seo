@@ -59,7 +59,7 @@ module.exports = {
             ? options.apos.modules[canonicalType].label
             : name.replace(/-/, ' ');
           const label = req.t('aposSeo:canonicalModule', { type: _.startCase(req.t(moduleName) || canonicalType) });
-          const help = req.t('aposSeo:canonicalHelpModule', { type: req.t(moduleName) || canonicalType });
+          const help = req.t('aposSeo:canonicalModuleHelp', { type: req.t(moduleName) || canonicalType });
 
           configuration.add[fieldName] = {
             help,
