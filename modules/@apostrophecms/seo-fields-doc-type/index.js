@@ -52,14 +52,17 @@ module.exports = {
         const req = options.apos.task.getReq();
         self.options.seoCanonicalTypes.forEach(canonicalType => {
           const name = canonicalType.startsWith('@apostrophecms/') ? canonicalType.split('@apostrophecms/')[1] : '';
+
           const fieldName = canonicalType.startsWith('@apostrophecms/')
             ? `_seoCanonical${_.kebabCase(name)}`
-            : `_seoCanonical${canonicalType}`;
-          const moduleName = options.apos.modules[canonicalType]
+            : `_seoCanonical${_.capitalize(canonicalType)}`;
+
+            const moduleName = options.apos.modules[canonicalType]
             ? options.apos.modules[canonicalType].label
             : name.replace(/-/, ' ');
+
           const label = req.t('aposSeo:canonicalModule', { type: _.startCase(req.t(moduleName) || canonicalType) });
-          const help = req.t('aposSeo:canonicalModuleHelp', { type: req.t(moduleName) || canonicalType });
+          const help = req.t('aposSeo:canonicalModuleHelp', { type: req.t(name) || canonicalType });
 
           configuration.add[fieldName] = {
             help,
