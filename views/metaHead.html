@@ -28,9 +28,13 @@
 {% endif %}
 
 {# canonical URL #}
-{% if document._seoCanonical and document._seoCanonical.length  %}
-	<link rel="canonical" href="{{ document._seoCanonical._url }}" />
-{% endif %}
+{% for name, items in document %}
+  {% if '_seoCanonical' in name %}
+    {% for item in items %}
+      <link rel="canonical" href="{{ item._url }}" />
+    {% endfor %}
+  {% endif %}
+{% endfor %}
 
 {# Google Tracking ID #}
 {% if global.seoGoogleTrackingId %}
