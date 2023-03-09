@@ -53,7 +53,7 @@ module.exports = {
         self.options.seoCanonicalTypes.forEach(canonicalType => {
           const name = canonicalType.startsWith('@apostrophecms/') ? canonicalType.split('@apostrophecms/')[1] : '';
           const fieldName = canonicalType.startsWith('@apostrophecms/')
-            ? `_${_.kebabCase(name)}`
+            ? `_seoCanonical${_.kebabCase(name)}`
             : `_seoCanonical${canonicalType}`;
           const moduleName = options.apos.modules[canonicalType]
             ? options.apos.modules[canonicalType].label
