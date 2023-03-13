@@ -50,19 +50,15 @@ module.exports = {
         && self.options.seoCanonicalTypes.length) {
 
         const req = options.apos.task.getReq();
+
         self.options.seoCanonicalTypes.forEach(canonicalType => {
-          const name = canonicalType.startsWith('@apostrophecms/') ? canonicalType.split('@apostrophecms/')[1] : '';
-
-          const fieldName = canonicalType.startsWith('@apostrophecms/')
-            ? `_seoCanonical${_.kebabCase(name)}`
-            : `_seoCanonical${_.capitalize(canonicalType)}`;
-
-            const moduleName = options.apos.modules[canonicalType]
+          const name = canonicalType.startsWith('@apostrophecms/') ? canonicalType.split('@apostrophecms/')[1] : canonicalType;
+          const fieldName = `_seoCanonical${_.capitalize(_.camelCase(name))}`;
+          const moduleName = options.apos.modules[canonicalType] && options.apos.modules[canonicalType].label
             ? options.apos.modules[canonicalType].label
-            : name.replace(/-/, ' ');
-
-          const label = req.t('aposSeo:canonicalModule', { type: _.startCase(req.t(moduleName) || canonicalType) });
-          const help = req.t('aposSeo:canonicalModuleHelp', { type: req.t(name) || canonicalType });
+            : name;
+          const label = req.t('aposSeo:canonicalModule', { type: _.startCase(req.t(moduleName)) });
+          const help = req.t('aposSeo:canonicalModuleHelp', { type: _.lowerCase(self.__meta.name) });
 
           configuration.add[fieldName] = {
             help,
