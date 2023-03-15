@@ -49,10 +49,18 @@ module.exports = {
     };
 
     if (self.options.seoCanonicalTypes &&
-        Array.isArray(self.options.seoCanonicalTypes) &&
-        self.options.seoCanonicalTypes.length) {
+      Array.isArray(self.options.seoCanonicalTypes) &&
+      self.options.seoCanonicalTypes.length) {
 
       const req = options.apos.task.getReq();
+      const choices = [];
+      configuration.add.seoSelectType = {
+        type: 'select',
+        label: req.t('aposSeo:canonicalSelectType'),
+        choices,
+        def: null
+      };
+      configuration.group.seo.fields.push('seoSelectType');
 
       self.options.seoCanonicalTypes.forEach(canonicalType => {
         const name = canonicalType.startsWith('@apostrophecms')
@@ -66,6 +74,10 @@ module.exports = {
         const label = req.t('aposSeo:canonicalModule', { type: _.startCase(req.t(moduleName)) });
         const help = req.t('aposSeo:canonicalModuleHelp', { type: _.lowerCase(self.__meta.name) });
 
+        choices.push({
+          label: _.startCase(req.t(moduleName)),
+          value: fieldName
+        });
         configuration.add[fieldName] = {
           help,
           label,
@@ -78,6 +90,9 @@ module.exports = {
               slug: 1,
               _url: 1
             }
+          },
+          if: {
+            seoSelectType: fieldName
           }
         };
 

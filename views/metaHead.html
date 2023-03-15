@@ -27,14 +27,13 @@
   <meta name="google-site-verification" content="{{ global.seoGoogleVerificationId }}" />
 {% endif %}
 
-{# canonical URL #}
-{% for name, items in document %}
-  {% if '_seoCanonical' in name %}
-    {% for item in items %}
-      <link rel="canonical" href="{{ item._url }}" />
-    {% endfor %}
-  {% endif %}
-{% endfor %}
+{% if document._seoCanonical and document._seoCanonical.length %}
+  {# canonical page URL #}
+  <link rel="canonical" href="{{ document._seoCanonical[0]._url }}" />
+{% elif document.seoSelectType and document[document.seoSelectType] and document[document.seoSelectType].length %}
+  {# canonical piece-page URL #}
+  <link rel="canonical" href="{{ document[document.seoSelectType][0]._url }}" />
+{% endif %}
 
 {# Google Tracking ID #}
 {% if global.seoGoogleTrackingId %}
