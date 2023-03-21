@@ -15,5 +15,8 @@
   "googleVerifyId": "ID Overovací identifikátor Google",
   "googleVerifyIdHelp": "Verifikačné ID poskytnuté spoločnosťou Google pre možnosť overenia metaznačky HTML.",
   "canonical": "Kanonický odkaz",
-  "canonicalHelp": "Existuje hlavná verzia tejto stránky na ktorú by mali vyhľadávače smerovať?"
+  "canonicalHelp": "Existuje hlavná verzia tejto stránky na ktorú by mali vyhľadávače smerovať?",
+  "canonicalSelectType": "Kanonický typ pre tento kus",
+  "canonicalModule": "{{ type }} Kanonický Odkaz",
+  "canonicalModuleHelp": "Existuje hlavná verzia tohto {{ type }}, na ktorú by mali vyhľadávače smerovať?"
 }

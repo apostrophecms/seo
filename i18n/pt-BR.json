@@ -1,0 +1,5 @@
+{
+  "canonicalSelectType": "Tipo canônico para esta peça",
+  "canonicalModule": "{{ type }} Link Canônico",
+  "canonicalModuleHelp": "Existe uma versão principal deste {{ type }} para a qual os mecanismos de pesquisa devem direcionar?"
+}
