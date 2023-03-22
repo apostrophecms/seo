@@ -8,14 +8,17 @@
     "robotsNoFollow": "No leer (crawl) ligas en la página (nofollow)",
     "robotsNoIndex": "Dejar de indexar la página (noindex)",
     "group": "SEO",
-  
+
     "gtmId": "ID de Google Tag Manager",
     "gtmIdHelp": "ID del Contenedor proveído en el Google Tag Manager (e.g., GTM-RPCVDTN).",
     "gaId": "ID de Seguimiento de Google Analytics",
     "gaIdHelp": "ID de Seguimiento proveído por Google Analytics.",
     "googleVerifyId": "ID de Verificación de Google",
     "googleVerifyIdHelp": "ID de Verificación proveído por Google para la opción de verificación de la etiqueta meta del HTML.",
-  
+
     "canonical": "Liga o Enlace Canónico",
-    "canonicalHelp": "¿Hay una versión principal de esta página a donde los buscadores deberian dirigir a los usuarios?"
+    "canonicalHelp": "¿Hay una versión principal de esta página a donde los buscadores deberian dirigir a los usuarios?",
+    "canonicalSelectType": "Tipo canónico para esta pieza",
+    "canonicalModule": "{{ type }} Enlace Canónico",
+    "canonicalModuleHelp": "¿Hay una versión principal de este {{ tipo }} a la que deberían dirigirse los motores de búsqueda?"
   }

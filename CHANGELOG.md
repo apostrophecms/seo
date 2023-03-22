@@ -1,10 +1,15 @@
 # Changelog
 
+## Unreleased
+
+### Adds
+- Canonical links for pieces, not only for pages from now on.
+
 ## 1.1.2 (2023-02-13)
 
 ### Changes
 - Remove `apostrophe` as a peer dependency.
-  
+
 ## 1.1.1 (2021-12-21)
 
 ### Adds

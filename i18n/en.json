@@ -17,5 +17,8 @@
   "googleVerifyIdHelp": "Verification ID provided by Google for the HTML meta tag verification option.",
 
   "canonical": "Canonical Link",
-  "canonicalHelp": "Is there a main version of this page that search engines should direct to?"
+  "canonicalHelp": "Is there a main version of this page that search engines should direct to?",
+  "canonicalSelectType": "Canonical type for this piece",
+  "canonicalModule": "{{ type }} Canonical Link",
+  "canonicalModuleHelp": "Is there a main version of this {{ type }} that search engines should direct to?"
 }
