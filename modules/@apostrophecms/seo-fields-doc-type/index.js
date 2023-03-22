@@ -63,12 +63,7 @@ module.exports = {
       configuration.group.seo.fields.push('seoSelectType');
 
       self.options.seoCanonicalTypes.forEach(canonicalType => {
-        const name = canonicalType.startsWith('@apostrophecms')
-          ? canonicalType.startsWith('@apostrophecms-pro')
-            ? canonicalType.split('@apostrophecms-pro/')[1]
-            : canonicalType.split('@apostrophecms/')[1]
-          : canonicalType;
-
+        const name = canonicalType.split(/^apostrophecms\/|apostrophecms-pro\//)[1] || canonicalType;
         const fieldName = `_${_.camelCase(`seoCanonical ${name}`)}`;
         const { label: moduleName = name } = options.apos.modules[canonicalType] || {};
         const label = req.t('aposSeo:canonicalModule', { type: _.startCase(req.t(moduleName)) });
