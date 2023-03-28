@@ -3,7 +3,7 @@ const _ = require('lodash');
 module.exports = {
   improve: '@apostrophecms/doc-type',
   fields(self, options) {
-    if (!options.seoFields) {
+    if (options.seoFields === false) {
       return;
     }
 
