@@ -32,19 +32,15 @@ require('apostrophe')({
 
 #### Setting the `baseUrl`
 
-It is important to set the `baseUrl` option on your ApostropheCMS application for various reasons. In the SEO module it contributes to building the correct `canonical` link tag URL. The `baseUrl` can be set two ways:
+It is important to set the `baseUrl` option on your ApostropheCMS application for various reasons. In the SEO module, it contributes to building the correct `canonical` link tag URL, so in production search engines and web crawlers will register the correct link. The `baseUrl` can be set multiple ways:
 
-##### In `app.js` as part of your main Apostrophe app
-```js
-require('apostrophe')({
-  shortName: 'mysite',
-  baseUrl: 'https://mysite.com',
-  modules: {
-    // ...
-  }
-});
-```
-##### As part of an environment configuration in `data/local.js`
+**With the `APOS_BASE_URL` environment variable**
+
+How you set the variable will depend on your hosting setup.
+
+**As part of an environment configuration in `data/local.js`**
+
+This method is if you are using stagecoach or a similar system for deployment.
 ```js
   module.exports = {
     baseUrl: 'https://mysite.com',
@@ -53,8 +49,13 @@ require('apostrophe')({
     }
   };
 ```
+
+**Via the multisite module if using [Apostrophe Assembly](https://apostrophecms.com/extensions/multisite-apostrophe-assembly)**
+
+See the multisite documentation for details.
+
 ### 2. Module configuration
-If you choose to disable SEO fields for a piece type or page type you can do so by setting `seoFields: false` on the appropriate module. The following modules disable SEO field enhancements by default:
+SEO fields are enabled for a piece type or page type by adding an option of `seoFields:true`. The following modules disable SEO field enhancements by default by setting the option to `false`:
  - `@apostrophecms/global`
  - `@apostrophecms/user`
  - `@apostrophecms/image`
@@ -71,6 +72,8 @@ module.exports = {
   }
 };
 ```
+
+#### Canonical links
 #### Add Google Analytics (GA)
 
 Setting `seoGoogleAnalytics: true` in `@apostrophecms/global` will add a Google Analytics tracking ID field to your Global configuration:
