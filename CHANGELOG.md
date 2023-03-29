@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.2.0 (2023-03-29)
 
 ### Adds
 - Canonical links for pieces, not only for pages from now on.
