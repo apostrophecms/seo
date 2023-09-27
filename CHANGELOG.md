@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.1 (2023-09-27)
+
+### Changes
+- Removes CircleCI and adds logo. No code changes.
+
 ## 1.2.0 (2023-03-29)
 
 ### Adds

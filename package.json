@@ -1,6 +1,6 @@
 {
   "name": "@apostrophecms/seo",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "SEO Tools for Apostrophe 3",
   "main": "index.js",
   "scripts": {
