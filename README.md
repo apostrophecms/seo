@@ -3,7 +3,7 @@
 
   <h1>SEO tools for ApostropheCMS</h1>
   <p>
-    <a aria-label="Apostrophe logo" href="https://v3.docs.apostrophecms.org">
+    <a aria-label="Apostrophe logo" href="https://docs.apostrophecms.org">
       <img src="https://img.shields.io/badge/MADE%20FOR%20ApostropheCMS-000000.svg?style=for-the-badge&logo=Apostrophe&labelColor=6516dd">
     </a>
     <a aria-label="Join the community on Discord" href="http://chat.apostrophecms.org">
