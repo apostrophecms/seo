@@ -1,5 +1,9 @@
 # Changelog
 
+## UNRELEASED
+
+- Edits package description. No code changes.
+
 ## 1.2.1 (2023-11-03)
 
 ### Changes
