@@ -2,7 +2,9 @@
 
 ## UNRELEASED
 
-- Edits package description. No code changes.
+- Corrected inaccurate information about enabling the module for piece types.
+It is enabled by default and can be expressly disabled via `seoFields: false`.
+- Edits package description.
 
 ## 1.2.1 (2023-11-03)
 
