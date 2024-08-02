@@ -1,0 +1,22 @@
+{
+  "title": "Titolo",
+  "titleHtmlHelp": "Definisce il titolo della pagina nei risultati di ricerca o nella scheda della pagina. Dovrebbe essere <a href=\"https://moz.com/learn/seo/title-tag\" target=\"_blank\">inferiore a 60 caratteri</a>.",
+  "description": "Descrizione",
+  "descriptionHtmlHelp": "Un riassunto breve e accurato del contenuto della pagina utilizzato nei risultati di ricerca. Dovrebbe essere <a href=\"https://moz.com/learn/seo/meta-description\" target=\"_blank\">tra 50 e 160 caratteri</a>.",
+  "robots": "Tag Robots",
+  "robotsHtmlHelp": "Impostazione dell'indicizzazione dei motori di ricerca. Per consentire a Google di indicizzare e esplorare completamente la tua pagina, lascia queste NON SELEZIONATE. <a href=\"https://moz.com/learn/seo/robots-meta-directives\" data-toggle=\"tooltip\" target=\"new_window\" title=\"Scopri di più sui Tag Meta Robots\">Scopri di più su queste opzioni</a>",
+  "robotsNoFollow": "Non seguire i link sulla pagina (nofollow)",
+  "robotsNoIndex": "Interrompi l'indicizzazione della pagina (noindex)",
+  "group": "SEO",
+  "gtmId": "ID Google Tag Manager",
+  "gtmIdHelp": "ID contenitore fornito in Google Tag Manager (ad es., GTM-RPCVDTN).",
+  "gaId": "ID tracciamento Google Analytics",
+  "gaIdHelp": "ID di tracciamento fornito da Google Analytics.",
+  "googleVerifyId": "ID di verifica Google",
+  "googleVerifyIdHelp": "ID di verifica fornito da Google per l'opzione di verifica del tag meta HTML.",
+  "canonical": "Collegamento Canonico",
+  "canonicalHelp": "Esiste una versione principale di questa pagina a cui i motori di ricerca dovrebbero reindirizzarsi?",
+  "canonicalSelectType": "Tipo canonico per questo pezzo",
+  "canonicalModule": "{{ type }} Collegamento Canonico",
+  "canonicalModuleHelp": "Esiste una versione principale di questo {{ type }} a cui i motori di ricerca dovrebbero reindirizzarsi?"
+}
