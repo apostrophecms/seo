@@ -1,6 +1,6 @@
 # Changelog
 
-## UNRELEASED
+## 1.2.2 (2024-08-08)
 
 - Corrected inaccurate information about enabling the module for piece types.
 It is enabled by default and can be expressly disabled via `seoFields: false`.
