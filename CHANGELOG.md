@@ -1,6 +1,7 @@
 # Changelog
 
-## UNRELEASED
+## 1.2.3 (2024-09-05)
+
 * Add AI and community-reviewed translation strings.
 
 ## 1.2.2 (2024-08-08)
