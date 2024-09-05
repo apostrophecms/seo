@@ -1,5 +1,8 @@
 # Changelog
 
+## UNRELEASED
+* Add AI and community-reviewed translation strings.
+
 ## 1.2.2 (2024-08-08)
 
 - Corrected inaccurate information about enabling the module for piece types.
