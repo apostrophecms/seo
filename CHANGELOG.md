@@ -1,5 +1,9 @@
 # Changelog
 
+## UNRELEASED
+
+- Adds a selection for adding a `robots.txt` string to the site through the global configuration.
+
 ## 1.2.3 (2024-09-05)
 
 * Add AI and community-reviewed translation strings.

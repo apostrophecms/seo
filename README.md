@@ -185,6 +185,24 @@ require('apostrophe')({
 });
 ```
 
+#### Add `robots.txt` to Your Site
+By default, the SEO extension will add a route to your site for `/robots.txt` that will return a string that allows for all search engines to index your site.
+
+```
+User-agent: *\nDisallow:
+```
+Within the global configuration you can choose to change this to disallow search engine indexing:
+
+```
+User-agent: *\nDisallow: /
+```
+
+You can also elect to select to add a custom string for your `robots.txt`. This can allow you finer control over what sections of your site can be indexed.
+
+Note that if you allow search engine to index your site, you can still set `noindex` and/or `nofollow` on a per page basis from the SEO tab of the individual page editing modals. If you disallow indexing of your site, settings for individual pages will be ignored.
+
+Any custom route and file set-up for delivering a `robots.txt` file in your project will override the settings in the `@apostrophecms/seo` extension.
+
 ### Notes
 
 #### Canonical URls
