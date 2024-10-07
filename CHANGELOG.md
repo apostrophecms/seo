@@ -2,7 +2,7 @@
 
 ## UNRELEASED
 
-- Adds a selection for adding a `robots.txt` string to the site through the global configuration.
+- Adds a selection for adding a `robots.txt` "file" to the site through the global configuration.
 
 ## 1.2.3 (2024-09-05)
 
