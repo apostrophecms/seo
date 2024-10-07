@@ -185,6 +185,24 @@ require('apostrophe')({
 });
 ```
 
+#### Add `robots.txt` to Your Site
+By default, the SEO extension will add a route to your site for `/robots.txt` that will return a string that allows for all search engines to index your site.
+
+```
+User-agent: *\nDisallow:
+```
+Within the global configuration you can choose to change this to disallow search engine indexing:
+
+```
+User-agent: *\nDisallow: /
+```
+
+You can also select to add a custom string for your `robots.txt`. This can allow you finer control over what sections of your site can be indexed and by which bots.
+
+Note that if you allow search engines to index your site, you can still set `noindex` and/or `nofollow` on a per-page basis from the SEO tab of the individual page editing modals. If you disallow indexing of your site, settings for individual pages will be ignored.
+
+A physical `robots.txt` file in `public/robots.txt`, or `sites/public/robots.txt` in an Assembly project, will override any settings made in this module. If you don't want a one-size-fits all policy for all sites, don't use a physical file.
+
 ### Notes
 
 #### Canonical URls
