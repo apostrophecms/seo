@@ -29,6 +29,7 @@ module.exports = {
         label: 'aposSeo:robotsCustomText',
         type: 'string',
         textarea: true,
+        required: true,
         if: {
           robotsTxtSelection: 'custom'
         }
@@ -85,18 +86,19 @@ module.exports = {
             let robotsTxtContent = '';
             switch (globalDoc.robotsTxtSelection) {
               case 'allow':
-                robotsTxtContent = 'User-agent: *\nDisallow: ';
+                robotsTxtContent = 'User-agent: *\nDisallow: \n';
                 break;
               case 'disallow':
-                robotsTxtContent = 'User-agent: *\nDisallow: /';
+                robotsTxtContent = 'User-agent: *\nDisallow: /\n';
                 break;
               case 'custom':
-                robotsTxtContent = globalDoc.robotsCustomText || 'User-agent: *\nDisallow: /';
+                robotsTxtContent = globalDoc.robotsCustomText || 'User-agent: *\nDisallow: /\n';
                 break;
               default:
-                robotsTxtContent = 'User-agent: *\nDisallow: ';
+                robotsTxtContent = 'User-agent: *\nDisallow: \n';
             }
 
+            req.res.setHeader('Content-Type', 'text/plain');
             return robotsTxtContent;
           } catch (err) {
             console.error(err);
