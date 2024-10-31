@@ -1,6 +1,6 @@
 # Changelog
 
-## UNRELEASED
+## 1.3.0 (2024-10-31)
 
 - Adds a selection for adding a `robots.txt` "file" to the site through the global configuration.
 
