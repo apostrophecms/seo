@@ -16,7 +16,6 @@
   "author": "Apostrophe Technologies",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^8.57.1",
-    "eslint-config-apostrophe": "^4.3.0"
+    "eslint-config-apostrophe": "^5.0.0"
   }
 }
