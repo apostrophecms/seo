@@ -5,6 +5,7 @@
 ### Changes
 
 * Bumbs `eslint-config-apostrophe` to `5`, fixes errors, removes unused dependencies.
+* Removes circle ci, adds github actions.
 
 ## 1.3.0 (2024-10-31)
 
