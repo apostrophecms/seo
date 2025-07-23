@@ -1,5 +1,8 @@
 const fs = require('fs');
 const path = require('path');
+const {
+  getMetaHead, getTagManagerHead, getTagManagerBody
+} = require('./lib/nodes');
 
 module.exports = {
   options: {
@@ -14,15 +17,21 @@ module.exports = {
     modules: getBundleModuleNames()
   },
   init(self) {
-    self.apos.template.prepend('body', '@apostrophecms/seo:tagManagerBody');
-    self.apos.template.append('head', '@apostrophecms/seo:tagManagerHead');
-    self.apos.template.prepend('head', '@apostrophecms/seo:metaHead');
+    self.prependNodes('head', 'metaHead');
+    self.appendNodes('head', 'tagManagerHead');
+    self.prependNodes('body', 'tagManagerBody');
   },
-  components(self) {
+  methods(self) {
     return {
-      async metaHead(req, data) {},
-      async tagManagerBody(req, data) {},
-      async tagManagerHead(req, data) {}
+      metaHead(req) {
+        return getMetaHead(req.data);
+      },
+      tagManagerHead(req) {
+        return getTagManagerHead(req.data);
+      },
+      tagManagerBody(req) {
+        return getTagManagerBody(req.data);
+      }
     };
   }
 };
