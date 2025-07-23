@@ -17,6 +17,9 @@
 
 Add useful meta fields to all pages and pieces.
 
+## Compatibility
+This version requires the latest ApostropheCMS. When adding this module to an existing project, run `npm update` to ensure all ApostropheCMS modules are up-to-date.
+
 ## Roadmap
 |Feature |Status  |
 --- | ---
