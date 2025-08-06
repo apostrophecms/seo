@@ -1,10 +1,10 @@
 # Changelog
 
-## UNRELEASED
+## 1.3.1 (2025-08-06)
 
 ### Changes
 
-* Bumbs `eslint-config-apostrophe` to `5`, fixes errors, removes unused dependencies.
+* Bumps `eslint-config-apostrophe` to `5`, fixes errors, removes unused dependencies.
 * Removes circle ci, adds github actions.
 * Inject nodes instead of async Nunjucks component to support external frontends.
 
