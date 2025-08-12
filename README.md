@@ -139,7 +139,7 @@ This adds a Google Site Verification ID field to your global configuration. Ente
 
 ### Setting the Base URL
 
-**This step is required for proper canonical link generation and SEO performance.** Configure your site's base URL for accurate canonical links and proper search engine indexing.
+**This step is required for proper canonical link generation and SEO performance.** If using [ApostropheCMS hosting](https://apostrophecms.com/hosting), this is set automatically. If you are self-hosted, configure your site's base URL as shown for accurate canonical links and proper search engine indexing.
 
 **Via environment variable (recommended):**
 ```bash
@@ -216,7 +216,7 @@ User-agent: *
 Disallow:
 ```
 
-Within the global configuration you can choose to change this to disallow search engine indexing:
+By clicking on the global settings gear button in the UI you can choose to change this to disallow search engine indexing:
 ```
 User-agent: *
 Disallow: /
@@ -259,7 +259,7 @@ This automatically sends 404 events to Google Analytics when a tracking ID is co
 
 ## 🚀 Ready for AI-Powered SEO?
 
-**Want to supercharge your SEO workflow?** Upgrade to [**ApostropheCMS Pro**](https://apostrophecms.com/pro) and get access to the [**SEO Assistant**](https://apostrophecms.com/extensions/seo-assistant) with AI-powered content optimization:
+**Want to supercharge your SEO workflow?** Create an account on Apostrophe Workspaces and upgrade to [**ApostropheCMS Pro**](https://app.apostrophecms.com/login) now. Get access to the [**SEO Assistant**](https://apostrophecms.com/extensions/seo-assistant) with AI-powered content optimization and additional Pro modules:
 
 ### ✨ SEO Assistant Pro Features
 - **🤖 AI-Generated Meta Titles**: Compelling, keyword-optimized titles generated automatically
@@ -287,7 +287,7 @@ The SEO Assistant analyzes your page content and generates optimized meta titles
 
 Perfect for agencies, franchises, or organizations managing multiple branded websites with consistent functionality but unique content and design.
 
-**[Learn more about the multisite extension](https://apostrophecms.com/extensions/multisite-apostrophe-assembly), **[Assembly](https://apostrophecms.com/assembly)** or **[contact our team](https://apostrophecms.com/contact-us)** to discuss your multisite needs.
+**[Learn more about the multisite extension](https://apostrophecms.com/extensions/multisite-apostrophe-assembly)**, **[Assembly licensing](https://apostrophecms.com/assembly)** or **[contact our team](https://apostrophecms.com/contact-us)** to discuss your multisite needs.
 
 ## Roadmap
 
