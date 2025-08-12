@@ -15,7 +15,7 @@
   </p>
 </div>
 
-**Ensure your content gets found by search engines and AI systems** with comprehensive SEO management for ApostropheCMS. Essential meta fields, Google Analytics integration, and automated robots.txt generation—everything you need to boost your search rankings and drive organic traffic.
+**Ensure your content gets found by search engines and AI systems** with comprehensive SEO management for ApostropheCMS. Essential meta fields, Google Analytics integration, and automated `robots.txt` generation—everything you need to boost your search rankings and drive organic traffic.
 
 ## Why ApostropheCMS SEO Tools?
 
@@ -87,8 +87,7 @@ apostrophe({
   }
 });
 ```
-
-This adds a Google Analytics tracking ID field to your global configuration.
+This adds a field in the global configuration for entering your Google Analytics Measurement ID (e.g., `G-XXXXXXXXXX`), which you can find in your Google Analytics account.
 
 ### Google Tag Manager Integration
 
@@ -111,7 +110,7 @@ apostrophe({
 });
 ```
 
-This adds a Google Tag Manager container ID field to your global configuration. Enter your GTM container ID (obtained from Google Tag Manager) in the global settings to enable tracking.
+This adds a Google Tag Manager container ID field to your global configuration. Enter your GTM container ID (e.g., `GTM-XXXXXXX`), which you can find in your Google Tag Manager account, to enable tracking.
 
 ### Google Site Verification
 
@@ -187,6 +186,8 @@ The following modules disable SEO fields by default:
 ### Canonical Link Configuration
 
 "Canonical links" are useful when a piece or page should **not** be considered the official version of a document, and you would prefer that search engines look elsewhere. This feature is always available for pages.
+
+[As described on Moz.com](https://moz.com/learn/seo/canonicalization): “A canonical tag, also known as 'rel canonical', is a method for informing search engines that a certain URL, referred to as the canonical URL, is the master copy of a page.” Using the canonical tag prevents problems caused by identical or 'duplicate' content appearing on multiple URLs. Practically speaking, the canonical tag tells search engines which version of a URL you want to appear in search results.
 
 If you wish to have this feature for a piece type, you will need to specify the `seoCanonicalTypes` option to that piece type module, as an array of types that the editor can choose from.
 
