@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.2 (2025-09-03)
+
+### Changes
+
+* README improved
+
 ## 1.3.1 (2025-08-06)
 
 ### Changes
