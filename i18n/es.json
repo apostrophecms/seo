@@ -26,7 +26,7 @@
   "canonicalModule": "{{ type }} Enlace Canónico",
   "canonicalModuleHelp": "¿Hay una versión principal de este {{ tipo }} a la que deberían dirigirse los motores de búsqueda?",
   "includeItemList": "Incluir ItemList en JSON-LD",
-  "includeItemListHelp": "Cuando está activado, las páginas de colección (Collection Page) incluyen una ItemList de los elementos visibles en los datos estructurados."
+  "includeItemListHelp": "Cuando está activado, las páginas de colección (Collection Page) incluyen una ItemList de los elementos visibles en los datos estructurados.",
 
   "twitterHandle": "Usuario de Twitter/X",
   "twitterHandleHelp": "Tu nombre de usuario de Twitter/X incluyendo el símbolo @ (ej., @tucuenta) para las tarjetas en redes sociales.",
