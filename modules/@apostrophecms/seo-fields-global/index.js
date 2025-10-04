@@ -146,7 +146,7 @@ module.exports = {
         type: 'string',
         help: 'aposSeo:twitterHandleHelp'
       },
-      seoOpenGraphImage: {
+      _seoOpenGraphImage: {
         label: 'aposSeo:defaultOGImage',
         type: 'relationship',
         withType: '@apostrophecms/image',
@@ -195,7 +195,7 @@ module.exports = {
       };
       group.seo.fields.push('seoGoogleVerificationId');
     }
-    group.seo.fields.push('seoTwitterHandle', 'seoOpenGraphImage');
+    group.seo.fields.push('seoTwitterHandle', '_seoOpenGraphImage');
 
     return Object.keys(add).length
       ? {
