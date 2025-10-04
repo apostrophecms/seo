@@ -24,5 +24,44 @@
   "canonicalHelp": "Há uma versão principal desta página para a qual os mecanismos de busca devem direcionar?",
   "canonicalSelectType": "Tipo canônico para esta peça",
   "canonicalModule": "{{ type }} Link Canônico",
-  "canonicalModuleHelp": "Existe uma versão principal deste {{ type }} para a qual os mecanismos de pesquisa devem direcionar?"
+  "canonicalModuleHelp": "Existe uma versão principal deste {{ type }} para a qual os mecanismos de pesquisa devem direcionar?",
+  "includeItemList": "Incluir ItemList no JSON-LD",
+  "includeItemListHelp": "Quando habilitado, páginas de coleção (Collection Page) incluem uma ItemList dos itens visíveis nos dados estruturados.",
+
+  "twitterHandle": "Usuário do Twitter/X",
+  "twitterHandleHelp": "Seu nome de usuário do Twitter/X incluindo o símbolo @ (ex.: @seuusuario) para cartões de mídia social.",
+  "defaultOGImage": "Imagem padrão de compartilhamento",
+  "defaultOGImageHelp": "Imagem alternativa para compartilhamento em redes sociais quando a página não tem uma imagem em destaque.",
+
+  "sku": "SKU (Unidade de controle de estoque)",
+  "skuHelp": "Identificador interno do produto ou número de estoque.",
+  "gtin": "GTIN/Código de barras",
+  "gtinHelp": "Número Global de Item Comercial – UPC, EAN, ISBN ou outro código de produto.",
+  "condition": "Condição do item",
+  "rating": "Classificação média",
+  "ratingHelp": "Classificação média dos clientes em uma escala de 0–5 estrelas.",
+  "reviewCount": "Número de avaliações",
+  "reviewCountHelp": "Número total de avaliações de clientes para este produto.",
+
+  "faqDetails": "Informações de FAQ",
+  "faqDetailsHelp": "Perguntas frequentes que podem aparecer como rich snippets nos resultados de pesquisa.",
+  "faqQuestions": "Perguntas e respostas",
+  "question": "Pergunta",
+  "answer": "Resposta",
+
+  "videoDetails": "Informações do vídeo",
+  "videoDetailsHelp": "Dados estruturados de vídeos ajudam a aparecer nos resultados de pesquisa de vídeos.",
+  "videoName": "Título do vídeo",
+  "videoNameHelp": "O título do vídeo como deve aparecer nos resultados de pesquisa.",
+  "videoDescription": "Descrição do vídeo",
+  "videoUploadDate": "Data de envio",
+  "videoDuration": "Duração",
+  "videoDurationHelp": "Duração do vídeo no formato ISO 8601 (ex.: PT1H30M para 1 hora e 30 minutos).",
+  "videoThumbnail": "Miniatura do vídeo",
+  "videoThumbnailHelp": "Imagem em miniatura do vídeo.",
+  "videoUrl": "URL do vídeo",
+  "videoUrlHelp": "URL direta para o arquivo de vídeo ou URL de incorporação.",
+  "videoEmbedUrl": "URL de incorporação",
+  "videoEmbedUrlHelp": "URL para incorporar o vídeo (ex.: URL de incorporação do YouTube)."
+
 }

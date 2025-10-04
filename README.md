@@ -230,6 +230,32 @@ A physical `robots.txt` file in `public/robots.txt`, or `sites/public/robots.txt
 
 ## Advanced Features
 
+### Structured Data (JSON-LD)
+
+This module generates JSON-LD in a single `<script type="application/ld+json">` with an `@graph` that can include:
+
+- WebSite and Organization (from Global)
+- WebPage or CollectionPage (per document)
+- A primary entity for detail pages: Article, Product, Event, Person, or LocalBusiness
+- ItemList for listing pages when enabled
+
+Editor guidance
+- Detail pages: choose the correct Schema Type in the SEO tab (Article/Product/Event/Person/Local Business) and fill the corresponding fields. These schemas now work on both pages and pieces.
+- Listing/index pages: choose “Collection Page”. Keep “Include ItemList in JSON-LD” enabled to add an ItemList of the visible items on the page.
+- Sitewide: set Site Name, Site Description, Canonical URL, and Organization details in Global to emit WebSite and Organization in the graph.
+
+ItemList generation
+- The module detects listing items from common keys: `req.data.pieces`, `req.data.items`, `req.data._pieces`, or `req.data.docs`.
+- Each item should provide `_url` (or `url`) and `title` (or `seoTitle`).
+- A boolean field “Include ItemList in JSON-LD” controls whether ItemList is emitted for Collection Pages (default: on). You can expose this toggle for WebPage as well if desired.
+
+Environment debug logging
+- Set `APOS_SEO_DEBUG=true` to print JSON-LD generation diagnostics to the server logs during development.
+
+Notes
+- Only one “primary entity” should be used per page. Keep rich entity schemas on their canonical detail pages; use CollectionPage + ItemList for listings.
+- The module outputs a single JSON-LD tag with all schemas in `@graph` for performance and clarity.
+
 ### Custom 404 Tracking
 
 Track 404 errors in Google Analytics by adding this to your `notFound.html` template:
@@ -256,6 +282,16 @@ This automatically sends 404 events to Google Analytics when a tracking ID is co
 |`seoGoogleTagManager`|Google Tag Manager Container ID|`@apostrophecms/global`|`seoGoogleTagManager: true`|
 |`seoGoogleTrackingId`|Google Analytics ID|`@apostrophecms/global`|`seoGoogleAnalytics: true`|
 |`seoGoogleVerificationId`|Google Verification ID, populates `<meta name="google-site-verification" />`|`@apostrophecms/global`|`seoGoogleVerification: true`|
+|`seoJsonLdType`|Schema.org type for this document (e.g., WebPage, CollectionPage, Article, Product, Event, Person, LocalBusiness)|`@apostrophecms/doc-type`|_Enabled by default_|
+|`seoJsonLdProduct`|Product fields (name, description, price, currency, availability, brand)|`@apostrophecms/doc-type`|Shown when `seoJsonLdType: 'Product'`|
+|`seoJsonLdEvent`|Event fields (name, description, start/end, location)|`@apostrophecms/doc-type`|Shown when `seoJsonLdType: 'Event'`|
+|`seoJsonLdPerson`|Person fields (name, description, jobTitle, organization)|`@apostrophecms/doc-type`|Shown when `seoJsonLdType: 'Person'`|
+|`seoJsonLdBusiness`|LocalBusiness fields (name, description, telephone, address, openingHours)|`@apostrophecms/doc-type`|Shown when `seoJsonLdType: 'LocalBusiness'`|
+|`seoIncludeItemList`|Include ItemList for listing pages|`@apostrophecms/doc-type`|Shown when `seoJsonLdType: 'CollectionPage'`|
+|`seoSiteName`|Site name for WebSite schema|`@apostrophecms/global`|_Enabled by default_|
+|`seoSiteDescription`|Site description for WebSite schema|`@apostrophecms/global`|_Enabled by default_|
+|`seoSiteCanonicalUrl`|Base URL used in structured data and canonicals|`@apostrophecms/global`|_Enabled by default_|
+|`seoJsonLdOrganization`|Organization schema settings (name, type, description, logo, contact, address)|`@apostrophecms/global`|_Enabled by default_|
 
 ## 🚀 Ready for AI-Powered SEO?
 

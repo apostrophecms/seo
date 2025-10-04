@@ -24,5 +24,44 @@
   "canonicalHelp": "Existuje hlavná verzia tejto stránky na ktorú by mali vyhľadávače smerovať?",
   "canonicalSelectType": "Kanonický typ pre tento kus",
   "canonicalModule": "{{ type }} Kanonický Odkaz",
-  "canonicalModuleHelp": "Existuje hlavná verzia tohto {{ type }}, na ktorú by mali vyhľadávače smerovať?"
+  "canonicalModuleHelp": "Existuje hlavná verzia tohto {{ type }}, na ktorú by mali vyhľadávače smerovať?",
+  "includeItemList": "Zahrnúť ItemList do JSON‑LD",
+  "includeItemListHelp": "Ak je povolené, stránky kolekcie (Collection Page) budú v štruktúrovaných dátach obsahovať ItemList viditeľných položiek.",
+
+  "twitterHandle": "Twitter/X účet",
+  "twitterHandleHelp": "Vaše používateľské meno na Twitter/X vrátane symbolu @ (napr. @vasekonto) pre karty sociálnych sietí.",
+  "defaultOGImage": "Predvolený obrázok na zdieľanie",
+  "defaultOGImageHelp": "Záložný obrázok pre zdieľanie na sociálnych sieťach, keď stránka nemá vybraný obrázok.",
+
+  "sku": "SKU (Skladová jednotka)",
+  "skuHelp": "Interný identifikátor produktu alebo skladové číslo.",
+  "gtin": "GTIN/Čiarový kód",
+  "gtinHelp": "Globálne číslo obchodnej položky – UPC, EAN, ISBN alebo iný čiarový kód produktu.",
+  "condition": "Stav položky",
+  "rating": "Priemerné hodnotenie",
+  "ratingHelp": "Priemerné hodnotenie zákazníkov na stupnici 0–5 hviezdičiek.",
+  "reviewCount": "Počet recenzií",
+  "reviewCountHelp": "Celkový počet recenzií zákazníkov pre tento produkt.",
+
+  "faqDetails": "Informácie o FAQ",
+  "faqDetailsHelp": "Často kladené otázky, ktoré sa môžu zobraziť ako rozšírené úryvky vo výsledkoch vyhľadávania.",
+  "faqQuestions": "Otázky a odpovede",
+  "question": "Otázka",
+  "answer": "Odpoveď",
+
+  "videoDetails": "Informácie o videu",
+  "videoDetailsHelp": "Štruktúrované údaje o videách pomáhajú pri zobrazovaní vo výsledkoch vyhľadávania videí.",
+  "videoName": "Názov videa",
+  "videoNameHelp": "Názov videa tak, ako sa má zobraziť vo výsledkoch vyhľadávania.",
+  "videoDescription": "Popis videa",
+  "videoUploadDate": "Dátum nahratia",
+  "videoDuration": "Trvanie",
+  "videoDurationHelp": "Trvanie videa vo formáte ISO 8601 (napr. PT1H30M pre 1 hodinu a 30 minút).",
+  "videoThumbnail": "Miniatúra videa",
+  "videoThumbnailHelp": "Náhľadový obrázok pre video.",
+  "videoUrl": "URL videa",
+  "videoUrlHelp": "Priama URL na videosúbor alebo URL na vloženie.",
+  "videoEmbedUrl": "Vkladacia URL",
+  "videoEmbedUrlHelp": "URL na vloženie videa (napr. YouTube embed URL)."
+
 }

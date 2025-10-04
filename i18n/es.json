@@ -24,5 +24,43 @@
   "canonicalHelp": "¿Hay una versión principal de esta página a donde los buscadores deberian dirigir a los usuarios?",
   "canonicalSelectType": "Tipo canónico para esta pieza",
   "canonicalModule": "{{ type }} Enlace Canónico",
-  "canonicalModuleHelp": "¿Hay una versión principal de este {{ tipo }} a la que deberían dirigirse los motores de búsqueda?"
+  "canonicalModuleHelp": "¿Hay una versión principal de este {{ tipo }} a la que deberían dirigirse los motores de búsqueda?",
+  "includeItemList": "Incluir ItemList en JSON-LD",
+  "includeItemListHelp": "Cuando está activado, las páginas de colección (Collection Page) incluyen una ItemList de los elementos visibles en los datos estructurados."
+
+  "twitterHandle": "Usuario de Twitter/X",
+  "twitterHandleHelp": "Tu nombre de usuario de Twitter/X incluyendo el símbolo @ (ej., @tucuenta) para las tarjetas en redes sociales.",
+  "defaultOGImage": "Imagen predeterminada para compartir",
+  "defaultOGImageHelp": "Imagen de respaldo para compartir en redes sociales cuando una página no tiene una imagen destacada.",
+
+  "sku": "SKU (Unidad de Mantenimiento de Stock)",
+  "skuHelp": "Tu identificador interno de producto o número de inventario.",
+  "gtin": "GTIN/Código de barras",
+  "gtinHelp": "Número Global de Artículo Comercial - UPC, EAN, ISBN u otro código de producto.",
+  "condition": "Condición del artículo",
+  "rating": "Valoración promedio",
+  "ratingHelp": "Valoración promedio de los clientes en una escala de 0 a 5 estrellas.",
+  "reviewCount": "Número de reseñas",
+  "reviewCountHelp": "Número total de reseñas de clientes para este producto.",
+
+  "faqDetails": "Información de Preguntas Frecuentes",
+  "faqDetailsHelp": "Preguntas frecuentes que pueden aparecer como fragmentos enriquecidos en los resultados de búsqueda.",
+  "faqQuestions": "Preguntas y respuestas",
+  "question": "Pregunta",
+  "answer": "Respuesta",
+
+  "videoDetails": "Información del video",
+  "videoDetailsHelp": "Los datos estructurados de videos ayudan a que aparezcan en los resultados de búsqueda de videos.",
+  "videoName": "Título del video",
+  "videoNameHelp": "El título del video tal como debe mostrarse en los resultados de búsqueda.",
+  "videoDescription": "Descripción del video",
+  "videoUploadDate": "Fecha de subida",
+  "videoDuration": "Duración",
+  "videoDurationHelp": "Duración del video en formato ISO 8601 (ej., PT1H30M para 1 hora y 30 minutos).",
+  "videoThumbnail": "Miniatura del video",
+  "videoThumbnailHelp": "Imagen en miniatura para el video.",
+  "videoUrl": "URL del video",
+  "videoUrlHelp": "URL directa al archivo de video o a la URL de inserción.",
+  "videoEmbedUrl": "URL de inserción",
+  "videoEmbedUrlHelp": "URL para incrustar el video (ej., URL de inserción de YouTube)."
 }
