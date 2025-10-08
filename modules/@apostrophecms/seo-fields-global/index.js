@@ -296,7 +296,7 @@ module.exports = {
           content += `## Content Types\n\n`;
           const pieceTypes = Object.values(self.apos.modules)
             .filter(m => m.__meta?.chain?.includes('@apostrophecms/piece-type'))
-            .filter(m => !m.options.seoFields === false)
+            .filter(m => m.options.seoFields !== false)
             .map(m => ({
               name: m.__meta.name,
               label: m.label || m.options.label || m.__meta.name
