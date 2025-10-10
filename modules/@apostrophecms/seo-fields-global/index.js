@@ -294,12 +294,23 @@ module.exports = {
 
           // Content Types Available
           content += `## Content Types\n\n`;
+          // DEBUG - remove after testing
+          const allModules = Object.values(self.apos.modules)
+            .filter(m => m.__meta?.chain?.includes('@apostrophecms/piece-type'));
+          console.log('All piece types found:', allModules.map(m => ({
+            name: m.__meta.name,
+            seoFields: m.options?.seoFields
+          })));
           const pieceTypes = Object.values(self.apos.modules)
             .filter(m => m.__meta?.chain?.includes('@apostrophecms/piece-type'))
-            .filter(m => m.options.seoFields !== false)
+            .filter(m => {
+              // Only exclude if explicitly set to false
+              const seoFieldsOption = m.options?.seoFields;
+              return seoFieldsOption !== false;
+            })
             .map(m => ({
               name: m.__meta.name,
-              label: m.label || m.options.label || m.__meta.name
+              label: m.label || m.options?.label || m.__meta.name
             }));
 
           if (pieceTypes.length > 0) {
