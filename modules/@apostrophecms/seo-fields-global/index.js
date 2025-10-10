@@ -271,7 +271,7 @@ module.exports = {
 
           // Key Pages - get top-level pages
           try {
-            const pages = await self.apos.page.find(req, { level: 0, archived: { $ne: true } })
+            const pages = await self.apos.page.find(req, { level: { $lte: 1 }, archived: { $ne: true } })
               .permission('view')
               .project({ title: 1, _url: 1, seoDescription: 1 })
               .limit(10)
