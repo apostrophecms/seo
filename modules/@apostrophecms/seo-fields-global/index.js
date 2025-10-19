@@ -290,6 +290,21 @@ module.exports = {
                   }
                 }
               }
+            },
+            sameAs: {
+              label: 'aposSeo:socialProfiles',
+              type: 'array',
+              titleField: 'url',
+              help: 'aposSeo:socialProfilesHelp', // "Add your official social media profiles"
+              fields: {
+                add: {
+                  url: {
+                    label: 'aposSeo:profileUrl',
+                    type: 'url',
+                    required: true
+                  }
+                }
+              }
             }
           }
         }
@@ -305,6 +320,12 @@ module.exports = {
         withType: '@apostrophecms/image',
         max: 1,
         help: 'aposSeo:defaultOGImageHelp'
+      },
+      seoSearchQueryParam: {
+        label: 'aposSeo:searchQueryParam',
+        type: 'string',
+        def: 'q',
+        help: 'aposSeo:searchQueryParamHelp' // "The query parameter your site uses for search (e.g., 'q', 'search', 'query')"
       }
     }
 
@@ -430,8 +451,8 @@ Allow: /
                 // Granular control based on checkboxes
                 const allowed = globalDoc.robotsAISelective || [];
                 const aiCrawlers = [
-                  'GPTBot', 'ChatGPT-User', 'Google-Extended', 
-                  'ClaudeBot', 'Claude-User', 'PerplexityBot', 
+                  'GPTBot', 'ChatGPT-User', 'Google-Extended',
+                  'ClaudeBot', 'Claude-User', 'PerplexityBot',
                   'CCBot', 'anthropic-ai', 'Applebot-Extended', 'FacebookBot'
                 ];
                 robotsTxtContent = '# Traditional search engines (always allowed)\n';

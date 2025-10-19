@@ -65,11 +65,14 @@
   "state": "Estado/Região",
   "postalCode": "CEP",
   "country": "País",
+  "aposSeo:socialProfilesHelp": "Adicione seus perfis oficiais de mídia social",
 
   "twitterHandle": "Usuário do Twitter/X",
   "twitterHandleHelp": "Seu nome de usuário no Twitter/X (ex.: @seudominio).",
   "defaultOGImage": "Imagem padrão para redes sociais",
   "defaultOGImageHelp": "Imagem padrão para compartilhamento em redes sociais quando a página não tem imagem destacada (recomendado: 1200x630px).",
+  "aposSeo:searchQueryParam": "Parâmetro de URL de pesquisa do site",
+  "aposSeo:searchQueryParamHelp": "O parâmetro de consulta que seu site usa para pesquisa (por exemplo, 'q', 'search', 'query')",
 
   "gtmId": "ID do Google Tag Manager",
   "gtmIdHelp": "O ID do seu contêiner do Google Tag Manager (ex.: GTM-XXXXXXX).",
@@ -146,7 +149,7 @@
   "businessAddress": "Endereço do negócio",
   "openingHours": "Horário de funcionamento",
   "hours": "Horário",
-  "hoursHelp": "Formato: 'Seg-Sex 09:00-17:00' ou 'Seg,Qua,Sex 09:00-17:00'.",
+  "hoursHelp": "Formato: Seg-Sex 09:00-17:00, Sáb 10:00-14:00 ou dias específicos como Segunda-feira 09:00-17:00.",
 
   "jobPostingDetails": "Detalhes da vaga",
   "jobPostingDetailsHelp": "Configure os dados estruturados para esta vaga. Isso ajuda seu anúncio a aparecer melhor no Google for Jobs e em outros portais de emprego.",

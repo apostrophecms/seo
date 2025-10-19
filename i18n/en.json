@@ -66,11 +66,13 @@
   "state": "State/Region",
   "postalCode": "Postal Code",
   "country": "Country",
+  "aposSeo:socialProfilesHelp": "Add your official social media profiles",
 
   "twitterHandle": "Twitter/X Handle",
   "twitterHandleHelp": "Your Twitter/X username (e.g., @yourhandle).",
   "defaultOGImage": "Default Social Sharing Image",
   "defaultOGImageHelp": "Default image for social media sharing when a page doesn't have a featured image (recommended: 1200x630px).",
+  "searchQueryParam": "Site Search URL Parameter", "searchQueryParamHelp": "The query parameter your site uses for search (e.g., 'q', 'search', 'query')",
 
   "gtmId": "Google Tag Manager ID",
   "gtmIdHelp": "Your Google Tag Manager container ID (e.g., GTM-XXXXXXX).",
@@ -147,7 +149,7 @@
   "businessAddress": "Business Address",
   "openingHours": "Opening Hours",
   "hours": "Hours",
-  "hoursHelp": "Format: 'Mo-Fr 09:00-17:00' or 'Mo,We,Fr 09:00-17:00'.",
+  "hoursHelp": "Format: Mo-Fr 09:00-17:00, Sa 10:00-14:00, or specific days like Monday 09:00-17:00.",
 
   "jobPostingDetails": "Job Posting Details",
   "jobPostingDetailsHelp": "Configure structured data for this job posting. This helps your job appear in Google for Jobs and other job search engines.",

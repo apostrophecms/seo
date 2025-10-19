@@ -66,11 +66,14 @@
   "state": "Štát/Región",
   "postalCode": "PSČ",
   "country": "Krajina",
+  "aposSeo:socialProfilesHelp": "Pridajte svoje oficiálne profily na sociálnych sieťach",
 
   "twitterHandle": "Twitter/X účet",
   "twitterHandleHelp": "Vaše používateľské meno na Twitter/X (napr. @vasucet).",
   "defaultOGImage": "Predvolený obrázok pre sociálne siete",
   "defaultOGImageHelp": "Predvolený obrázok na zdieľanie na sociálnych sieťach, keď stránka nemá vlastný obrázok (odporúčané: 1200x630px).",
+  "aposSeo:searchQueryParam": "Parametr URL vyhľadávania na stránke",
+  "aposSeo:searchQueryParamHelp": "Parameter dotazu, ktorý váš web používa na vyhľadávanie (napr. 'q', 'search', 'query')",
 
   "gtmId": "ID Google Tag Manager",
   "gtmIdHelp": "ID vášho kontajnera Google Tag Manager (napr. GTM-XXXXXXX).",
@@ -147,7 +150,7 @@
   "businessAddress": "Adresa firmy",
   "openingHours": "Otváracie hodiny",
   "hours": "Hodiny",
-  "hoursHelp": "Formát: 'Po-Pi 09:00-17:00' alebo 'Po,St,Pia 09:00-17:00'.",
+  "hoursHelp": "Formát: Po-Pi 09:00-17:00, So 10:00-14:00 alebo konkrétne dni ako Pondelok 09:00-17:00.",
 
   "jobPostingDetails": "Podrobnosti o pracovnej ponuke",
   "jobPostingDetailsHelp": "Nakonfigurujte štruktúrované údaje pre túto pracovnú ponuku. Pomôže to vášmu inzerátu zobraziť sa lepšie v Google for Jobs a na iných pracovných portáloch.",

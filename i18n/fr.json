@@ -66,11 +66,14 @@
   "state": "État/Région",
   "postalCode": "Code postal",
   "country": "Pays",
+  "aposSeo:socialProfilesHelp": "Ajoutez vos profils officiels de réseaux sociaux",
 
   "twitterHandle": "Identifiant Twitter/X",
   "twitterHandleHelp": "Votre nom d’utilisateur Twitter/X (ex. @votrecompte).",
   "defaultOGImage": "Image de partage par défaut",
   "defaultOGImageHelp": "Image par défaut pour le partage sur les réseaux sociaux lorsqu’une page n’a pas d’image (recommandé : 1200x630px).",
+  "aposSeo:searchQueryParam": "Paramètre d’URL de recherche du site",
+  "aposSeo:searchQueryParamHelp": "Le paramètre de requête utilisé par votre site pour la recherche (par ex. 'q', 'search', 'query')",
 
   "gtmId": "ID Google Tag Manager",
   "gtmIdHelp": "L’ID de votre conteneur Google Tag Manager (ex. GTM-XXXXXXX).",
@@ -147,7 +150,7 @@
   "businessAddress": "Adresse de l’entreprise",
   "openingHours": "Heures d’ouverture",
   "hours": "Horaires",
-  "hoursHelp": "Format : 'Lu-Ve 09:00-17:00' ou 'Lu,Me,Ve 09:00-17:00'.",
+  "hoursHelp": "Format : Lu-Ve 09:00-17:00, Sa 10:00-14:00 ou des jours spécifiques comme Lundi 09:00-17:00.",
 
   "jobPostingDetails": "Détails de l’offre d’emploi",
   "jobPostingDetailsHelp": "Configurez les données structurées pour cette offre. Cela permet à votre emploi d’apparaître plus facilement dans Google for Jobs et d’autres portails.",
