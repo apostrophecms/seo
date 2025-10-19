@@ -290,6 +290,10 @@
   "protein": "Bielkoviny",
   "fat": "Tuky",
   "datePublished": "Dátum publikovania",
+  "recipeVideo": "URL videa receptu",
+  "recipeVideoHelp": "Voliteľné: URL na video, ktoré ukazuje, ako pripraviť tento recept (YouTube, Vimeo atď.)",
+  "recipeKeywords": "Kľúčové slová",
+  "recipeKeywordsHelp": "Voliteľné: Kľúčové slová oddelené čiarkami na kategorizáciu tohto receptu (napr. 'dezert, čokoláda, jednoduché')",
 
   "courseDetails": "Detaily kurzu",
   "courseDetailsHelp": "Informácie pre markup schémy Kurz – pre online vzdelávanie a edukačný obsah.",
@@ -304,5 +308,38 @@
   "coursePriceHelp": "Cena za zápis do tohto kurzu (0 pre bezplatné kurzy).",
 
   "includeItemList": "Zahrnúť ItemList do JSON-LD",
-  "includeItemListHelp": "Generovať schému ItemList pre položky zobrazené na tejto stránke kolekcie. Odporúčané pre kategórie/indexové stránky."
+  "includeItemListHelp": "Generovať schému ItemList pre položky zobrazené na tejto stránke kolekcie. Odporúčané pre kategórie/indexové stránky.",
+
+  "isEducationalVideo": "Je vzdelávacie video",
+  "isEducationalVideoHelp": "Začiarkni toto, ak je video určené na vzdelávacie účely (návody, prednášky, ukážky)",
+  "educationalUse": "Vzdelávacie použitie",
+  "educationalUseHelp": "Ako má byť toto video použité na vzdelávacie účely",
+  "learningResourceType": "Typ vzdelávacieho zdroja",
+  "learningResourceTypeHelp": "Typ vzdelávacieho obsahu, ktorý toto video poskytuje",
+
+  "isPaywalled": "Platený obsah",
+  "isPaywalledHelp": "Začiarkni toto, ak obsah vyžaduje predplatné alebo platbu na prístup. Pomáha to vyhľadávačom pochopiť štruktúru obsahu.",
+  "paywallSelector": "CSS selektor paywallu",
+  "paywallSelectorHelp": "CSS selektor pre prvok paywallu (predvolené: .paywall). Identifikuje, ktorá časť stránky je za paywallom.",
+
+  "qaPageDetails": "Podrobnosti stránky otázok a odpovedí",
+  "qaPageDetailsHelp": "Nastav túto stránku ako stránku otázok a odpovedí (napr. ako Stack Overflow alebo príspevky na fóre). Použi ju pre stránky s jednou otázkou a jednou alebo viacerými odpoveďami.",
+  "qaQuestion": "Názov otázky",
+  "qaQuestionHelp": "Hlavná otázka, ktorá je položená (povinné)",
+  "qaQuestionText": "Text otázky",
+  "qaQuestionTextHelp": "Úplný text alebo telo otázky s doplňujúcim kontextom",
+  "qaQuestionAuthor": "Autor otázky",
+  "qaQuestionAuthorHelp": "Meno osoby, ktorá položila otázku",
+  "qaQuestionDate": "Dátum otázky",
+  "qaQuestionDateHelp": "Kedy bola otázka zverejnená",
+  "qaQuestionUpvotes": "Hlasy otázky",
+  "qaQuestionUpvotesHelp": "Počet pozitívnych hlasov alebo označení „páči sa mi“ pre otázku",
+  "qaAcceptedAnswer": "Schválená odpoveď",
+  "qaAcceptedAnswerHelp": "Odpoveď označená ako správna alebo najviac užitočná",
+  "qaAnswerText": "Text odpovede",
+  "qaAnswerAuthor": "Autor odpovede",
+  "qaAnswerDate": "Dátum odpovede",
+  "qaAnswerUpvotes": "Hlasy odpovede",
+  "qaSuggestedAnswers": "Ďalšie odpovede",
+  "qaSuggestedAnswersHelp": "Ďalšie navrhované odpovede, ktoré neboli označené ako schválené"
 }

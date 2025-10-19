@@ -16,7 +16,7 @@
 </div>
 
 **Ensure your content gets found by search engines and AI systems** with comprehensive SEO management for ApostropheCMS. Essential meta fields, Google Analytics integration, automated `robots.txt` and `llms.txt` generation—everything you need to boost your search rankings, control AI training usage, and drive organic traffic.
-
+<!-- omit in toc-->
 ## Why ApostropheCMS SEO Tools?
 
 - **🎯 Complete SEO Control**: Essential meta fields for titles, descriptions, and canonical URLs
@@ -29,9 +29,82 @@
 - **📈 Marketing Team Ready**: Easy-to-use interface for non-technical content creators
 - **💰 E-commerce Ready**: Rich structured data for products, offers, and pricing
 
+<!-- omit in toc -->
 ## Compatibility
 
 This version requires the latest ApostropheCMS. When adding this module to an existing project, run `npm update` to ensure all ApostropheCMS modules are up-to-date.
+
+## Table of Contents
+
+- [Why ApostropheCMS SEO Tools?](#why-apostrophecms-seo-tools)
+- [Table of Contents](#table-of-contents)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Core Features](#core-features)
+  - [Automatic SEO Fields](#automatic-seo-fields)
+  - [Google Analytics \& Tag Manager](#google-analytics--tag-manager)
+  - [Social Media Meta Tags](#social-media-meta-tags)
+  - [Automated Robots.txt](#automated-robotstxt)
+  - [AI Crawler Control (llms.txt)](#ai-crawler-control-llmstxt)
+  - [Sitemap Integration](#sitemap-integration)
+- [Structured Data \& Schema Types](#structured-data--schema-types)
+  - [How It Works](#how-it-works)
+  - [Choosing the Right Schema](#choosing-the-right-schema)
+    - [**Web Page**](#web-page)
+    - [**Collection Page**](#collection-page)
+    - [**Article**](#article)
+    - [**Product**](#product)
+    - [**Offer**](#offer)
+    - [**Aggregate Offer**](#aggregate-offer)
+    - [**Event**](#event)
+    - [**Person**](#person)
+    - [**Local Business**](#local-business)
+    - [**Job Posting**](#job-posting)
+    - [**FAQ Page**](#faq-page)
+    - [**QA Page**](#qa-page)
+    - [**Video Object**](#video-object)
+    - [**How To**](#how-to)
+    - [**Review**](#review)
+    - [**Recipe**](#recipe)
+    - [**Course**](#course)
+  - [E-commerce Best Practices](#e-commerce-best-practices)
+  - [Quick Schema Selection Guide](#quick-schema-selection-guide)
+- [Implementation Guidelines for Developers](#implementation-guidelines-for-developers)
+  - [Featured Images](#featured-images)
+  - [Paywalled Content](#paywalled-content)
+  - [Author Information](#author-information)
+  - [URL Requirements](#url-requirements)
+  - [Date Fields](#date-fields)
+  - [Listing Pages (Item List)](#listing-pages-item-list)
+  - [Summary: Required Fields by Schema Type](#summary-required-fields-by-schema-type)
+  - [Best Practices](#best-practices)
+  - [ItemList Generation](#itemlist-generation)
+  - [Debugging Structured Data](#debugging-structured-data)
+- [Essential Configuration](#essential-configuration)
+  - [Setting the Base URL](#setting-the-base-url)
+- [AI \& Search Strategy](#ai--search-strategy)
+  - [Recommended Configuration for Most Sites](#recommended-configuration-for-most-sites)
+  - [For Maximum AI Visibility](#for-maximum-ai-visibility)
+  - [For Maximum Privacy/Protection](#for-maximum-privacyprotection)
+  - [Understanding the Difference](#understanding-the-difference)
+  - [Google Analytics Integration](#google-analytics-integration)
+  - [Google Tag Manager Integration](#google-tag-manager-integration)
+  - [Google Site Verification](#google-site-verification)
+  - [Sitemap Installation](#sitemap-installation)
+- [Advanced Configuration](#advanced-configuration)
+  - [Disabling SEO Fields](#disabling-seo-fields)
+  - [Canonical Link Configuration](#canonical-link-configuration)
+  - [Pagination Support](#pagination-support)
+  - [Custom 404 Tracking](#custom-404-tracking)
+- [Performance Optimization](#performance-optimization)
+  - [Critical Font Preloading](#critical-font-preloading)
+  - [Mobile Optimization](#mobile-optimization)
+- [Field Reference](#field-reference)
+- [🚀 Ready for AI-Powered SEO?](#-ready-for-ai-powered-seo)
+  - [✨ SEO Assistant Pro Features](#-seo-assistant-pro-features)
+- [🏢 Managing Multiple Sites?](#-managing-multiple-sites)
+  - [✨ Assembly Multisite Features](#-assembly-multisite-features)
+- [Roadmap](#roadmap)
 
 ## Installation
 
@@ -185,14 +258,14 @@ The module automatically generates appropriate Schema.org markup based on the sc
 
 Select the schema type in the SEO tab of any page or piece editor. Only use one primary schema per page for best results.
 
-#### **WebPage**
+#### **Web Page**
 Use for standard pages like About, Contact, or general information pages.
 
 **Best for:** About pages, contact pages, general information pages, landing pages
 
 ---
 
-#### **CollectionPage**
+#### **Collection Page**
 Use for index and listing pages that display multiple items.
 
 **Required fields:**
@@ -240,7 +313,7 @@ For e-commerce product pages with pricing and availability.
 
 ---
 
-#### **Offer** 🆕
+#### **Offer**
 For single-price items, services, or standalone offers.
 
 **Required fields:**
@@ -268,7 +341,7 @@ For single-price items, services, or standalone offers.
 
 ---
 
-#### **AggregateOffer** 🆕
+#### **Aggregate Offer**
 For items with multiple price points, variants, or marketplace scenarios.
 
 **Required fields:**
@@ -327,7 +400,7 @@ For author profiles, team member bios, and individual profiles.
 
 ---
 
-#### **LocalBusiness**
+#### **Local Business**
 For brick-and-mortar businesses with physical locations.
 
 **Required fields:**
@@ -343,7 +416,7 @@ For brick-and-mortar businesses with physical locations.
 
 ---
 
-#### **JobPosting**
+#### **Job Posting**
 For job listings and career pages. Essential for appearing in Google for Jobs.
 
 **Required fields:**
@@ -369,7 +442,7 @@ For job listings and career pages. Essential for appearing in Google for Jobs.
 
 ---
 
-#### **FAQPage**
+#### **FAQ Page**
 For frequently asked questions pages.
 
 **Required fields:**
@@ -382,10 +455,48 @@ For frequently asked questions pages.
 
 **Best for:** Help centers, support pages, product FAQs, general Q&A pages
 
----
+#### **QA Page**
+For question and answer pages where a single question has one or more answers (like Stack Overflow, forums, or community Q&A).
 
-#### **VideoObject**
-For video content pages.
+**Required fields:**
+- Question title
+
+**Optional fields:**
+- Question details/body text
+- Question author name
+- Question date posted
+- Question upvote count
+- **Accepted Answer**: The answer marked as correct/most helpful
+  - Answer text (required if providing accepted answer)
+  - Answer author
+  - Answer date
+  - Answer upvote count
+- **Other Answers**: Additional suggested answers
+  - Each with text, author, date, and upvote count
+
+**Best for:** Community forums, support forums, Q&A platforms, discussion boards, knowledge bases with user-contributed answers
+
+**Difference from FAQ:** 
+- **FAQPage** is for curated, official FAQs written by your organization
+- **QAPage** is for community-driven Q&A with voting, multiple answers, and user attribution
+
+**SEO Impact:** Can appear in Google's Q&A rich results with voting counts, accepted answers highlighted, and author information. Helps establish expertise and community engagement.
+
+**Example use cases:**
+- Technical support forum: "How do I reset my password?" with 5 community answers
+- Programming Q&A: "What's the difference between var and let in JavaScript?" with accepted answer
+- Product support: Customer questions with manufacturer responses
+
+**Best practices:**
+- Always provide the accepted answer when one exists
+- Include upvote counts to signal answer quality
+- Add author names for credibility
+- Use for pages with single questions only (not question listings)
+
+**Note:** For question listing/index pages, use CollectionPage schema instead.
+
+#### **Video Object**
+For video content pages, including educational videos and tutorials.
 
 **Required fields:**
 - Video name
@@ -394,15 +505,25 @@ For video content pages.
 - Video description
 - Upload date
 - Duration (ISO 8601 format: "PT1M30S" for 1 minute 30 seconds)
-- Thumbnail image
+- Thumbnail image (uses `_featuredImage` relationship if not specified)
 - Content URL (direct video file)
 - Embed URL (YouTube/Vimeo embed)
 
-**Best for:** Video landing pages, video galleries, tutorial videos, webinar recordings
+**Educational video fields:**
+When "Is Educational Video" is checked, additional fields become available:
+- **Educational Use**: How the video is used (assignment, professional development, continuing education, vocational training)
+- **Learning Resource Type**: Type of educational content (lecture, tutorial, demonstration, presentation, exercise)
 
----
+**Best for:** Video landing pages, video galleries, tutorial videos, webinar recordings, online courses, training materials
 
-#### **HowTo** 🆕
+**SEO Impact:** Educational videos can appear in Google's learning-specific search features and video carousels with enhanced metadata.
+
+**Example use cases:**
+- Software tutorial: "How to Use Photoshop Layers" (learningResourceType: tutorial)
+- University lecture: "Introduction to Calculus" (educationalUse: assignment)
+- Professional training: "Project Management Fundamentals" (educationalUse: professional development)
+
+#### **How To**
 For step-by-step guides and tutorials.
 
 **Required fields:**
@@ -422,7 +543,7 @@ For step-by-step guides and tutorials.
 
 ---
 
-#### **Review** 🆕
+#### **Review**
 For product reviews, service reviews, and editorial reviews.
 
 **Required fields:**
@@ -439,7 +560,7 @@ For product reviews, service reviews, and editorial reviews.
 
 ---
 
-#### **Recipe** 🆕
+#### **Recipe**
 For cooking recipes and food content.
 
 **Required fields:**
@@ -466,7 +587,7 @@ For cooking recipes and food content.
 
 ---
 
-#### **Course** 🆕
+#### **Course**
 For online courses and training programs.
 
 **Required fields:**
@@ -531,6 +652,228 @@ For online courses and training programs.
 | Recipes | Recipe |
 | Online courses | Course |
 
+## Implementation Guidelines for Developers
+
+When using this SEO module, there are specific guidelines your content types and templates must follow for certain schema types to work correctly.
+
+### Featured Images
+
+Several schema types rely on a `_featuredImage` relationship field being present on your document. If you want rich results for these schema types, **your page or piece type must include this field**:
+
+**Schema types that use featured images:**
+- **Product** - Product image
+- **Recipe** - Recipe photo
+- **How To** - Guide illustration
+- **Video Object** - Video thumbnail (falls back to featured image)
+
+**Example implementation:**
+
+```javascript
+// modules/article/index.js
+module.exports = {
+  extend: '@apostrophecms/piece-type',
+  options: {
+    label: 'Article'
+  },
+  fields: {
+    add: {
+      _featuredImage: {
+        label: 'Featured Image',
+        type: 'relationship',
+        withType: '@apostrophecms/image',
+        max: 1,
+        required: true  // Make required if using Product or Recipe schemas
+      }
+    },
+    group: {
+      basics: {
+        fields: ['title', '_featuredImage', 'excerpt']
+      }
+    }
+  }
+};
+```
+
+**Note:** The field name **must be** `_featuredImage` (with the leading underscore) for the SEO module to find it automatically.
+
+### Paywalled Content
+
+If you mark content as paywalled, your templates must use consistent CSS classes or IDs to wrap premium content. The module needs to know which HTML element contains the paywalled content.
+
+**How it works:**
+
+1. Add a wrapper element around your paywalled content in your template
+2. Configure the CSS selector in the SEO settings to match your wrapper
+
+**Example template implementation:**
+
+```nunjucks
+{# views/show.html #}
+<article>
+  <h1>{{ data.piece.title }}</h1>
+  
+  {# Free preview content #}
+  <div class="article-preview">
+    {{ data.piece.excerpt }}
+  </div>
+  
+  {# Paywalled content - note the class name #}
+  <div class="paywall">
+    {% if data.user %}
+      {# Show full content to subscribers #}
+      {{ data.piece.body }}
+    {% else %}
+      {# Show paywall message to non-subscribers #}
+      <div class="paywall-notice">
+        <p>Subscribe to read more...</p>
+      </div>
+    {% endif %}
+  </div>
+</article>
+```
+
+**Common CSS selector patterns:**
+
+```css
+/* By class (most common) */
+.paywall
+.premium-content
+.members-only
+
+/* By ID */
+#paywalled-content
+
+/* By data attribute */
+[data-paywall="true"]
+
+/* Multiple classes */
+.article-body.premium
+```
+
+**In the SEO settings**, set the "Paywall CSS Selector" field to match your implementation (e.g., `.paywall`).
+
+**Why this matters:** Google requires you to explicitly mark which parts of your page require payment. The CSS selector tells search engines exactly where the paywall boundary is, helping them show appropriate content previews without penalties.
+
+### Author Information
+
+For **Article** and **Recipe** schemas, the module looks for an `_author` relationship field to populate author information in structured data.
+
+**Example implementation:**
+
+```javascript
+// modules/article/index.js
+module.exports = {
+  extend: '@apostrophecms/piece-type',
+  options: {
+    label: 'Article'
+  },
+  fields: {
+    add: {
+      _author: {
+        label: 'Author',
+        type: 'relationship',
+        withType: '@apostrophecms/user',
+        max: 1
+      }
+    },
+    group: {
+      basics: {
+        fields: ['title', '_author', 'publishedAt']
+      }
+    }
+  }
+};
+```
+
+The module will use `_author[0].title` or `_author[0].username` for the author name in structured data.
+
+### URL Requirements
+
+Most schema types require that documents have a `_url` property. This is automatically provided by ApostropheCMS for pages and pieces with "show pages" enabled.
+
+**For pieces to have URLs**, ensure your piece type is configured properly:
+
+```javascript
+// modules/article/index.js
+module.exports = {
+  extend: '@apostrophecms/piece-type',
+  options: {
+    label: 'Article',
+    // This is required for pieces to have individual URLs
+    showPages: true
+  }
+};
+```
+
+And create a corresponding piece-page-type:
+
+```javascript
+// modules/article-page/index.js
+module.exports = {
+  extend: '@apostrophecms/piece-page-type'
+};
+```
+
+### Date Fields
+
+Several schema types use date information. The module looks for these fields in priority order:
+
+1. **Publication dates:** `publishedAt`, then `createdAt`
+2. **Modification dates:** `updatedAt`, then `createdAt`
+
+**Best practice:** Add a `publishedAt` field to content types that use Article schema:
+
+```javascript
+fields: {
+  add: {
+    publishedAt: {
+      label: 'Publication Date',
+      type: 'date',
+      def: null
+    }
+  }
+}
+```
+
+### Listing Pages (Item List)
+
+For **Collection Page** schema with Item List generation, the module automatically detects listing items from these request data properties:
+
+- `req.data.pieces`
+- `req.data.items`
+- `req.data._pieces`
+- `req.data.docs`
+
+Each item must have:
+- A URL: `_url` or `url` property
+- A title: `seoTitle` or `title` property
+
+**Standard piece-page-type index pages work automatically** without additional configuration.
+
+### Summary: Required Fields by Schema Type
+
+| Schema Type | Required Fields | Optional Fields | Developer Notes |
+|-------------|----------------|-----------------|-----------------|
+| **Article** | None (uses title) | `_author`, `publishedAt`, `_featuredImage` | Standard blog post setup |
+| **Product** | Product name (in schema settings) | `_featuredImage` (highly recommended) | Image critical for rich results |
+| **Recipe** | Recipe name, ingredients, instructions | `_featuredImage` (highly recommended), `_author` | Image essential for recipe cards |
+| **Event** | Event name, start date | Location details | None |
+| **Person** | Person name | Job title, organization | None |
+| **VideoObject** | Video name | `_featuredImage` (thumbnail), educational fields | See Learning Video features |
+| **HowTo** | Guide name, steps | `_featuredImage` (recommended), supplies, tools | Step images improve visibility |
+| **Review** | Item reviewed | `_author`, rating | None |
+| **Course** | Course name | Provider, pricing | None |
+| **JobPosting** | Job title, dates, location | Salary, requirements | Organization logo from global |
+| **QAPage** | Question text | Answers, authors, votes | For single Q&A pages only |
+| **FAQPage** | Q&A pairs | None | For curated FAQs |
+| **WebPage/CollectionPage** | None | None | Standard pages |
+| **LocalBusiness** | Business name | Address, hours, phone | None |
+| **Offer** | Name, price | Availability, shipping | Falls back to global org |
+| **AggregateOffer** | Name, price range | Individual offers array | For products with variants |
+
+**Paywalled content (any type):** Must implement CSS wrapper with matching selector (see [Paywalled Content](#paywalled-content) section)
+
+**Learning Videos:** VideoObject schema includes optional educational metadata - enable "Is Educational Video" checkbox to access additional fields for tutorials and courses
 ### Best Practices
 
 - **One primary schema per page**: Use a single primary entity type (Article, Product, etc.) per detail page
@@ -552,6 +895,14 @@ Each item should provide `_url` (or `url`) and `title` (or `seoTitle`). Toggle t
 ### Debugging Structured Data
 
 Set the environment variable `APOS_SEO_DEBUG=true` to print JSON-LD generation diagnostics to your server logs during development.
+
+**Important:** Not all schema types show rich results in Google Search Console's URL Inspection Tool. The following schemas are valid and will be indexed, but may not appear in the rich results preview:
+
+- **HowTo** - Valid schema, but not shown in URL Inspection Tool
+- **QAPage** - Valid schema, but not shown in URL Inspection Tool
+- **Learning Video** - Extension of VideoObject, shown as standard Video
+
+Use the [Rich Results Test](https://search.google.com/test/rich-results) and [Schema Markup Validator](https://validator.schema.org/) for comprehensive testing of all schema types.
 
 ## Essential Configuration
 

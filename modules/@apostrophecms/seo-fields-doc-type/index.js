@@ -36,6 +36,21 @@ module.exports = {
             }
           ]
         },
+        seoIsPaywalled: {
+          label: 'aposSeo:isPaywalled',
+          type: 'boolean',
+          help: 'aposSeo:isPaywalledHelp',
+          def: false
+        },
+        seoPaywallSelector: {
+          label: 'aposSeo:paywallSelector',
+          type: 'string',
+          help: 'aposSeo:paywallSelectorHelp',
+          def: '.paywall',
+          if: {
+            seoIsPaywalled: true
+          }
+        },
 
         // SCHEMA TYPE SELECTOR
         seoJsonLdType: {
@@ -53,6 +68,7 @@ module.exports = {
             { label: 'Local Business', value: 'LocalBusiness' },
             { label: 'Job Posting', value: 'JobPosting' },
             { label: 'FAQ Page', value: 'FAQPage' },
+            { label: 'Q&A Page', value: 'QAPage' },
             { label: 'Video', value: 'VideoObject' },
             { label: 'How-To', value: 'HowTo' },
             { label: 'Review', value: 'Review' },
@@ -592,6 +608,105 @@ module.exports = {
           }
         },
 
+        // CONDITIONAL: Q&A Page Fields
+        seoJsonLdQAPage: {
+          label: 'aposSeo:qaPageDetails',
+          type: 'object',
+          help: 'aposSeo:qaPageDetailsHelp',
+          if: {
+            seoJsonLdType: 'QAPage'
+          },
+          fields: {
+            add: {
+              question: {
+                label: 'aposSeo:qaQuestion',
+                type: 'string',
+                help: 'aposSeo:qaQuestionHelp',
+                required: true
+              },
+              questionText: {
+                label: 'aposSeo:qaQuestionText',
+                type: 'string',
+                textarea: true,
+                help: 'aposSeo:qaQuestionTextHelp'
+              },
+              questionAuthor: {
+                label: 'aposSeo:qaQuestionAuthor',
+                type: 'string',
+                help: 'aposSeo:qaQuestionAuthorHelp'
+              },
+              questionDate: {
+                label: 'aposSeo:qaQuestionDate',
+                type: 'date',
+                help: 'aposSeo:qaQuestionDateHelp'
+              },
+              questionUpvotes: {
+                label: 'aposSeo:qaQuestionUpvotes',
+                type: 'integer',
+                min: 0,
+                help: 'aposSeo:qaQuestionUpvotesHelp'
+              },
+              acceptedAnswer: {
+                label: 'aposSeo:qaAcceptedAnswer',
+                type: 'object',
+                help: 'aposSeo:qaAcceptedAnswerHelp',
+                fields: {
+                  add: {
+                    text: {
+                      label: 'aposSeo:qaAnswerText',
+                      type: 'string',
+                      textarea: true,
+                      required: true
+                    },
+                    author: {
+                      label: 'aposSeo:qaAnswerAuthor',
+                      type: 'string'
+                    },
+                    dateCreated: {
+                      label: 'aposSeo:qaAnswerDate',
+                      type: 'date'
+                    },
+                    upvotes: {
+                      label: 'aposSeo:qaAnswerUpvotes',
+                      type: 'integer',
+                      min: 0
+                    }
+                  }
+                }
+              },
+              suggestedAnswers: {
+                label: 'aposSeo:qaSuggestedAnswers',
+                type: 'array',
+                titleField: 'text',
+                help: 'aposSeo:qaSuggestedAnswersHelp',
+                fields: {
+                  add: {
+                    text: {
+                      label: 'aposSeo:qaAnswerText',
+                      type: 'string',
+                      textarea: true,
+                      required: true
+                    },
+                    author: {
+                      label: 'aposSeo:qaAnswerAuthor',
+                      type: 'string'
+                    },
+                    dateCreated: {
+                      label: 'aposSeo:qaAnswerDate',
+                      type: 'date'
+                    },
+                    upvotes: {
+                      label: 'aposSeo:qaAnswerUpvotes',
+                      type: 'integer',
+                      min: 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+
         // CONDITIONAL: Video Object Fields
         seoJsonLdVideo: {
           label: 'aposSeo:videoDetails',
@@ -638,6 +753,40 @@ module.exports = {
                 label: 'aposSeo:videoEmbedUrl',
                 type: 'url',
                 help: 'aposSeo:videoEmbedUrlHelp'
+              },
+              isEducational: {
+                label: 'aposSeo:isEducationalVideo',
+                type: 'boolean',
+                help: 'aposSeo:isEducationalVideoHelp'
+              },
+              educationalUse: {
+                label: 'aposSeo:educationalUse',
+                type: 'select',
+                help: 'aposSeo:educationalUseHelp',
+                if: {
+                  isEducational: true
+                },
+                choices: [
+                  { label: 'Assignment', value: 'assignment' },
+                  { label: 'Professional Development', value: 'professional development' },
+                  { label: 'Continuing Education', value: 'continuing education' },
+                  { label: 'Vocational Training', value: 'vocational training' }
+                ]
+              },
+              learningResourceType: {
+                label: 'aposSeo:learningResourceType',
+                type: 'select',
+                help: 'aposSeo:learningResourceTypeHelp',
+                if: {
+                  isEducational: true
+                },
+                choices: [
+                  { label: 'Lecture', value: 'lecture' },
+                  { label: 'Tutorial', value: 'tutorial' },
+                  { label: 'Demonstration', value: 'demonstration' },
+                  { label: 'Presentation', value: 'presentation' },
+                  { label: 'Exercise', value: 'exercise' }
+                ]
               }
             }
           }
@@ -873,6 +1022,16 @@ module.exports = {
                     }
                   }
                 }
+              },
+              video: {
+                label: 'aposSeo:recipeVideo',
+                type: 'url',
+                help: 'aposSeo:recipeVideoHelp'
+              },
+              keywords: {
+                label: 'aposSeo:recipeKeywords',
+                type: 'string',
+                help: 'aposSeo:recipeKeywordsHelp'
               },
               nutrition: {
                 label: 'aposSeo:nutritionInfo',
@@ -1232,8 +1391,9 @@ module.exports = {
             'seoTitle',
             'seoDescription',
             'seoRobots',
+            'seoIsPaywalled',
+            'seoPaywallSelector',
             'seoJsonLdType',
-            // Conditional fields automatically appear based on 'if' conditions
             'seoJsonLdProduct',
             'seoJsonLdEvent',
             'seoJsonLdPerson',

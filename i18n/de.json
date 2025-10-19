@@ -290,6 +290,10 @@
   "protein": "Eiweiß",
   "fat": "Fett",
   "datePublished": "Veröffentlichungsdatum",
+  "recipeVideo": "Rezept-Video-URL",
+  "recipeVideoHelp": "Optional: URL zu einem Video, das zeigt, wie dieses Rezept zubereitet wird (YouTube, Vimeo usw.)",
+  "recipeKeywords": "Schlüsselwörter",
+  "recipeKeywordsHelp": "Optional: Durch Kommas getrennte Schlüsselwörter zur Kategorisierung dieses Rezepts (z. B. „Dessert, Schokolade, einfach“)",
 
   "courseDetails": "Kursdetails",
   "courseDetailsHelp": "Informationen für Course-Schema-Markup – für Online-Lernen und Bildungsinhalte.",
@@ -304,5 +308,39 @@
   "coursePriceHelp": "Der Preis für die Teilnahme an diesem Kurs (0 für kostenlose Kurse).",
 
   "includeItemList": "ItemList im JSON-LD einschließen",
-  "includeItemListHelp": "Erzeugt ein ItemList-Schema für die auf dieser Übersichtsseite angezeigten Elemente. Empfohlen für Kategorie-/Indexseiten."
+  "includeItemListHelp": "Erzeugt ein ItemList-Schema für die auf dieser Übersichtsseite angezeigten Elemente. Empfohlen für Kategorie-/Indexseiten.",
+
+  "isEducationalVideo": "Ist Lehrvideo",
+  "isEducationalVideoHelp": "Aktivieren Sie dies, wenn das Video zu Bildungszwecken gedacht ist (Tutorials, Vorlesungen, Demonstrationen)",
+  "educationalUse": "Bildungsverwendung",
+  "educationalUseHelp": "Wie dieses Video für Bildungszwecke verwendet werden soll",
+  "learningResourceType": "Art der Lernressource",
+  "learningResourceTypeHelp": "Die Art der Bildungsinhalte, die dieses Video bietet",
+
+  "isPaywalled": "Kostenpflichtiger Inhalt",
+  "isPaywalledHelp": "Aktivieren Sie dies, wenn dieser Inhalt ein Abonnement oder eine Zahlung erfordert. Dies hilft Suchmaschinen, die Inhaltsstruktur zu verstehen.",
+  "paywallSelector": "CSS-Selektor für Paywall",
+  "paywallSelectorHelp": "CSS-Selektor für das Paywall-Element (Standard: .paywall). Dies identifiziert den Teil der Seite, der hinter der Paywall liegt.",
+
+  "qaPageDetails": "Q&A-Seitendetails",
+  "qaPageDetailsHelp": "Konfigurieren Sie diese Seite als Q&A-Seite (ähnlich wie Stack Overflow oder Forenbeiträge). Verwenden Sie dies für Seiten mit einer einzelnen Frage und einer oder mehreren Antworten.",
+  "qaQuestion": "Fragetitel",
+  "qaQuestionHelp": "Die gestellte Hauptfrage (erforderlich)",
+  "qaQuestionText": "Fragetext",
+  "qaQuestionTextHelp": "Vollständiger Text/Körper der Frage mit zusätzlichem Kontext",
+  "qaQuestionAuthor": "Fragenautor",
+  "qaQuestionAuthorHelp": "Name der Person, die die Frage gestellt hat",
+  "qaQuestionDate": "Fragedatum",
+  "qaQuestionDateHelp": "Datum, an dem die Frage gestellt wurde",
+  "qaQuestionUpvotes": "Frage-Bewertungen",
+  "qaQuestionUpvotesHelp": "Anzahl der positiven Bewertungen/Likes, die die Frage erhalten hat",
+  "qaAcceptedAnswer": "Akzeptierte Antwort",
+  "qaAcceptedAnswerHelp": "Die Antwort, die als korrekt oder am hilfreichsten markiert wurde",
+  "qaAnswerText": "Antworttext",
+  "qaAnswerAuthor": "Antwortautor",
+  "qaAnswerDate": "Antwortdatum",
+  "qaAnswerUpvotes": "Antwort-Bewertungen",
+  "qaSuggestedAnswers": "Weitere Antworten",
+  "qaSuggestedAnswersHelp": "Zusätzliche vorgeschlagene Antworten, die nicht als akzeptiert markiert wurden"
+
 }

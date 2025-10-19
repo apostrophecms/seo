@@ -290,6 +290,10 @@
   "protein": "Proteine",
   "fat": "Grassi",
   "datePublished": "Data di pubblicazione",
+  "recipeVideo": "URL del video della ricetta",
+  "recipeVideoHelp": "Opzionale: URL di un video che mostra come preparare questa ricetta (YouTube, Vimeo, ecc.)",
+  "recipeKeywords": "Parole chiave",
+  "recipeKeywordsHelp": "Opzionale: Parole chiave separate da virgole per aiutare a classificare questa ricetta (ad es. 'dessert, cioccolato, facile')",
 
   "courseDetails": "Dettagli corso",
   "courseDetailsHelp": "Informazioni per il markup schema Corso – per l’apprendimento online e i contenuti educativi.",
@@ -304,5 +308,39 @@
   "coursePriceHelp": "Il prezzo per iscriversi a questo corso (0 per corsi gratuiti).",
 
   "includeItemList": "Includi ItemList in JSON-LD",
-  "includeItemListHelp": "Genera uno schema ItemList per gli elementi mostrati in questa pagina di raccolta. Raccomandato per pagine categoria/indice."
+  "includeItemListHelp": "Genera uno schema ItemList per gli elementi mostrati in questa pagina di raccolta. Raccomandato per pagine categoria/indice.",
+
+  "isEducationalVideo": "È un video educativo",
+  "isEducationalVideoHelp": "Seleziona questa opzione se il video è destinato a scopi educativi (tutorial, lezioni, dimostrazioni)",
+  "educationalUse": "Uso educativo",
+  "educationalUseHelp": "Come si intende utilizzare questo video a fini educativi",
+  "learningResourceType": "Tipo di risorsa educativa",
+  "learningResourceTypeHelp": "Il tipo di contenuto educativo fornito da questo video",
+
+  "isPaywalled": "Contenuto a pagamento",
+  "isPaywalledHelp": "Seleziona questa opzione se il contenuto richiede un abbonamento o un pagamento per accedervi. Questo aiuta i motori di ricerca a comprendere la struttura del contenuto.",
+  "paywallSelector": "Selettore CSS del paywall",
+  "paywallSelectorHelp": "Selettore CSS per l’elemento del paywall (predefinito: .paywall). Identifica quale parte della pagina è dietro il paywall.",
+
+  "qaPageDetails": "Dettagli della pagina Q&A",
+  "qaPageDetailsHelp": "Configura questa pagina come pagina di domande e risposte (simile a Stack Overflow o ai post dei forum). Usala per pagine con una singola domanda e una o più risposte.",
+  "qaQuestion": "Titolo della domanda",
+  "qaQuestionHelp": "La domanda principale posta (obbligatorio)",
+  "qaQuestionText": "Testo della domanda",
+  "qaQuestionTextHelp": "Testo completo o corpo della domanda con ulteriore contesto",
+  "qaQuestionAuthor": "Autore della domanda",
+  "qaQuestionAuthorHelp": "Nome della persona che ha posto la domanda",
+  "qaQuestionDate": "Data della domanda",
+  "qaQuestionDateHelp": "Quando è stata pubblicata la domanda",
+  "qaQuestionUpvotes": "Voti positivi della domanda",
+  "qaQuestionUpvotesHelp": "Numero di voti positivi o mi piace ricevuti dalla domanda",
+  "qaAcceptedAnswer": "Risposta accettata",
+  "qaAcceptedAnswerHelp": "La risposta contrassegnata come corretta o più utile",
+  "qaAnswerText": "Testo della risposta",
+  "qaAnswerAuthor": "Autore della risposta",
+  "qaAnswerDate": "Data della risposta",
+  "qaAnswerUpvotes": "Voti positivi della risposta",
+  "qaSuggestedAnswers": "Altre risposte",
+  "qaSuggestedAnswersHelp": "Altre risposte suggerite che non sono state contrassegnate come accettate"
+
 }

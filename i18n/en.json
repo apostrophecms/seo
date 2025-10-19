@@ -290,6 +290,10 @@
   "protein": "Protein",
   "fat": "Fat",
   "datePublished": "Date Published",
+  "recipeVideo": "Recipe Video URL",
+  "recipeVideoHelp": "Optional: URL to a video showing how to make this recipe (YouTube, Vimeo, etc.)",
+  "recipeKeywords": "Keywords",
+  "recipeKeywordsHelp": "Optional: Comma-separated keywords to help categorize this recipe (e.g., 'dessert, chocolate, easy')",
 
   "courseDetails": "Course Details",
   "courseDetailsHelp": "Information for Course schema markup - for online learning and educational content.",
@@ -304,5 +308,38 @@
   "coursePriceHelp": "The price to enroll in this course (0 for free courses).",
 
   "includeItemList": "Include ItemList in JSON-LD",
-  "includeItemListHelp": "Generate an ItemList schema for the items displayed on this collection page. Recommended for category/index pages."
+  "includeItemListHelp": "Generate an ItemList schema for the items displayed on this collection page. Recommended for category/index pages.",
+
+  "isEducationalVideo": "Is Educational Video",
+  "isEducationalVideoHelp": "Check this if the video is intended for educational purposes (tutorials, lectures, demonstrations)",
+  "educationalUse": "Educational Use",
+  "educationalUseHelp": "How this video is intended to be used educationally",
+  "learningResourceType": "Learning Resource Type",
+  "learningResourceTypeHelp": "The type of educational content this video provides",
+
+  "isPaywalled": "Paywalled Content",
+  "isPaywalledHelp": "Check this if this content requires a subscription or payment to access. This helps search engines understand the content structure.",
+  "paywallSelector": "Paywall CSS Selector",
+  "paywallSelectorHelp": "CSS selector for the paywall element (default: .paywall). This identifies which part of the page is behind the paywall.",
+
+  "qaPageDetails": "Q&A Page Details",
+  "qaPageDetailsHelp": "Configure this page as a Q&A page (like Stack Overflow or forum posts). Use this for pages with a single question and one or more answers.",
+  "qaQuestion": "Question Title",
+  "qaQuestionHelp": "The main question being asked (required)",
+  "qaQuestionText": "Question Details",
+  "qaQuestionTextHelp": "Full text/body of the question with additional context",
+  "qaQuestionAuthor": "Question Author",
+  "qaQuestionAuthorHelp": "Name of the person who asked the question",
+  "qaQuestionDate": "Question Date",
+  "qaQuestionDateHelp": "When the question was posted",
+  "qaQuestionUpvotes": "Question Upvotes",
+  "qaQuestionUpvotesHelp": "Number of upvotes/likes the question has received",
+  "qaAcceptedAnswer": "Accepted Answer",
+  "qaAcceptedAnswerHelp": "The answer marked as correct or most helpful",
+  "qaAnswerText": "Answer Text",
+  "qaAnswerAuthor": "Answer Author",
+  "qaAnswerDate": "Answer Date",
+  "qaAnswerUpvotes": "Answer Upvotes",
+  "qaSuggestedAnswers": "Other Answers",
+  "qaSuggestedAnswersHelp": "Additional suggested answers that haven't been marked as accepted"
 }

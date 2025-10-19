@@ -289,6 +289,10 @@
   "protein": "Proteína",
   "fat": "Gordura",
   "datePublished": "Data de publicação",
+  "recipeVideo": "URL do vídeo da receita",
+  "recipeVideoHelp": "Opcional: URL de um vídeo mostrando como preparar esta receita (YouTube, Vimeo, etc.)",
+  "recipeKeywords": "Palavras-chave",
+  "recipeKeywordsHelp": "Opcional: Palavras-chave separadas por vírgulas para ajudar a categorizar esta receita (ex.: 'sobremesa, chocolate, fácil')",
 
   "courseDetails": "Detalhes do curso",
   "courseDetailsHelp": "Informações para marcação de esquema Curso – para aprendizagem online e conteúdo educacional.",
@@ -303,5 +307,39 @@
   "coursePriceHelp": "O preço para inscrição neste curso (0 para cursos gratuitos).",
 
   "includeItemList": "Incluir ItemList no JSON-LD",
-  "includeItemListHelp": "Gerar um esquema ItemList para os itens exibidos nesta página de coleção. Recomendado para páginas de categoria/índice."
+  "includeItemListHelp": "Gerar um esquema ItemList para os itens exibidos nesta página de coleção. Recomendado para páginas de categoria/índice.",
+
+  "isEducationalVideo": "É um vídeo educacional",
+  "isEducationalVideoHelp": "Marque esta opção se o vídeo for destinado a fins educacionais (tutoriais, palestras, demonstrações)",
+  "educationalUse": "Uso educacional",
+  "educationalUseHelp": "Como este vídeo deve ser utilizado para fins educacionais",
+  "learningResourceType": "Tipo de recurso educacional",
+  "learningResourceTypeHelp": "O tipo de conteúdo educacional que este vídeo fornece",
+
+  "isPaywalled": "Conteúdo pago",
+  "isPaywalledHelp": "Marque esta opção se o conteúdo exigir assinatura ou pagamento para acesso. Isso ajuda os mecanismos de busca a entender a estrutura do conteúdo.",
+  "paywallSelector": "Seletor CSS do paywall",
+  "paywallSelectorHelp": "Seletor CSS para o elemento do paywall (padrão: .paywall). Identifica qual parte da página está atrás do paywall.",
+
+  "qaPageDetails": "Detalhes da página de perguntas e respostas",
+  "qaPageDetailsHelp": "Configure esta página como uma página de perguntas e respostas (como o Stack Overflow ou postagens de fórum). Use-a para páginas com uma única pergunta e uma ou mais respostas.",
+  "qaQuestion": "Título da pergunta",
+  "qaQuestionHelp": "A pergunta principal que está sendo feita (obrigatório)",
+  "qaQuestionText": "Texto da pergunta",
+  "qaQuestionTextHelp": "Texto completo ou corpo da pergunta com contexto adicional",
+  "qaQuestionAuthor": "Autor da pergunta",
+  "qaQuestionAuthorHelp": "Nome da pessoa que fez a pergunta",
+  "qaQuestionDate": "Data da pergunta",
+  "qaQuestionDateHelp": "Quando a pergunta foi publicada",
+  "qaQuestionUpvotes": "Votos positivos da pergunta",
+  "qaQuestionUpvotesHelp": "Número de votos positivos ou curtidas que a pergunta recebeu",
+  "qaAcceptedAnswer": "Resposta aceita",
+  "qaAcceptedAnswerHelp": "A resposta marcada como correta ou mais útil",
+  "qaAnswerText": "Texto da resposta",
+  "qaAnswerAuthor": "Autor da resposta",
+  "qaAnswerDate": "Data da resposta",
+  "qaAnswerUpvotes": "Votos positivos da resposta",
+  "qaSuggestedAnswers": "Outras respostas",
+  "qaSuggestedAnswersHelp": "Respostas adicionais sugeridas que não foram marcadas como aceitas"
+
 }
