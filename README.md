@@ -47,6 +47,8 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
   - [Automated Robots.txt](#automated-robotstxt)
   - [AI Crawler Control (llms.txt)](#ai-crawler-control-llmstxt)
   - [Sitemap Integration](#sitemap-integration)
+- [Essential Configuration](#essential-configuration)
+  - [Setting the Base URL](#setting-the-base-url)
 - [Structured Data \& Schema Types](#structured-data--schema-types)
   - [How It Works](#how-it-works)
   - [Choosing the Right Schema](#choosing-the-right-schema)
@@ -69,6 +71,21 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
     - [**Course**](#course)
   - [E-commerce Best Practices](#e-commerce-best-practices)
   - [Quick Schema Selection Guide](#quick-schema-selection-guide)
+- [AI \& Search Strategy](#ai--search-strategy)
+  - [Recommended Configuration for Most Sites](#recommended-configuration-for-most-sites)
+  - [For Maximum AI Visibility](#for-maximum-ai-visibility)
+  - [For Maximum Privacy/Protection](#for-maximum-privacyprotection)
+  - [Understanding the Difference](#understanding-the-difference)
+  - [Site Search Query Parameter](#site-search-query-parameter)
+  - [Google Analytics Integration](#google-analytics-integration)
+  - [Google Tag Manager Integration](#google-tag-manager-integration)
+  - [Google Site Verification](#google-site-verification)
+  - [Sitemap Installation](#sitemap-installation)
+- [Advanced Configuration](#advanced-configuration)
+  - [Disabling SEO Fields](#disabling-seo-fields)
+  - [Canonical Link Configuration](#canonical-link-configuration)
+  - [Pagination Support](#pagination-support)
+  - [Custom 404 Tracking](#custom-404-tracking)
 - [Implementation Guidelines for Developers](#implementation-guidelines-for-developers)
   - [Featured Images](#featured-images)
   - [Paywalled Content](#paywalled-content)
@@ -80,25 +97,14 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
   - [Best Practices](#best-practices)
   - [ItemList Generation](#itemlist-generation)
   - [Debugging Structured Data](#debugging-structured-data)
-- [Essential Configuration](#essential-configuration)
-  - [Setting the Base URL](#setting-the-base-url)
-- [AI \& Search Strategy](#ai--search-strategy)
-  - [Recommended Configuration for Most Sites](#recommended-configuration-for-most-sites)
-  - [For Maximum AI Visibility](#for-maximum-ai-visibility)
-  - [For Maximum Privacy/Protection](#for-maximum-privacyprotection)
-  - [Understanding the Difference](#understanding-the-difference)
-  - [Google Analytics Integration](#google-analytics-integration)
-  - [Google Tag Manager Integration](#google-tag-manager-integration)
-  - [Google Site Verification](#google-site-verification)
-  - [Sitemap Installation](#sitemap-installation)
-- [Advanced Configuration](#advanced-configuration)
-  - [Disabling SEO Fields](#disabling-seo-fields)
-  - [Canonical Link Configuration](#canonical-link-configuration)
-  - [Pagination Support](#pagination-support)
-  - [Custom 404 Tracking](#custom-404-tracking)
+- [Extending the SEO Module with Custom JSON-LD Schemas](#extending-the-seo-module-with-custom-json-ld-schemas)
+  - [Adding Custom JSON-LD Schemas (Project-Level Extension)](#adding-custom-json-ld-schemas-project-level-extension)
+  - [Notes](#notes)
+  - [Example Use Cases](#example-use-cases)
 - [Performance Optimization](#performance-optimization)
   - [Critical Font Preloading](#critical-font-preloading)
   - [Mobile Optimization](#mobile-optimization)
+    - [Theme Color for Mobile Browsers](#theme-color-for-mobile-browsers)
 - [Field Reference](#field-reference)
 - [🚀 Ready for AI-Powered SEO?](#-ready-for-ai-powered-seo)
   - [✨ SEO Assistant Pro Features](#-seo-assistant-pro-features)
@@ -240,6 +246,32 @@ The module automatically provides an `/llms.txt` route to communicate your AI us
 ### Sitemap Integration
 
 Works seamlessly with `@apostrophecms/sitemap` to generate XML sitemaps that help search engines discover and index your content. The sitemap is automatically referenced in the `/llms.txt` file for AI crawlers.
+
+
+## Essential Configuration
+
+### Setting the Base URL
+
+**This step is required** for proper canonical link generation and SEO performance. If using [ApostropheCMS hosting](https://apostrophecms.com/hosting), this is set automatically.
+
+**Via environment variable (recommended):**
+```bash
+export APOS_BASE_URL=https://yoursite.com
+```
+
+**Via configuration file:**
+```javascript
+// data/local.js
+export default {
+  baseUrl: 'https://yoursite.com',
+  modules: {
+    // other module configuration
+  }
+};
+```
+
+**For multisite projects using ApostropheCMS Assembly:**
+The base URL is automatically configured through the `baseUrlDomains` option. [Learn more about Assembly multisite hosting](https://apostrophecms.com/assembly).
 
 ## Structured Data & Schema Types
 
@@ -446,14 +478,16 @@ For job listings and career pages. Essential for appearing in Google for Jobs.
 For frequently asked questions pages.
 
 **Required fields:**
-- At least one question-answer pair
+- At least one question-and-answer pair
 
 **How to use:**
-1. Select "FAQ Page" as schema type
-2. Add questions and answers in the FAQ Details section
-3. Each question-answer pair becomes a structured data entry
+1. Select **"FAQ Page"** as the schema type in the SEO tab.
+2. In the **FAQ Details** section, add each question and its corresponding answer.
+3. Each entry automatically generates structured data compliant with Google’s FAQPage schema.
 
-**Best for:** Help centers, support pages, product FAQs, general Q&A pages
+**Best for:** Help centers, knowledge bases, product FAQ pages
+
+**SEO impact:** Enables rich FAQ snippets in Google Search results, improving click-through rates.
 
 #### **QA Page**
 For question and answer pages where a single question has one or more answers (like Stack Overflow, forums, or community Q&A).
@@ -651,6 +685,242 @@ For online courses and training programs.
 | Review articles | Review |
 | Recipes | Recipe |
 | Online courses | Course |
+
+
+## AI & Search Strategy
+
+### Recommended Configuration for Most Sites
+
+For optimal search visibility while protecting intellectual property:
+
+**robots.txt Settings:**
+- Mode: "Allow Search, Block AI Training"
+- This maintains Google Search rankings while preventing your content from being used in AI training datasets
+
+**llms.txt Settings:**
+- Mode: "Disallow AI Training"
+- This clearly communicates your AI usage policies to compliant systems
+
+**Why This Works:**
+- Traditional search engines (Google, Bing) continue normal indexing
+- AI Overview and AI-powered search features remain functional
+- Real-time AI browsing (ChatGPT browsing, Claude Projects) still works
+- Your content is protected from AI training datasets
+- No negative impact on search rankings (confirmed by Google)
+
+### For Maximum AI Visibility
+
+If you want your content widely used by AI systems:
+
+**robots.txt Settings:**
+- Mode: "Allow All (Search + AI)"
+
+**llms.txt Settings:**
+- Mode: "Allow AI Crawling"
+
+### For Maximum Privacy/Protection
+
+If you want to restrict all AI access:
+
+**robots.txt Settings:**
+- Mode: "Selective AI Crawlers"
+- Check only: ChatGPT-User, Claude-User (if you want to allow real-time queries)
+- Or use "Block All" for complete restriction
+
+**llms.txt Settings:**
+- Mode: "Disabled"
+
+### Understanding the Difference
+
+| Feature | robots.txt | llms.txt |
+|---------|-----------|----------|
+| **Purpose** | Enforceable crawler control | Policy communication |
+| **Technical** | Bots must respect (enforceable) | Informational only |
+| **Affects** | Which bots can crawl | How content may be used |
+| **Best for** | Access control | Terms of use |
+| **Required?** | Yes (standard) | Optional (emerging) |
+
+### Site Search Query Parameter
+Set the query parameter your site uses for search (e.g., `q`, `search`, `query`).
+
+**Example:**
+If your search URL is `/search?q=term`, set:
+```json
+"seoSearchQueryParam": "q"
+```
+This enables the `SearchAction` JSON-LD in your site’s `WebSite` schema.
+
+### Google Analytics Integration
+
+Enable Google Analytics tracking:
+
+```javascript
+import apostrophe from 'apostrophe';
+
+apostrophe({
+  root: import.meta,
+  shortName: 'my-project',
+  modules: {
+    '@apostrophecms/seo': {},
+    '@apostrophecms/global': {
+      options: {
+        seoGoogleAnalytics: true
+      }
+    }
+  }
+});
+```
+
+This adds a field in the global configuration for your Google Analytics Measurement ID (e.g., `G-XXXXXXXXXX`).
+
+### Google Tag Manager Integration
+
+For advanced tracking and marketing campaigns:
+
+```javascript
+import apostrophe from 'apostrophe';
+
+apostrophe({
+  root: import.meta,
+  shortName: 'my-project',
+  modules: {
+    '@apostrophecms/seo': {},
+    '@apostrophecms/global': {
+      options: {
+        seoGoogleTagManager: true
+      }
+    }
+  }
+});
+```
+
+Add your GTM container ID (e.g., `GTM-XXXXXXX`) in the global configuration.
+
+### Google Site Verification
+
+Verify site ownership for Google Search Console:
+
+```javascript
+import apostrophe from 'apostrophe';
+
+apostrophe({
+  root: import.meta,
+  shortName: 'my-project',
+  modules: {
+    '@apostrophecms/seo': {},
+    '@apostrophecms/global': {
+      options: {
+        seoGoogleVerification: true
+      }
+    }
+  }
+});
+```
+
+Enter your verification meta tag content from Google Search Console in the global settings.
+
+### Sitemap Installation
+
+Install the companion sitemap module for XML sitemap generation:
+
+```bash
+npm install @apostrophecms/sitemap
+```
+
+```javascript
+import apostrophe from 'apostrophe';
+
+apostrophe({
+  root: import.meta,
+  shortName: 'my-project',
+  modules: {
+    '@apostrophecms/seo': {},
+    '@apostrophecms/sitemap': {}
+  }
+});
+```
+
+## Advanced Configuration
+
+### Disabling SEO Fields
+
+Disable SEO fields for specific page or piece types:
+
+```javascript
+// modules/my-piece-type/index.js
+export default {
+  extend: '@apostrophecms/piece-type',
+  options: {
+    seoFields: false
+  }
+};
+```
+
+The following modules disable SEO fields by default:
+- `@apostrophecms/global`
+- `@apostrophecms/user`
+- `@apostrophecms/image`
+- `@apostrophecms/image-tag`
+- `@apostrophecms/file`
+- `@apostrophecms/file-tag`
+
+### Canonical Link Configuration
+
+Configure canonical URL options for pieces by specifying which document types editors can reference:
+
+```javascript
+// modules/article/index.js
+export default {
+  extend: '@apostrophecms/piece-type',
+  options: {
+    label: 'Article',
+    seoCanonicalTypes: [ '@apostrophecms/page', 'topic' ]
+  }
+};
+```
+
+This allows editors to designate another page or piece as the canonical source for search engines, helping prevent duplicate content penalties.
+
+> **What are canonical links?** [As described on Moz.com](https://moz.com/learn/seo/canonicalization): "A canonical tag tells search engines which version of a URL you want to appear in search results." This prevents problems when identical content appears on multiple URLs.
+
+### Pagination Support
+
+For listing pages with pagination, the module automatically adds `rel="prev"` and `rel="next"` link tags when pagination data is provided:
+
+```javascript
+// In your index page or piece-page-type
+module.exports = {
+  async index(req) {
+    const currentPage = parseInt(req.query.page) || 1;
+    const perPage = 10;
+
+    // Your query logic here...
+
+    req.data.pagination = {
+      currentPage,
+      totalPages: Math.ceil(totalCount / perPage),
+      baseUrl: req.data.page._url
+    };
+
+    return {};
+  }
+};
+```
+
+This helps search engines understand pagination relationships and prevents duplicate content issues.
+
+### Custom 404 Tracking
+
+Track 404 errors in Google Analytics by adding this to your `notFound.html` template:
+
+```nunjucks
+{% block extraBody %}
+  {{ super() }}
+  {% include "@apostrophecms/seo:404.html" %}
+{% endblock %}
+```
+
+This automatically sends 404 events when a tracking ID is configured, helping you identify broken links.
 
 ## Implementation Guidelines for Developers
 
@@ -894,7 +1164,8 @@ Each item should provide `_url` (or `url`) and `title` (or `seoTitle`). Toggle t
 
 ### Debugging Structured Data
 
-Set the environment variable `APOS_SEO_DEBUG=true` to print JSON-LD generation diagnostics to your server logs during development.
+Set the environment variable `APOS_SEO_DEBUG=true` to print JSON-LD generation diagnostics to your server logs during development. When enabled, any errors or malformed data encountered during schema generation will be logged to your server console along with the offending data payload.
+This is particularly useful when testing new schema types or diagnosing missing fields in custom templates.
 
 **Important:** Not all schema types show rich results in Google Search Console's URL Inspection Tool. The following schemas are valid and will be indexed, but may not appear in the rich results preview:
 
@@ -904,267 +1175,93 @@ Set the environment variable `APOS_SEO_DEBUG=true` to print JSON-LD generation d
 
 Use the [Rich Results Test](https://search.google.com/test/rich-results) and [Schema Markup Validator](https://validator.schema.org/) for comprehensive testing of all schema types.
 
-## Essential Configuration
+## Extending the SEO Module with Custom JSON-LD Schemas
 
-### Setting the Base URL
+While the `@apostrophecms/seo` module provides a wide range of built-in structured data types, developers may want to add new custom schema types for specialized content. This section explains how to safely extend structured data generation at the **project level** without modifying the package itself.
 
-**This step is required** for proper canonical link generation and SEO performance. If using [ApostropheCMS hosting](https://apostrophecms.com/hosting), this is set automatically.
+### Adding Custom JSON-LD Schemas (Project-Level Extension)
 
-**Via environment variable (recommended):**
-```bash
-export APOS_BASE_URL=https://yoursite.com
-```
+ApostropheCMS allows you to inject additional `<script type="application/ld+json">` tags from any project-level module. This is the simplest and safest way to extend structured data generation without altering the SEO module’s internal logic.
 
-**Via configuration file:**
-```javascript
-// data/local.js
-export default {
-  baseUrl: 'https://yoursite.com',
-  modules: {
-    // other module configuration
-  }
-};
-```
+**Steps:**
 
-**For multisite projects using ApostropheCMS Assembly:**
-The base URL is automatically configured through the `baseUrlDomains` option. [Learn more about Assembly multisite hosting](https://apostrophecms.com/assembly).
+1. Create a new project-level module and inside that file, add the following code:
 
-## AI & Search Strategy
+   ```js
+   // modules/custom-jsonld/index.js
+   export default {
+     handlers(self) {
+       return {
+         '@apostrophecms/page:beforeSend': {
+           addCustomJsonLd(req) {
+             const { page, piece, global } = req.data;
+             const document = piece || page;
+             if (!document) return;
 
-### Recommended Configuration for Most Sites
+             const schema = {
+               '@context': 'https://schema.org',
+               '@type': 'YourNewType',
+               'name': document.title || document.seoTitle,
+               'description': document.seoDescription,
+               'url': document._url || global?.seoSiteCanonicalUrl
+             };
 
-For optimal search visibility while protecting intellectual property:
+             // Push an additional JSON-LD script into the head
+             (req.data.head || (req.data.head = [])).push({
+               name: 'script',
+               attrs: { type: 'application/ld+json' },
+               body: [{ raw: JSON.stringify(schema, null, 2) }]
+             });
+           }
+         }
+       };
+     }
+   };
+   ```
 
-**robots.txt Settings:**
-- Mode: "Allow Search, Block AI Training"
-- This maintains Google Search rankings while preventing your content from being used in AI training datasets
+### Notes
 
-**llms.txt Settings:**
-- Mode: "Disallow AI Training"
-- This clearly communicates your AI usage policies to compliant systems
+* This approach adds an **additional** `<script type="application/ld+json">` tag to the HTML head. Google and other search engines fully support multiple JSON-LD blocks per page.
+* You can add multiple schema types by repeating the push block or by creating several modules.
+* If you also need editors to set values for your new schema fields, extend the `@apostrophecms/doc-type` module to add new schema fields and conditionally display them when your schema type is selected.
 
-**Why This Works:**
-- Traditional search engines (Google, Bing) continue normal indexing
-- AI Overview and AI-powered search features remain functional
-- Real-time AI browsing (ChatGPT browsing, Claude Projects) still works
-- Your content is protected from AI training datasets
-- No negative impact on search rankings (confirmed by Google)
+### Example Use Cases
 
-### For Maximum AI Visibility
-
-If you want your content widely used by AI systems:
-
-**robots.txt Settings:**
-- Mode: "Allow All (Search + AI)"
-
-**llms.txt Settings:**
-- Mode: "Allow AI Crawling"
-
-### For Maximum Privacy/Protection
-
-If you want to restrict all AI access:
-
-**robots.txt Settings:**
-- Mode: "Selective AI Crawlers"
-- Check only: ChatGPT-User, Claude-User (if you want to allow real-time queries)
-- Or use "Block All" for complete restriction
-
-**llms.txt Settings:**
-- Mode: "Disabled"
-
-### Understanding the Difference
-
-| Feature | robots.txt | llms.txt |
-|---------|-----------|----------|
-| **Purpose** | Enforceable crawler control | Policy communication |
-| **Technical** | Bots must respect (enforceable) | Informational only |
-| **Affects** | Which bots can crawl | How content may be used |
-| **Best for** | Access control | Terms of use |
-| **Required?** | Yes (standard) | Optional (emerging) |
-
-### Google Analytics Integration
-
-Enable Google Analytics tracking:
-
-```javascript
-import apostrophe from 'apostrophe';
-
-apostrophe({
-  root: import.meta,
-  shortName: 'my-project',
-  modules: {
-    '@apostrophecms/seo': {},
-    '@apostrophecms/global': {
-      options: {
-        seoGoogleAnalytics: true
-      }
-    }
-  }
-});
-```
-
-This adds a field in the global configuration for your Google Analytics Measurement ID (e.g., `G-XXXXXXXXXX`).
-
-### Google Tag Manager Integration
-
-For advanced tracking and marketing campaigns:
-
-```javascript
-import apostrophe from 'apostrophe';
-
-apostrophe({
-  root: import.meta,
-  shortName: 'my-project',
-  modules: {
-    '@apostrophecms/seo': {},
-    '@apostrophecms/global': {
-      options: {
-        seoGoogleTagManager: true
-      }
-    }
-  }
-});
-```
-
-Add your GTM container ID (e.g., `GTM-XXXXXXX`) in the global configuration.
-
-### Google Site Verification
-
-Verify site ownership for Google Search Console:
-
-```javascript
-import apostrophe from 'apostrophe';
-
-apostrophe({
-  root: import.meta,
-  shortName: 'my-project',
-  modules: {
-    '@apostrophecms/seo': {},
-    '@apostrophecms/global': {
-      options: {
-        seoGoogleVerification: true
-      }
-    }
-  }
-});
-```
-
-Enter your verification meta tag content from Google Search Console in the global settings.
-
-### Sitemap Installation
-
-Install the companion sitemap module for XML sitemap generation:
-
-```bash
-npm install @apostrophecms/sitemap
-```
-
-```javascript
-import apostrophe from 'apostrophe';
-
-apostrophe({
-  root: import.meta,
-  shortName: 'my-project',
-  modules: {
-    '@apostrophecms/seo': {},
-    '@apostrophecms/sitemap': {}
-  }
-});
-```
-
-## Advanced Configuration
-
-### Disabling SEO Fields
-
-Disable SEO fields for specific page or piece types:
-
-```javascript
-// modules/my-piece-type/index.js
-export default {
-  extend: '@apostrophecms/piece-type',
-  options: {
-    seoFields: false
-  }
-};
-```
-
-The following modules disable SEO fields by default:
-- `@apostrophecms/global`
-- `@apostrophecms/user`
-- `@apostrophecms/image`
-- `@apostrophecms/image-tag`
-- `@apostrophecms/file`
-- `@apostrophecms/file-tag`
-
-### Canonical Link Configuration
-
-Configure canonical URL options for pieces by specifying which document types editors can reference:
-
-```javascript
-// modules/article/index.js
-export default {
-  extend: '@apostrophecms/piece-type',
-  options: {
-    label: 'Article',
-    seoCanonicalTypes: [ '@apostrophecms/page', 'topic' ]
-  }
-};
-```
-
-This allows editors to designate another page or piece as the canonical source for search engines, helping prevent duplicate content penalties.
-
-> **What are canonical links?** [As described on Moz.com](https://moz.com/learn/seo/canonicalization): "A canonical tag tells search engines which version of a URL you want to appear in search results." This prevents problems when identical content appears on multiple URLs.
-
-### Pagination Support
-
-For listing pages with pagination, the module automatically adds `rel="prev"` and `rel="next"` link tags when pagination data is provided:
-
-```javascript
-// In your index page or piece-page-type
-module.exports = {
-  async index(req) {
-    const currentPage = parseInt(req.query.page) || 1;
-    const perPage = 10;
-
-    // Your query logic here...
-
-    req.data.pagination = {
-      currentPage,
-      totalPages: Math.ceil(totalCount / perPage),
-      baseUrl: req.data.page._url
-    };
-
-    return {};
-  }
-};
-```
-
-This helps search engines understand pagination relationships and prevents duplicate content issues.
-
-### Custom 404 Tracking
-
-Track 404 errors in Google Analytics by adding this to your `notFound.html` template:
-
-```nunjucks
-{% block extraBody %}
-  {{ super() }}
-  {% include "@apostrophecms/seo:404.html" %}
-{% endblock %}
-```
-
-This automatically sends 404 events when a tracking ID is configured, helping you identify broken links.
+* Adding specialized schema types like `PodcastEpisode`, `SoftwareApplication`, or `Book`.
+* Integrating external APIs that require custom structured data.
+* Providing enhanced metadata for niche verticals such as healthcare, education, or media.
 
 ## Performance Optimization
 
 ### Critical Font Preloading
 
 Configure critical fonts in Global settings to preload them, improving page load performance and preventing layout shift. The module generates `<link rel="preload">` tags for specified font URLs.
+**Example:**
+``` json
+[
+{ "url": "/fonts/inter.woff2" },
+{ "url": "/fonts/poppins.woff2" }
+]
+```
 
 ### Mobile Optimization
 
 The module automatically includes:
 - Viewport meta tag for responsive design
 - Optional theme-color meta tag for PWA compatibility
+#### Theme Color for Mobile Browsers
+Set a theme color for mobile browsers. Supports:
+- **Single color mode** (one color for all)
+- **Light/Dark mode** variants
+
+Example configuration:
+```json
+{
+  "mode": "lightDark",
+  "light": "#ffffff",
+  "dark": "#121212"
+}
+```
 
 ## Field Reference
 
