@@ -25,7 +25,6 @@ module.exports = {
     return {
       metaHead(req) {
         const theSchema = getMetaHead(req.data, options);
-        // console.log('the schema!!!!', theSchema);
         return theSchema;
       },
       tagManagerHead(req) {
