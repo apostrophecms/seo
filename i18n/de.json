@@ -45,11 +45,6 @@
   "themeColorDark": "Farbe im Dunkelmodus",
   "themeColorDarkHelp": "Themenfarbe, wenn der Benutzer den Dunkelmodus bevorzugt.",
 
-  "criticalFonts": "Kritische Schriftarten",
-  "criticalFontsHelp": "Fügen Sie URLs zu kritischen Webfonts hinzu, die für bessere Performance vorab geladen werden sollen.",
-  "fontUrl": "Schriftart-URL",
-  "fontUrlHelp": "Vollständige URL zur Schriftdatei (vorzugsweise im WOFF2-Format).",
-
   "organizationInfo": "Organisationsinformationen",
   "organizationInfoHelp": "Informationen zu Ihrer Organisation für strukturierte Daten.",
   "orgName": "Name der Organisation",

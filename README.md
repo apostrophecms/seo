@@ -41,75 +41,16 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Core Features](#core-features)
-  - [Automatic SEO Fields](#automatic-seo-fields)
-  - [Google Analytics \& Tag Manager](#google-analytics--tag-manager)
-  - [Social Media Meta Tags](#social-media-meta-tags)
-  - [Automated Robots.txt](#automated-robotstxt)
-  - [AI Crawler Control (llms.txt)](#ai-crawler-control-llmstxt)
-  - [Sitemap Integration](#sitemap-integration)
 - [Essential Configuration](#essential-configuration)
-  - [Setting the Base URL](#setting-the-base-url)
 - [Structured Data \& Schema Types](#structured-data--schema-types)
-  - [How It Works](#how-it-works)
-  - [Choosing the Right Schema](#choosing-the-right-schema)
-    - [**Web Page**](#web-page)
-    - [**Collection Page**](#collection-page)
-    - [**Article**](#article)
-    - [**Product**](#product)
-    - [**Offer**](#offer)
-    - [**Aggregate Offer**](#aggregate-offer)
-    - [**Event**](#event)
-    - [**Person**](#person)
-    - [**Local Business**](#local-business)
-    - [**Job Posting**](#job-posting)
-    - [**FAQ Page**](#faq-page)
-    - [**QA Page**](#qa-page)
-    - [**Video Object**](#video-object)
-    - [**How To**](#how-to)
-    - [**Review**](#review)
-    - [**Recipe**](#recipe)
-    - [**Course**](#course)
-  - [E-commerce Best Practices](#e-commerce-best-practices)
-  - [Quick Schema Selection Guide](#quick-schema-selection-guide)
 - [AI \& Search Strategy](#ai--search-strategy)
-  - [Recommended Configuration for Most Sites](#recommended-configuration-for-most-sites)
-  - [For Maximum AI Visibility](#for-maximum-ai-visibility)
-  - [For Maximum Privacy/Protection](#for-maximum-privacyprotection)
-  - [Understanding the Difference](#understanding-the-difference)
-  - [Site Search Query Parameter](#site-search-query-parameter)
-  - [Google Analytics Integration](#google-analytics-integration)
-  - [Google Tag Manager Integration](#google-tag-manager-integration)
-  - [Google Site Verification](#google-site-verification)
-  - [Sitemap Installation](#sitemap-installation)
 - [Advanced Configuration](#advanced-configuration)
-  - [Disabling SEO Fields](#disabling-seo-fields)
-  - [Canonical Link Configuration](#canonical-link-configuration)
-  - [Pagination Support](#pagination-support)
-  - [Custom 404 Tracking](#custom-404-tracking)
 - [Implementation Guidelines for Developers](#implementation-guidelines-for-developers)
-  - [Featured Images](#featured-images)
-  - [Paywalled Content](#paywalled-content)
-  - [Author Information](#author-information)
-  - [URL Requirements](#url-requirements)
-  - [Date Fields](#date-fields)
-  - [Listing Pages (Item List)](#listing-pages-item-list)
-  - [Summary: Required Fields by Schema Type](#summary-required-fields-by-schema-type)
-  - [Best Practices](#best-practices)
-  - [ItemList Generation](#itemlist-generation)
-  - [Debugging Structured Data](#debugging-structured-data)
 - [Extending the SEO Module with Custom JSON-LD Schemas](#extending-the-seo-module-with-custom-json-ld-schemas)
-  - [Adding Custom JSON-LD Schemas (Project-Level Extension)](#adding-custom-json-ld-schemas-project-level-extension)
-  - [Notes](#notes)
-  - [Example Use Cases](#example-use-cases)
 - [Performance Optimization](#performance-optimization)
-  - [Critical Font Preloading](#critical-font-preloading)
-  - [Mobile Optimization](#mobile-optimization)
-    - [Theme Color for Mobile Browsers](#theme-color-for-mobile-browsers)
 - [Field Reference](#field-reference)
 - [🚀 Ready for AI-Powered SEO?](#-ready-for-ai-powered-seo)
-  - [✨ SEO Assistant Pro Features](#-seo-assistant-pro-features)
 - [🏢 Managing Multiple Sites?](#-managing-multiple-sites)
-  - [✨ Assembly Multisite Features](#-assembly-multisite-features)
 - [Roadmap](#roadmap)
 
 ## Installation
@@ -1235,13 +1176,93 @@ ApostropheCMS allows you to inject additional `<script type="application/ld+json
 
 ### Critical Font Preloading
 
-Configure critical fonts in Global settings to preload them, improving page load performance and preventing layout shift. The module generates `<link rel="preload">` tags for specified font URLs.
-**Example:**
-``` json
-[
-{ "url": "/fonts/inter.woff2" },
-{ "url": "/fonts/poppins.woff2" }
+Preload critical fonts to improve Core Web Vitals scores and SEO performance. Font loading directly impacts:
+- **Cumulative Layout Shift (CLS)**: Prevents layout shift when custom fonts load
+- **Largest Contentful Paint (LCP)**: Faster font loading improves render time
+- **First Contentful Paint (FCP)**: Reduces render-blocking font requests
+
+Configure critical fonts as a developer-level option in your `app.js`:
+```javascript
+import apostrophe from 'apostrophe';
+
+apostrophe({
+  root: import.meta,
+  shortName: 'my-project',
+  modules: {
+    '@apostrophecms/seo': {
+      options: {
+        criticalFonts: [
+          {
+            url: '/fonts/inter-variable.woff2',
+            type: 'font/woff2'  // Optional, defaults to 'font/woff2'
+          },
+          {
+            url: 'https://cdn.yoursite.com/fonts/geist-mono.woff',
+            type: 'font/woff'
+          }
+        ]
+      }
+    }
+  }
+});
+```
+
+The module automatically generates `<link rel="preload">` tags for each configured font. The `crossorigin` attribute is automatically added for absolute URLs (CDN/external fonts) and omitted for relative URLs (self-hosted fonts).
+
+**Where to store fonts:**
+
+1. **Self-hosted (recommended)**: Place font files in `public/fonts/` and reference as `/fonts/filename.woff2`
+   - No CORS configuration needed
+   - Simple deployment
+   - Example: `{ url: '/fonts/inter.woff2' }`
+
+2. **CDN/S3**: Use full URLs with proper CORS headers configured on your CDN
+   - Better caching and global performance
+   - Requires CORS: `Access-Control-Allow-Origin: *`
+   - Example: `{ url: 'https://cdn.yoursite.com/fonts/inter.woff2' }`
+
+3. **Don't use with Google Fonts**: They have their own optimization and don't benefit from preload
+
+**Advanced options:**
+```javascript
+criticalFonts: [
+  {
+    url: '/fonts/local.woff2'
+    // No crossorigin (relative URL)
+  },
+  {
+    url: 'https://cdn.example.com/font.woff2'
+    // Automatic crossorigin="anonymous" (absolute URL)
+  },
+  {
+    url: 'https://cdn.example.com/font.woff2',
+    crossorigin: false  // Explicitly disable crossorigin if needed
+  },
+  {
+    url: 'https://private-cdn.example.com/font.woff2',
+    crossorigin: 'use-credentials'  // For authenticated CDN requests
+  }
 ]
+```
+
+**Best practices:**
+- Only preload fonts used above the fold (typically 1-2 fonts maximum)
+- Use `woff2` format for best compression (supported by all modern browsers)
+- Ensure font files are actually available at the specified URLs before deployment
+- Test with Google PageSpeed Insights to verify Core Web Vitals improvements
+
+**Example project structure:**
+```
+my-project/
+├── public/
+│   └── fonts/
+│       ├── inter-variable.woff2
+│       └── headings.woff2
+└── modules/
+    └── asset/
+        └── ui/
+            └── src/
+                └── index.scss  # Reference fonts here with @font-face
 ```
 
 ### Mobile Optimization
@@ -1292,7 +1313,6 @@ Example configuration:
 |`seoSiteDescription`|Site description for WebSite schema|`@apostrophecms/global`|_Enabled by default_|
 |`seoSiteCanonicalUrl`|Base URL for structured data|`@apostrophecms/global`|_Enabled by default_|
 |`seoJsonLdOrganization`|Organization schema settings|`@apostrophecms/global`|_Enabled by default_|
-|`seoCriticalFonts`|Critical font URLs for preloading|`@apostrophecms/global`|_Enabled by default_|
 
 ## 🚀 Ready for AI-Powered SEO?
 

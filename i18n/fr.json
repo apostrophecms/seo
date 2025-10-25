@@ -45,11 +45,6 @@
   "themeColorDark": "Couleur en mode sombre",
   "themeColorDarkHelp": "Couleur du thème lorsque l’utilisateur préfère le mode sombre.",
 
-  "criticalFonts": "Polices critiques",
-  "criticalFontsHelp": "Ajoutez les URLs des polices web critiques qui doivent être préchargées pour de meilleures performances.",
-  "fontUrl": "URL de la police",
-  "fontUrlHelp": "URL complète du fichier de police (de préférence au format WOFF2).",
-
   "organizationInfo": "Informations sur l’organisation",
   "organizationInfoHelp": "Informations sur votre organisation pour les données structurées.",
   "orgName": "Nom de l’organisation",

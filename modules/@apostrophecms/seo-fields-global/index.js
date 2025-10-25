@@ -189,22 +189,6 @@ module.exports = {
           }
         }
       },
-      seoCriticalFonts: {
-        label: 'aposSeo:criticalFonts',
-        type: 'array',
-        titleField: 'url',
-        help: 'aposSeo:criticalFontsHelp',
-        fields: {
-          add: {
-            url: {
-              label: 'aposSeo:fontUrl',
-              type: 'url',
-              required: true,
-              help: 'aposSeo:fontUrlHelp'
-            }
-          }
-        }
-      },
       seoJsonLdOrganization: {
         label: 'aposSeo:organizationInfo',
         type: 'object',
@@ -343,7 +327,6 @@ module.exports = {
           'seoSiteDescription',
           'seoSiteCanonicalUrl',
           'seoThemeColor',
-          'seoCriticalFonts',
           'seoJsonLdOrganization'
         ],
         last: true

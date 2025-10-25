@@ -45,11 +45,6 @@
   "themeColorDark": "Farba pre tmavý režim",
   "themeColorDarkHelp": "Farba témy, keď používateľ preferuje tmavý režim.",
 
-  "criticalFonts": "Kritické fonty",
-  "criticalFontsHelp": "Pridajte URL kritických webových fontov, ktoré sa majú prednačítať pre lepší výkon.",
-  "fontUrl": "URL fontu",
-  "fontUrlHelp": "Celá URL k súboru fontu (najlepšie vo formáte WOFF2).",
-
   "organizationInfo": "Informácie o organizácii",
   "organizationInfoHelp": "Informácie o vašej organizácii pre štruktúrované dáta.",
   "orgName": "Názov organizácie",

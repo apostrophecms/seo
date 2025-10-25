@@ -45,11 +45,6 @@
   "themeColorDark": "Color en modo oscuro",
   "themeColorDarkHelp": "Color del tema cuando el usuario prefiere modo oscuro.",
 
-  "criticalFonts": "Fuentes críticas",
-  "criticalFontsHelp": "Agregue URLs de fuentes web críticas que deben precargarse para mejorar el rendimiento.",
-  "fontUrl": "URL de fuente",
-  "fontUrlHelp": "URL completa del archivo de fuente (preferiblemente formato WOFF2).",
-
   "organizationInfo": "Información de la organización",
   "organizationInfoHelp": "Información sobre su organización para datos estructurados.",
   "orgName": "Nombre de la organización",

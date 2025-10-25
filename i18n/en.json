@@ -45,11 +45,6 @@
   "themeColorDark": "Dark Mode Color",
   "themeColorDarkHelp": "Theme color when user prefers dark mode.",
 
-  "criticalFonts": "Critical Fonts",
-  "criticalFontsHelp": "Add URLs to critical web fonts that should be preloaded for better performance.",
-  "fontUrl": "Font URL",
-  "fontUrlHelp": "Full URL to the font file (preferably WOFF2 format).",
-
   "organizationInfo": "Organization Information",
   "organizationInfoHelp": "Information about your organization for structured data.",
   "orgName": "Organization Name",
