@@ -21,10 +21,12 @@ module.exports = {
     self.appendNodes('head', 'tagManagerHead');
     self.prependNodes('body', 'tagManagerBody');
   },
-  methods(self) {
+  methods(self, options) {
     return {
       metaHead(req) {
-        return getMetaHead(req.data);
+        const theSchema = getMetaHead(req.data, options);
+        // console.log('the schema!!!!', theSchema);
+        return theSchema;
       },
       tagManagerHead(req) {
         return getTagManagerHead(req.data);

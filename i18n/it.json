@@ -61,14 +61,17 @@
   "state": "Stato/Regione",
   "postalCode": "CAP",
   "country": "Paese",
-  "aposSeo:socialProfilesHelp": "Aggiungi i tuoi profili social ufficiali",
 
-  "twitterHandle": "Handle Twitter/X",
-  "twitterHandleHelp": "Il tuo nome utente Twitter/X (es. @iltuoaccount).",
+  "socialProfiles": "Profili social",
+  "socialProfilesHelp": "Aggiungi i profili dei social media della tua organizzazione. L’handle Twitter/X verrà utilizzato per i meta tag della Twitter Card.",
+  "platform": "Piattaforma",
+  "profileUrl": "URL del profilo",
+  "profileUrlHelp": "URL completo del tuo profilo (es. https://twitter.com/tuonomeutente)",
+
   "defaultOGImage": "Immagine predefinita per i social",
   "defaultOGImageHelp": "Immagine predefinita per la condivisione sui social quando una pagina non ha un’immagine (consigliato: 1200x630px).",
-  "aposSeo:searchQueryParam": "Parametro URL di ricerca del sito",
-  "aposSeo:searchQueryParamHelp": "Il parametro di query utilizzato dal tuo sito per la ricerca (es. 'q', 'search', 'query')",
+  "searchQueryParam": "Parametro URL di ricerca del sito",
+  "searchQueryParamHelp": "Il parametro di query utilizzato dal tuo sito per la ricerca (es. 'q', 'search', 'query')",
 
   "gtmId": "ID Google Tag Manager",
   "gtmIdHelp": "L’ID del tuo contenitore Google Tag Manager (es. GTM-XXXXXXX).",

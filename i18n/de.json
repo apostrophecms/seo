@@ -61,14 +61,17 @@
   "state": "Bundesland/Region",
   "postalCode": "Postleitzahl",
   "country": "Land",
-  "aposSeo:socialProfilesHelp": "Fügen Sie Ihre offiziellen Social-Media-Profile hinzu",
 
-  "twitterHandle": "Twitter/X-Handle",
-  "twitterHandleHelp": "Ihr Twitter/X-Benutzername (z. B. @ihrhandle).",
+  "socialProfiles": "Soziale Profile",
+  "socialProfilesHelp": "Fügen Sie die Social-Media-Profile Ihrer Organisation hinzu. Der Twitter/X-Handle wird für Twitter-Card-Meta-Tags verwendet.",
+  "platform": "Plattform",
+  "profileUrl": "Profil-URL",
+  "profileUrlHelp": "Vollständige URL zu Ihrem Profil (z. B. https://twitter.com/ihreusername)",
+
   "defaultOGImage": "Standardbild für Social Media",
   "defaultOGImageHelp": "Standardbild für Social-Media-Sharing, wenn eine Seite kein eigenes Bild hat (empfohlen: 1200x630px).",
-  "aposSeo:searchQueryParam": "Parameter für die Website-Such-URL",
-  "aposSeo:searchQueryParamHelp": "Der Abfrageparameter, den Ihre Website für die Suche verwendet (z. B. 'q', 'search', 'query')",
+  "searchQueryParam": "Parameter für die Website-Such-URL",
+  "searchQueryParamHelp": "Der Abfrageparameter, den Ihre Website für die Suche verwendet (z. B. 'q', 'search', 'query')",
 
   "gtmId": "Google Tag Manager-ID",
   "gtmIdHelp": "Ihre Google Tag Manager-Container-ID (z. B. GTM-XXXXXXX).",

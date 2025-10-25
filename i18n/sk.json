@@ -61,14 +61,17 @@
   "state": "Štát/Región",
   "postalCode": "PSČ",
   "country": "Krajina",
-  "aposSeo:socialProfilesHelp": "Pridajte svoje oficiálne profily na sociálnych sieťach",
 
-  "twitterHandle": "Twitter/X účet",
-  "twitterHandleHelp": "Vaše používateľské meno na Twitter/X (napr. @vasucet).",
+  "socialProfiles": "Sociálne profily",
+  "socialProfilesHelp": "Pridajte profily sociálnych sietí svojej organizácie. Názov účtu Twitter/X sa použije pre meta tagy Twitter Card.",
+  "platform": "Platforma",
+  "profileUrl": "URL profilu",
+  "profileUrlHelp": "Úplná adresa URL vášho profilu (napr. https://twitter.com/vaseuzivatelskemeno)",
+
   "defaultOGImage": "Predvolený obrázok pre sociálne siete",
   "defaultOGImageHelp": "Predvolený obrázok na zdieľanie na sociálnych sieťach, keď stránka nemá vlastný obrázok (odporúčané: 1200x630px).",
-  "aposSeo:searchQueryParam": "Parametr URL vyhľadávania na stránke",
-  "aposSeo:searchQueryParamHelp": "Parameter dotazu, ktorý váš web používa na vyhľadávanie (napr. 'q', 'search', 'query')",
+  "searchQueryParam": "Parametr URL vyhľadávania na stránke",
+  "searchQueryParamHelp": "Parameter dotazu, ktorý váš web používa na vyhľadávanie (napr. 'q', 'search', 'query')",
 
   "gtmId": "ID Google Tag Manager",
   "gtmIdHelp": "ID vášho kontajnera Google Tag Manager (napr. GTM-XXXXXXX).",

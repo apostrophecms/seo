@@ -83,7 +83,7 @@ module.exports = {
           }
         ],
         // Default to allowing browsing bots but not training bots
-        def: ['ChatGPT-User', 'Claude-User', 'PerplexityBot']
+        def: [ 'ChatGPT-User', 'Claude-User', 'PerplexityBot' ]
       },
       robotsCustomText: {
         label: 'aposSeo:robotsCustomText',
@@ -158,8 +158,14 @@ module.exports = {
               type: 'select',
               def: 'single',
               choices: [
-                { label: 'aposSeo:singleColor', value: 'single' },
-                { label: 'aposSeo:lightAndDark', value: 'lightDark' }
+                {
+                  label: 'aposSeo:singleColor',
+                  value: 'single'
+                },
+                {
+                  label: 'aposSeo:lightAndDark',
+                  value: 'lightDark'
+                }
               ]
             },
             single: {
@@ -205,11 +211,26 @@ module.exports = {
               type: 'select',
               def: 'Organization',
               choices: [
-                { label: 'Organization', value: 'Organization' },
-                { label: 'Corporation', value: 'Corporation' },
-                { label: 'LocalBusiness', value: 'LocalBusiness' },
-                { label: 'NGO', value: 'NGO' },
-                { label: 'GovernmentOrganization', value: 'GovernmentOrganization' }
+                {
+                  label: 'Organization',
+                  value: 'Organization'
+                },
+                {
+                  label: 'Corporation',
+                  value: 'Corporation'
+                },
+                {
+                  label: 'LocalBusiness',
+                  value: 'LocalBusiness'
+                },
+                {
+                  label: 'NGO',
+                  value: 'NGO'
+                },
+                {
+                  label: 'GovernmentOrganization',
+                  value: 'GovernmentOrganization'
+                }
               ]
             },
             description: {
@@ -238,10 +259,22 @@ module.exports = {
                     type: 'select',
                     def: 'customer service',
                     choices: [
-                      { label: 'Customer Service', value: 'customer service' },
-                      { label: 'Sales', value: 'sales' },
-                      { label: 'Support', value: 'technical support' },
-                      { label: 'Billing', value: 'billing support' }
+                      {
+                        label: 'Customer Service',
+                        value: 'customer service'
+                      },
+                      {
+                        label: 'Sales',
+                        value: 'sales'
+                      },
+                      {
+                        label: 'Support',
+                        value: 'technical support'
+                      },
+                      {
+                        label: 'Billing',
+                        value: 'billing support'
+                      }
                     ]
                   }
                 }
@@ -274,29 +307,60 @@ module.exports = {
                   }
                 }
               }
-            },
-            sameAs: {
-              label: 'aposSeo:socialProfiles',
-              type: 'array',
-              titleField: 'url',
-              help: 'aposSeo:socialProfilesHelp', // "Add your official social media profiles"
-              fields: {
-                add: {
-                  url: {
-                    label: 'aposSeo:profileUrl',
-                    type: 'url',
-                    required: true
-                  }
-                }
-              }
             }
           }
         }
       },
-      seoTwitterHandle: {
-        label: 'aposSeo:twitterHandle',
-        type: 'string',
-        help: 'aposSeo:twitterHandleHelp'
+      seoSocialProfiles: {
+        label: 'aposSeo:socialProfiles',
+        type: 'array',
+        titleField: 'platform',
+        help: 'aposSeo:socialProfilesHelp',
+        fields: {
+          add: {
+            platform: {
+              label: 'aposSeo:platform',
+              type: 'select',
+              required: true,
+              choices: [
+                {
+                  label: 'Twitter/X',
+                  value: 'twitter'
+                },
+                {
+                  label: 'Bluesky',
+                  value: 'bluesky'
+                },
+                {
+                  label: 'LinkedIn',
+                  value: 'linkedin'
+                },
+                {
+                  label: 'Facebook',
+                  value: 'facebook'
+                },
+                {
+                  label: 'Instagram',
+                  value: 'instagram'
+                },
+                {
+                  label: 'YouTube',
+                  value: 'youtube'
+                },
+                {
+                  label: 'GitHub',
+                  value: 'github'
+                }
+              ]
+            },
+            profileUrl: {
+              label: 'aposSeo:profileUrl',
+              type: 'url',
+              required: true,
+              help: 'aposSeo:profileUrlHelp'
+            }
+          }
+        }
       },
       _seoOpenGraphImage: {
         label: 'aposSeo:defaultOGImage',
@@ -311,8 +375,7 @@ module.exports = {
         def: 'q',
         help: 'aposSeo:searchQueryParamHelp' // "The query parameter your site uses for search (e.g., 'q', 'search', 'query')"
       }
-    }
-
+    };
 
     const group = {
       seo: {
@@ -327,7 +390,10 @@ module.exports = {
           'seoSiteDescription',
           'seoSiteCanonicalUrl',
           'seoThemeColor',
-          'seoJsonLdOrganization'
+          'seoJsonLdOrganization',
+          'seoSocialProfiles',
+          '_seoOpenGraphImage',
+          'seoSearchQueryParam'
         ],
         last: true
       }
@@ -357,7 +423,6 @@ module.exports = {
       };
       group.seo.fields.push('seoGoogleVerificationId');
     }
-    group.seo.fields.push('seoTwitterHandle', '_seoOpenGraphImage');
 
     return Object.keys(add).length
       ? {
@@ -430,7 +495,7 @@ User-agent: *
 Allow: /
 `;
                 break;
-              case 'selective':
+              case 'selective': {
                 // Granular control based on checkboxes
                 const allowed = globalDoc.robotsAISelective || [];
                 const aiCrawlers = [
@@ -453,6 +518,7 @@ Allow: /
                 });
                 robotsTxtContent += '# Default\nUser-agent: *\nAllow: /\n';
                 break;
+              }
               case 'disallow':
                 robotsTxtContent = 'User-agent: *\nDisallow: /\n';
                 break;
@@ -497,25 +563,25 @@ Allow: /
 
             // Add AI training policy based on selection
             if (global.llmsTxtSelection === 'disallow') {
-              content += `## AI Training Policy\n\n`;
-              content += `This site's content should NOT be used for:\n`;
-              content += `- Training large language models\n`;
-              content += `- Building AI datasets\n`;
-              content += `- Machine learning training data\n\n`;
-              content += `The content may be used for:\n`;
-              content += `- Real-time search and retrieval\n`;
-              content += `- Answering user queries with attribution\n`;
-              content += `- Providing context with proper citations\n\n`;
+              content += '## AI Training Policy\n\n';
+              content += 'This site\'s content should NOT be used for:\n';
+              content += '- Training large language models\n';
+              content += '- Building AI datasets\n';
+              content += '- Machine learning training data\n\n';
+              content += 'The content may be used for:\n';
+              content += '- Real-time search and retrieval\n';
+              content += '- Answering user queries with attribution\n';
+              content += '- Providing context with proper citations\n\n';
             } else {
-              content += `## AI Training Policy\n\n`;
-              content += `This site allows responsible AI crawling and indexing for:\n`;
-              content += `- Search and retrieval purposes\n`;
-              content += `- Answering user queries with proper attribution\n`;
-              content += `- Building context for AI assistants\n\n`;
+              content += '## AI Training Policy\n\n';
+              content += 'This site allows responsible AI crawling and indexing for:\n';
+              content += '- Search and retrieval purposes\n';
+              content += '- Answering user queries with proper attribution\n';
+              content += '- Building context for AI assistants\n\n';
             }
 
             // Site Information
-            content += `## Site Information\n\n`;
+            content += '## Site Information\n\n';
             content += `- URL: ${baseUrl}\n`;
 
             if (global.seoJsonLdOrganization?.name) {
@@ -527,32 +593,35 @@ Allow: /
               content += `- Contact: ${global.seoJsonLdOrganization.contactPoint.telephone}\n`;
             }
 
-            content += `\n`;
+            content += '\n';
 
             // Reference sitemap if the module exists
             const hasSitemap = self.apos.modules['@apostrophecms/sitemap'];
             if (hasSitemap) {
-              content += `## Sitemap\n\n`;
+              content += '## Sitemap\n\n';
               content += `- XML Sitemap: ${baseUrl}/sitemap.xml\n\n`;
             }
 
             // Key Pages - get top-level pages
             try {
-              const pages = await self.apos.page.find(req, { level: { $lte: 1 }, archived: { $ne: true } })
+              const pages = await self.apos.page.find(req, {
+                level: { $lte: 1 },
+                archived: { $ne: true }
+              })
                 .permission('view')
                 .project({ title: 1, _url: 1, seoDescription: 1 })
                 .limit(10)
                 .toArray();
 
               if (pages.length > 0) {
-                content += `## Main Pages\n\n`;
+                content += '## Main Pages\n\n';
                 pages.forEach(page => {
                   content += `### ${page.title}\n`;
                   content += `- URL: ${page._url}\n`;
                   if (page.seoDescription) {
                     content += `- Description: ${page.seoDescription}\n`;
                   }
-                  content += `\n`;
+                  content += '\n';
                 });
               }
             } catch (err) {
@@ -560,7 +629,7 @@ Allow: /
             }
 
             // Content Types Available
-            content += `## Content Types\n\n`;
+            content += '## Content Types\n\n';
             const pieceTypes = Object.values(self.apos.modules)
               .filter(m => m.__meta?.chain?.some(c => c.name === '@apostrophecms/piece-type'))
               .filter(m => {
@@ -569,7 +638,8 @@ Allow: /
                 return seoFieldsOption !== false;
               })
               .filter(m => {
-                // Filter out internal/system types - anything with @ or : is typically internal
+                // Filter out internal/system types
+                // anything with @ or : is typically internal
                 const name = m.__meta.name;
                 return !name.startsWith('@apostrophecms/') &&
                   !name.startsWith('@apostrophecms-pro/') &&
@@ -581,17 +651,17 @@ Allow: /
               }));
 
             if (pieceTypes.length > 0) {
-              content += `This site contains the following content types:\n\n`;
+              content += 'This site contains the following content types:\n\n';
               pieceTypes.forEach(type => {
                 content += `- ${type.label}\n`;
               });
-              content += `\n`;
+              content += '\n';
             }
 
             // Technical Details
-            content += `## Technical Details\n\n`;
-            content += `- Platform: ApostropheCMS\n`;
-            content += `- SEO Module: @apostrophecms/seo\n`;
+            content += '## Technical Details\n\n';
+            content += '- Platform: ApostropheCMS\n';
+            content += '- SEO Module: @apostrophecms/seo\n';
             content += `- Robots: ${baseUrl}/robots.txt\n`;
 
             const schemaTypes = new Set();
@@ -602,21 +672,21 @@ Allow: /
               content += `- Structured Data: ${Array.from(schemaTypes).join(', ')}\n`;
             }
 
-            content += `\n`;
+            content += '\n';
 
             // Footer
-            content += `## For AI/LLM Systems\n\n`;
-            content += `This site uses structured data (JSON-LD) on pages for better context.\n`;
-            content += `Check individual pages for schema.org markup including:\n`;
-            content += `- WebPage/CollectionPage schemas\n`;
-            content += `- Article, Product, Event, Person schemas\n`;
-            content += `- BreadcrumbList navigation context\n`;
-            content += `- ItemList for collection pages\n`;
+            content += '## For AI/LLM Systems\n\n';
+            content += 'This site uses structured data (JSON-LD) on pages for better context.\n';
+            content += 'Check individual pages for schema.org markup including:\n';
+            content += '- WebPage/CollectionPage schemas\n';
+            content += '- Article, Product, Event, Person schemas\n';
+            content += '- BreadcrumbList navigation context\n';
+            content += '- ItemList for collection pages\n';
 
             if (global.llmsTxtSelection === 'disallow') {
-              content += `\n## Important\n\n`;
-              content += `Please respect our AI training policy stated above. `;
-              content += `Use this content for real-time retrieval and user assistance only.\n`;
+              content += '\n## Important\n\n';
+              content += 'Please respect our AI training policy stated above. ';
+              content += 'Use this content for real-time retrieval and user assistance only.\n';
             }
 
             req.res.setHeader('Content-Type', 'text/plain; charset=utf-8');
