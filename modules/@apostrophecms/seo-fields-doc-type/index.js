@@ -141,7 +141,8 @@ module.exports = {
         },
 
         // CONDITIONAL: Article-specific fields
-        // Article uses seoTitle/seoDescription from above, so no extra fields needed currently
+        // Article uses seoTitle/seoDescription from above,
+        // so no extra fields needed currently
 
         // CONDITIONAL: Product Schema Fields
         seoJsonLdProduct: {
