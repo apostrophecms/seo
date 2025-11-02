@@ -1,7 +1,7 @@
 {
   "group": "SEO",
   "title": "Título SEO",
-  "titleHtmlHelp": "Título personalizado para resultados de busca. Se deixado em branco, o título da página será usado.",
+  "titleHtmlHelp": "<strong>Deixe em branco na maioria dos casos.</strong> O título da sua página será usado automaticamente.<br><br><strong>⚠️ Atenção :</strong> Se você usar um título de SEO personalizado, certifique-se de que ele descreve com precisão o conteúdo da página. Os mecanismos de pesquisa comparam o título de SEO com o conteúdo real da página e os dados estruturados. Inconsistências podem prejudicar seu ranqueamento.",
   "description": "Meta descrição",
   "descriptionHtmlHelp": "Uma breve descrição desta página para os mecanismos de busca (recomendado 155–160 caracteres).",
   "robots": "Meta tag Robots",

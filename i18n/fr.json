@@ -1,7 +1,7 @@
 {
   "group": "SEO",
   "title": "Titre SEO",
-  "titleHtmlHelp": "Titre personnalisé pour les résultats de recherche. Si laissé vide, le titre de la page sera utilisé.",
+  "titleHtmlHelp": "<strong>Laisser vide dans la plupart des cas.</strong> Le titre de votre page sera utilisé automatiquement.<br><br><strong>⚠️ Attention :</strong> Si vous utilisez un titre SEO personnalisé, assurez-vous qu’il décrit précisément le contenu de votre page. Les moteurs de recherche comparent votre titre SEO au contenu réel de la page et aux données structurées. Les divergences peuvent nuire à votre classement.",
   "description": "Méta description",
   "descriptionHtmlHelp": "Brève description de cette page pour les moteurs de recherche (155–160 caractères recommandés).",
   "robots": "Balise méta Robots",

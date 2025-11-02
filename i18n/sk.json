@@ -1,7 +1,7 @@
 {
   "group": "SEO",
   "title": "SEO nadpis",
-  "titleHtmlHelp": "Vlastný nadpis pre výsledky vyhľadávania. Ak zostane prázdny, použije sa nadpis stránky.",
+  "titleHtmlHelp": "<strong>Vo väčšine prípadov nechajte prázdne.</strong> Názov stránky sa použije automaticky.<br><br><strong>⚠️ Upozornenie :</strong> Ak použijete vlastný SEO názov, uistite sa, že presne opisuje obsah stránky. Vyhľadávače porovnávajú SEO názov so skutočným obsahom stránky a štruktúrovanými údajmi. Nezhody môžu negatívne ovplyvniť vaše hodnotenie.",
   "description": "Meta popis",
   "descriptionHtmlHelp": "Stručný popis tejto stránky pre vyhľadávače (odporúčaných 155–160 znakov).",
   "robots": "Meta tag Robots",
