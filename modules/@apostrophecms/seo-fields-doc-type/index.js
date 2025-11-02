@@ -21,6 +21,13 @@ module.exports = {
           type: 'string',
           htmlHelp: 'aposSeo:descriptionHtmlHelp'
         },
+        _seoOpenGraphImage: {
+          label: 'aposSeo:ogImage',
+          type: 'relationship',
+          withType: '@apostrophecms/image',
+          max: 1,
+          help: 'aposSeo:ogImageHelp'
+        },
         seoRobots: {
           label: 'aposSeo:robots',
           htmlHelp: 'aposSeo:robotsHtmlHelp',
@@ -58,22 +65,70 @@ module.exports = {
           type: 'select',
           help: 'aposSeo:schemaTypeHelp',
           choices: [
-            { label: 'None', value: '' },
-            { label: 'Web Page', value: 'WebPage' },
-            { label: 'Collection Page', value: 'CollectionPage' },
-            { label: 'Article', value: 'Article' },
-            { label: 'Product', value: 'Product' },
-            { label: 'Event', value: 'Event' },
-            { label: 'Person', value: 'Person' },
-            { label: 'Local Business', value: 'LocalBusiness' },
-            { label: 'Job Posting', value: 'JobPosting' },
-            { label: 'FAQ Page', value: 'FAQPage' },
-            { label: 'Q&A Page', value: 'QAPage' },
-            { label: 'Video', value: 'VideoObject' },
-            { label: 'How-To', value: 'HowTo' },
-            { label: 'Review', value: 'Review' },
-            { label: 'Recipe', value: 'Recipe' },
-            { label: 'Course', value: 'Course' },
+            {
+              label: 'None',
+              value: ''
+            },
+            {
+              label: 'Web Page',
+              value: 'WebPage'
+            },
+            {
+              label: 'Collection Page',
+              value: 'CollectionPage'
+            },
+            {
+              label: 'Article',
+              value: 'Article'
+            },
+            {
+              label: 'Product',
+              value: 'Product'
+            },
+            {
+              label: 'Event',
+              value: 'Event'
+            },
+            {
+              label: 'Person',
+              value: 'Person'
+            },
+            {
+              label: 'Local Business',
+              value: 'LocalBusiness'
+            },
+            {
+              label: 'Job Posting',
+              value: 'JobPosting'
+            },
+            {
+              label: 'FAQ Page',
+              value: 'FAQPage'
+            },
+            {
+              label: 'Q&A Page',
+              value: 'QAPage'
+            },
+            {
+              label: 'Video',
+              value: 'VideoObject'
+            },
+            {
+              label: 'How-To',
+              value: 'HowTo'
+            },
+            {
+              label: 'Review',
+              value: 'Review'
+            },
+            {
+              label: 'Recipe',
+              value: 'Recipe'
+            },
+            {
+              label: 'Course',
+              value: 'Course'
+            },
             {
               label: 'Offer',
               value: 'Offer'
@@ -123,10 +178,22 @@ module.exports = {
                 type: 'select',
                 def: 'InStock',
                 choices: [
-                  { label: 'In Stock', value: 'InStock' },
-                  { label: 'Out of Stock', value: 'OutOfStock' },
-                  { label: 'Pre-order', value: 'PreOrder' },
-                  { label: 'Discontinued', value: 'Discontinued' }
+                  {
+                    label: 'In Stock',
+                    value: 'InStock'
+                  },
+                  {
+                    label: 'Out of Stock',
+                    value: 'OutOfStock'
+                  },
+                  {
+                    label: 'Pre-order',
+                    value: 'PreOrder'
+                  },
+                  {
+                    label: 'Discontinued',
+                    value: 'Discontinued'
+                  }
                 ]
               },
               brand: {
@@ -148,10 +215,22 @@ module.exports = {
                 type: 'select',
                 def: 'NewCondition',
                 choices: [
-                  { label: 'New', value: 'NewCondition' },
-                  { label: 'Used', value: 'UsedCondition' },
-                  { label: 'Refurbished', value: 'RefurbishedCondition' },
-                  { label: 'Damaged', value: 'DamagedCondition' }
+                  {
+                    label: 'New',
+                    value: 'NewCondition'
+                  },
+                  {
+                    label: 'Used',
+                    value: 'UsedCondition'
+                  },
+                  {
+                    label: 'Refurbished',
+                    value: 'RefurbishedCondition'
+                  },
+                  {
+                    label: 'Damaged',
+                    value: 'DamagedCondition'
+                  }
                 ]
               },
               rating: {
@@ -361,14 +440,38 @@ module.exports = {
                 type: 'checkboxes',
                 help: 'aposSeo:employmentTypeHelp',
                 choices: [
-                  { label: 'Full-time', value: 'FULL_TIME' },
-                  { label: 'Part-time', value: 'PART_TIME' },
-                  { label: 'Contractor', value: 'CONTRACTOR' },
-                  { label: 'Temporary', value: 'TEMPORARY' },
-                  { label: 'Intern', value: 'INTERN' },
-                  { label: 'Volunteer', value: 'VOLUNTEER' },
-                  { label: 'Per Diem', value: 'PER_DIEM' },
-                  { label: 'Other', value: 'OTHER' }
+                  {
+                    label: 'Full-time',
+                    value: 'FULL_TIME'
+                  },
+                  {
+                    label: 'Part-time',
+                    value: 'PART_TIME'
+                  },
+                  {
+                    label: 'Contractor',
+                    value: 'CONTRACTOR'
+                  },
+                  {
+                    label: 'Temporary',
+                    value: 'TEMPORARY'
+                  },
+                  {
+                    label: 'Intern',
+                    value: 'INTERN'
+                  },
+                  {
+                    label: 'Volunteer',
+                    value: 'VOLUNTEER'
+                  },
+                  {
+                    label: 'Per Diem',
+                    value: 'PER_DIEM'
+                  },
+                  {
+                    label: 'Other',
+                    value: 'OTHER'
+                  }
                 ]
               },
               hiringOrganization: {
@@ -489,11 +592,26 @@ module.exports = {
                       type: 'select',
                       def: 'YEAR',
                       choices: [
-                        { label: 'Per Year', value: 'YEAR' },
-                        { label: 'Per Month', value: 'MONTH' },
-                        { label: 'Per Week', value: 'WEEK' },
-                        { label: 'Per Day', value: 'DAY' },
-                        { label: 'Per Hour', value: 'HOUR' }
+                        {
+                          label: 'Per Year',
+                          value: 'YEAR'
+                        },
+                        {
+                          label: 'Per Month',
+                          value: 'MONTH'
+                        },
+                        {
+                          label: 'Per Week',
+                          value: 'WEEK'
+                        },
+                        {
+                          label: 'Per Day',
+                          value: 'DAY'
+                        },
+                        {
+                          label: 'Per Hour',
+                          value: 'HOUR'
+                        }
                       ]
                     }
                   }
@@ -509,12 +627,30 @@ module.exports = {
                 type: 'select',
                 help: 'aposSeo:educationRequirementsHelp',
                 choices: [
-                  { label: 'High School', value: 'HighSchool' },
-                  { label: 'Associate Degree', value: 'AssociateDegree' },
-                  { label: 'Bachelor Degree', value: 'BachelorDegree' },
-                  { label: 'Master Degree', value: 'MasterDegree' },
-                  { label: 'Doctorate', value: 'Doctorate' },
-                  { label: 'Professional Certificate', value: 'ProfessionalCertificate' }
+                  {
+                    label: 'High School',
+                    value: 'HighSchool'
+                  },
+                  {
+                    label: 'Associate Degree',
+                    value: 'AssociateDegree'
+                  },
+                  {
+                    label: 'Bachelor Degree',
+                    value: 'BachelorDegree'
+                  },
+                  {
+                    label: 'Master Degree',
+                    value: 'MasterDegree'
+                  },
+                  {
+                    label: 'Doctorate',
+                    value: 'Doctorate'
+                  },
+                  {
+                    label: 'Professional Certificate',
+                    value: 'ProfessionalCertificate'
+                  }
                 ]
               },
               qualifications: {
@@ -767,10 +903,22 @@ module.exports = {
                   isEducational: true
                 },
                 choices: [
-                  { label: 'Assignment', value: 'assignment' },
-                  { label: 'Professional Development', value: 'professional development' },
-                  { label: 'Continuing Education', value: 'continuing education' },
-                  { label: 'Vocational Training', value: 'vocational training' }
+                  {
+                    label: 'Assignment',
+                    value: 'assignment'
+                  },
+                  {
+                    label: 'Professional Development',
+                    value: 'professional development'
+                  },
+                  {
+                    label: 'Continuing Education',
+                    value: 'continuing education'
+                  },
+                  {
+                    label: 'Vocational Training',
+                    value: 'vocational training'
+                  }
                 ]
               },
               learningResourceType: {
@@ -781,11 +929,26 @@ module.exports = {
                   isEducational: true
                 },
                 choices: [
-                  { label: 'Lecture', value: 'lecture' },
-                  { label: 'Tutorial', value: 'tutorial' },
-                  { label: 'Demonstration', value: 'demonstration' },
-                  { label: 'Presentation', value: 'presentation' },
-                  { label: 'Exercise', value: 'exercise' }
+                  {
+                    label: 'Lecture',
+                    value: 'lecture'
+                  },
+                  {
+                    label: 'Tutorial',
+                    value: 'tutorial'
+                  },
+                  {
+                    label: 'Demonstration',
+                    value: 'demonstration'
+                  },
+                  {
+                    label: 'Presentation',
+                    value: 'presentation'
+                  },
+                  {
+                    label: 'Exercise',
+                    value: 'exercise'
+                  }
                 ]
               }
             }
@@ -904,12 +1067,30 @@ module.exports = {
                 type: 'select',
                 def: 'Thing',
                 choices: [
-                  { label: 'Thing', value: 'Thing' },
-                  { label: 'Product', value: 'Product' },
-                  { label: 'Book', value: 'Book' },
-                  { label: 'Movie', value: 'Movie' },
-                  { label: 'Restaurant', value: 'Restaurant' },
-                  { label: 'Service', value: 'Service' }
+                  {
+                    label: 'Thing',
+                    value: 'Thing'
+                  },
+                  {
+                    label: 'Product',
+                    value: 'Product'
+                  },
+                  {
+                    label: 'Book',
+                    value: 'Book'
+                  },
+                  {
+                    label: 'Movie',
+                    value: 'Movie'
+                  },
+                  {
+                    label: 'Restaurant',
+                    value: 'Restaurant'
+                  },
+                  {
+                    label: 'Service',
+                    value: 'Service'
+                  }
                 ]
               },
               reviewBody: {
@@ -1116,9 +1297,18 @@ module.exports = {
                 label: 'aposSeo:educationalLevel',
                 type: 'select',
                 choices: [
-                  { label: 'Beginner', value: 'Beginner' },
-                  { label: 'Intermediate', value: 'Intermediate' },
-                  { label: 'Advanced', value: 'Advanced' }
+                  {
+                    label: 'Beginner',
+                    value: 'Beginner'
+                  },
+                  {
+                    label: 'Intermediate',
+                    value: 'Intermediate'
+                  },
+                  {
+                    label: 'Advanced',
+                    value: 'Advanced'
+                  }
                 ]
               },
               price: {
@@ -1136,9 +1326,18 @@ module.exports = {
                 type: 'select',
                 def: 'InStock',
                 choices: [
-                  { label: 'In Stock', value: 'InStock' },
-                  { label: 'Out of Stock', value: 'OutOfStock' },
-                  { label: 'Pre-order', value: 'PreOrder' }
+                  {
+                    label: 'In Stock',
+                    value: 'InStock'
+                  },
+                  {
+                    label: 'Out of Stock',
+                    value: 'OutOfStock'
+                  },
+                  {
+                    label: 'Pre-order',
+                    value: 'PreOrder'
+                  }
                 ]
               },
               rating: {
@@ -1207,14 +1406,38 @@ module.exports = {
                 type: 'select',
                 def: 'InStock',
                 choices: [
-                  { label: 'In Stock', value: 'InStock' },
-                  { label: 'Out of Stock', value: 'OutOfStock' },
-                  { label: 'Pre-order', value: 'PreOrder' },
-                  { label: 'Discontinued', value: 'Discontinued' },
-                  { label: 'Limited Availability', value: 'LimitedAvailability' },
-                  { label: 'Online Only', value: 'OnlineOnly' },
-                  { label: 'In Store Only', value: 'InStoreOnly' },
-                  { label: 'Sold Out', value: 'SoldOut' }
+                  {
+                    label: 'In Stock',
+                    value: 'InStock'
+                  },
+                  {
+                    label: 'Out of Stock',
+                    value: 'OutOfStock'
+                  },
+                  {
+                    label: 'Pre-order',
+                    value: 'PreOrder'
+                  },
+                  {
+                    label: 'Discontinued',
+                    value: 'Discontinued'
+                  },
+                  {
+                    label: 'Limited Availability',
+                    value: 'LimitedAvailability'
+                  },
+                  {
+                    label: 'Online Only',
+                    value: 'OnlineOnly'
+                  },
+                  {
+                    label: 'In Store Only',
+                    value: 'InStoreOnly'
+                  },
+                  {
+                    label: 'Sold Out',
+                    value: 'SoldOut'
+                  }
                 ]
               },
               validFrom: {
@@ -1242,10 +1465,22 @@ module.exports = {
                 type: 'select',
                 def: 'NewCondition',
                 choices: [
-                  { label: 'New', value: 'NewCondition' },
-                  { label: 'Used', value: 'UsedCondition' },
-                  { label: 'Refurbished', value: 'RefurbishedCondition' },
-                  { label: 'Damaged', value: 'DamagedCondition' }
+                  {
+                    label: 'New',
+                    value: 'NewCondition'
+                  },
+                  {
+                    label: 'Used',
+                    value: 'UsedCondition'
+                  },
+                  {
+                    label: 'Refurbished',
+                    value: 'RefurbishedCondition'
+                  },
+                  {
+                    label: 'Damaged',
+                    value: 'DamagedCondition'
+                  }
                 ]
               },
               shippingDetails: {
@@ -1325,10 +1560,22 @@ module.exports = {
                 type: 'select',
                 def: 'InStock',
                 choices: [
-                  { label: 'In Stock', value: 'InStock' },
-                  { label: 'Out of Stock', value: 'OutOfStock' },
-                  { label: 'Pre-order', value: 'PreOrder' },
-                  { label: 'Limited Availability', value: 'LimitedAvailability' }
+                  {
+                    label: 'In Stock',
+                    value: 'InStock'
+                  },
+                  {
+                    label: 'Out of Stock',
+                    value: 'OutOfStock'
+                  },
+                  {
+                    label: 'Pre-order',
+                    value: 'PreOrder'
+                  },
+                  {
+                    label: 'Limited Availability',
+                    value: 'LimitedAvailability'
+                  }
                 ]
               },
               url: {
@@ -1368,9 +1615,18 @@ module.exports = {
                       type: 'select',
                       def: 'InStock',
                       choices: [
-                        { label: 'In Stock', value: 'InStock' },
-                        { label: 'Out of Stock', value: 'OutOfStock' },
-                        { label: 'Pre-order', value: 'PreOrder' }
+                        {
+                          label: 'In Stock',
+                          value: 'InStock'
+                        },
+                        {
+                          label: 'Out of Stock',
+                          value: 'OutOfStock'
+                        },
+                        {
+                          label: 'Pre-order',
+                          value: 'PreOrder'
+                        }
                       ]
                     },
                     url: {
@@ -1382,7 +1638,7 @@ module.exports = {
               }
             }
           }
-        },
+        }
       },
       group: {
         seo: {
@@ -1390,6 +1646,7 @@ module.exports = {
           fields: [
             'seoTitle',
             'seoDescription',
+            '_seoOpenGraphImage',
             'seoRobots',
             'seoIsPaywalled',
             'seoPaywallSelector',

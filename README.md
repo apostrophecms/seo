@@ -23,7 +23,6 @@
 - **📊 Analytics Ready**: Built-in Google Analytics, Tag Manager, and Site Verification integration
 - **🤖 Smart Automation**: Automatic robots.txt generation with granular control
 - **🤖 AI-Ready**: Automatic llms.txt generation for AI crawler control and training transparency
-- **📱 Social Media Ready**: Open Graph and Twitter Card meta tags for rich social sharing
 - **⚡ Zero Configuration**: Works out of the box with all page and piece types
 - **🔍 Search Engine Friendly**: Proper canonical linking prevents duplicate content issues
 - **📈 Marketing Team Ready**: Easy-to-use interface for non-technical content creators
@@ -34,23 +33,101 @@
 
 This version requires the latest ApostropheCMS. When adding this module to an existing project, run `npm update` to ensure all ApostropheCMS modules are up-to-date.
 
+---
+
+## TL;DR: Quick Setup
+
+1. Install the module:
+
+   ```bash
+   npm install @apostrophecms/seo
+   ```
+2. Set your base URL (`APOS_BASE_URL`).
+3. Enable Google Analytics or Tag Manager in `@apostrophecms/global`.
+4. Optionally install `@apostrophecms/sitemap` for XML sitemap generation.
+5. Configure `robots.txt` and `llms.txt` via global settings.
+6. Choose schema types per page in the SEO tab.
+7. Validate your structured data using [Google’s Rich Results Test](https://search.google.com/test/rich-results).
+
+---
+
 ## Table of Contents
 
 - [Why ApostropheCMS SEO Tools?](#why-apostrophecms-seo-tools)
+- [TL;DR: Quick Setup](#tldr-quick-setup)
 - [Table of Contents](#table-of-contents)
 - [Installation](#installation)
-- [Quick Start](#quick-start)
+- [Before You Start](#before-you-start)
+  - [✅ Works Immediately (No Setup Required)](#-works-immediately-no-setup-required)
+  - [⚙️ Requires Content Structure Setup](#️-requires-content-structure-setup)
+- [Field Flexibility](#field-flexibility)
+  - [Flexible Field Formats](#flexible-field-formats)
+  - [Debug Mode](#debug-mode)
+  - [When to Use Each Approach](#when-to-use-each-approach)
 - [Core Features](#core-features)
+  - [Automatic SEO Fields](#automatic-seo-fields)
+  - [Google Analytics \& Tag Manager](#google-analytics--tag-manager)
+  - [Automated Robots.txt](#automated-robotstxt)
+  - [AI Crawler Control (llms.txt)](#ai-crawler-control-llmstxt)
+  - [Sitemap Integration](#sitemap-integration)
 - [Essential Configuration](#essential-configuration)
+  - [Setting the Base URL](#setting-the-base-url)
+  - [Google Analytics Integration](#google-analytics-integration)
+  - [Google Tag Manager Integration](#google-tag-manager-integration)
+  - [Google Site Verification](#google-site-verification)
+  - [Sitemap Installation](#sitemap-installation)
+- [Setup Examples](#setup-examples)
+  - [Simple Blog Setup (Minimal Configuration)](#simple-blog-setup-minimal-configuration)
+  - [Advanced Blog Setup (Full Featured)](#advanced-blog-setup-full-featured)
+  - [E-commerce Product (Simple)](#e-commerce-product-simple)
 - [Structured Data \& Schema Types](#structured-data--schema-types)
+  - [How It Works](#how-it-works)
+  - [Choosing the Right Schema](#choosing-the-right-schema)
+  - [E-commerce Best Practices](#e-commerce-best-practices)
+  - [Quick Schema Selection Guide](#quick-schema-selection-guide)
 - [AI \& Search Strategy](#ai--search-strategy)
+  - [Understanding Crawler Types](#understanding-crawler-types)
+  - [Recommended Configuration for Most Sites](#recommended-configuration-for-most-sites)
+  - [For Maximum AI Visibility](#for-maximum-ai-visibility)
+  - [For Maximum Privacy/Protection](#for-maximum-privacyprotection)
+  - [Understanding robots.txt vs llms.txt](#understanding-robotstxt-vs-llmstxt)
+  - [Site Search Query Parameter](#site-search-query-parameter)
 - [Advanced Configuration](#advanced-configuration)
+  - [Disabling SEO Fields](#disabling-seo-fields)
+  - [Canonical Link Configuration](#canonical-link-configuration)
+  - [Pagination Support](#pagination-support)
+  - [Custom 404 Tracking](#custom-404-tracking)
 - [Implementation Guidelines for Developers](#implementation-guidelines-for-developers)
+  - [Field Format Options](#field-format-options)
+  - [Featured Images](#featured-images)
+  - [Paywalled Content](#paywalled-content)
+  - [Author Information](#author-information-1)
+  - [URL Requirements](#url-requirements)
+  - [Date Fields](#date-fields)
+  - [Listing Pages (Item List)](#listing-pages-item-list)
+  - [Summary: Required Fields by Schema Type](#summary-required-fields-by-schema-type)
+  - [Best Practices](#best-practices)
+  - [ItemList Generation](#itemlist-generation)
+  - [Debugging Structured Data](#debugging-structured-data)
+- [Troubleshooting](#troubleshooting)
+  - [Fallbacks Not Working](#fallbacks-not-working)
+  - [Images Not Appearing in Structured Data](#images-not-appearing-in-structured-data)
+  - [Author Shows as "undefined"](#author-shows-as-undefined)
+  - [Date Format Errors](#date-format-errors)
+  - [Schema Not Generated](#schema-not-generated)
+  - [Debug Logs Not Appearing](#debug-logs-not-appearing)
 - [Extending the SEO Module with Custom JSON-LD Schemas](#extending-the-seo-module-with-custom-json-ld-schemas)
+  - [Adding Custom JSON-LD Schemas (Project-Level Extension)](#adding-custom-json-ld-schemas-project-level-extension)
+  - [Notes](#notes)
+  - [Example Use Cases](#example-use-cases)
 - [Performance Optimization](#performance-optimization)
+  - [Critical Font Preloading](#critical-font-preloading)
+  - [Mobile Optimization](#mobile-optimization)
 - [Field Reference](#field-reference)
 - [🚀 Ready for AI-Powered SEO?](#-ready-for-ai-powered-seo)
+  - [✨ SEO Assistant Pro Features](#-seo-assistant-pro-features)
 - [🏢 Managing Multiple Sites?](#-managing-multiple-sites)
+  - [✨ Assembly Multisite Features](#-assembly-multisite-features)
 - [Roadmap](#roadmap)
 
 ## Installation
@@ -58,8 +135,6 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
 ```bash
 npm install @apostrophecms/seo
 ```
-
-## Quick Start
 
 Configure the module in your `app.js` file:
 
@@ -76,6 +151,181 @@ apostrophe({
 ```
 
 **Important:** For proper SEO functionality, you must also configure your site's base URL. See the [Essential Configuration](#essential-configuration) section below.
+
+## Before You Start
+
+This module provides SEO functionality at two levels:
+
+### ✅ Works Immediately (No Setup Required)
+
+These features work out-of-the-box with any ApostropheCMS site:
+
+- **Essential meta tags**: Title, description, robots
+- **Analytics**: Google Analytics, Tag Manager, Site Verification
+- **Site control**: Automated robots.txt and llms.txt generation
+- **Basic structured data**: WebPage and CollectionPage schemas
+
+**You can start using these features right away** - just install the module and configure your global SEO settings.
+
+### ⚙️ Requires Content Structure Setup
+
+Advanced structured data types need specific fields in your content types:
+
+- **Article, Review**: Work best with author information
+- **Product, HowTo**: Benefit from featured images for richer results
+- **Recipe**: **Requires** a featured image (Google requirement)
+- **VideoObject**: **Requires** thumbnail and upload date (Google requirement)
+- **JobPosting**: Complex schema with many required fields for Google for Jobs
+- **Event, LocalBusiness**: Need address/location fields
+- **FAQPage, QAPage**: Need question and answer content
+
+## Field Flexibility
+
+The SEO module provides flexible field formats to accommodate different project needs. Whether you're building a simple blog or a complex application, you can choose the field structure that works best for your use case.
+
+### Flexible Field Formats
+
+#### Author Information
+
+Provide author information in any of these formats:
+
+**Simple string field (easiest):**
+```javascript
+fields: {
+  add: {
+    author: {
+      type: 'string',
+      label: 'Author Name',
+      def: 'Editorial Team'
+    }
+  }
+}
+```
+
+**User relationship (full featured):**
+```javascript
+fields: {
+  add: {
+    _author: {
+      type: 'relationship',
+      withType: '@apostrophecms/user',
+      max: 1
+    }
+  }
+}
+```
+
+**Automatic fallback:** When neither is provided, the module falls back to the logged-in user (if available).
+
+---
+
+#### Images
+
+Images can be provided as:
+
+**Simple object (for external images):**
+```javascript
+fields: {
+  add: {
+    featuredImage: {
+      type: 'object',
+      fields: {
+        add: {
+          url: { type: 'url', required: true },
+          alt: { type: 'string' },
+          width: { type: 'integer' },
+          height: { type: 'integer' }
+        }
+      }
+    }
+  }
+}
+```
+
+**ApostropheCMS image relationship (for uploaded images):**
+```javascript
+fields: {
+  add: {
+    _featuredImage: {
+      type: 'relationship',
+      withType: '@apostrophecms/image',
+      max: 1
+    }
+  }
+}
+```
+
+The module checks multiple field names: `_featuredImage`, `featuredImage`, `image`
+
+---
+
+#### Descriptions
+
+Descriptions are automatically sourced from the first available field:
+
+1. Schema-specific description (e.g., `product.description`)
+2. `seoDescription` (SEO-optimized content)
+3. `excerpt` (content preview)
+4. `description` (general description)
+
+This means you don't need to duplicate content across multiple fields.
+
+---
+
+#### Publication Dates
+
+The module accepts multiple date field names:
+
+- `publishedAt` (standard ApostropheCMS field)
+- `publicationDate`
+- `datePublished`
+- Automatically falls back to `createdAt` if none are provided
+```javascript
+fields: {
+  add: {
+    publicationDate: {
+      type: 'date',
+      label: 'Publication Date'
+    }
+  }
+}
+```
+
+---
+
+### Debug Mode
+
+Enable debug mode to see which fallback fields are being used:
+```bash
+export APOS_SEO_DEBUG=true
+npm run dev
+```
+
+You'll see helpful log messages like:
+
+```bash
+[SEO] Author fallback used: document.author = "John Doe"
+[SEO] Image fallback used: document.featuredImage
+[SEO] Description fallback used: document.excerpt
+```
+---
+
+### When to Use Each Approach
+
+**Use simple fields when:**
+- Building a basic blog or content site
+- You don't need the full power of relationships
+- You want to minimize database complexity
+- Content editors just need to enter text
+
+**Use relationships when:**
+- You need author profiles with multiple fields
+- You're using ApostropheCMS image management features
+- You want to reuse content across multiple pieces
+- You need relationship-based queries
+
+**Mix and match:**
+You can use relationships for some fields and simple types for others. The fallback system handles both seamlessly.
 
 ## Core Features
 
@@ -102,56 +352,39 @@ Built-in integration with Google Analytics, Google Tag Manager, and Google Site 
 
 See [Essential Configuration](#essential-configuration) below for setup instructions.
 
-### Social Media Meta Tags
-
-Automatic generation of Open Graph and Twitter Card meta tags for rich social media sharing:
-
-- **Open Graph**: Title, description, image, and URL for Facebook, LinkedIn, and other platforms
-- **Twitter Cards**: Optimized meta tags for Twitter sharing with card previews
-- **Automatic fallbacks**: Uses your SEO title, description, and featured images when specific social fields aren't provided
-
 ### Automated Robots.txt
 
-The module automatically provides a `/robots.txt` route with strategic control over both traditional search engines and AI crawlers. Configure this through the global settings with five options:
+The module automatically provides a `/robots.txt` route with strategic control over both traditional search engines and AI crawlers. Configure through global settings with five control modes:
 
-**Control Modes:**
+**Available Modes:**
 
 1. **Allow All (Search + AI)** - Default open access for all crawlers
-2. **Allow Search, Block AI Training** ⭐ **Recommended** - Maintains search rankings while protecting intellectual property
+2. **Allow Search, Block AI Training** - Maintains search rankings while protecting content from AI training
 3. **Selective AI Crawlers** - Granular control over individual AI crawlers
 4. **Block All** - Prevents all indexing
 5. **Custom** - Write your own robots.txt content
 
-**Understanding AI Crawler Control:**
+**Selective Mode Crawlers:**
+For fine-grained control, use Selective mode to choose specific AI crawlers:
+- **GPTBot** (OpenAI ChatGPT training)
+- **ChatGPT-User** (OpenAI real-time browsing)
+- **Google-Extended** (Google AI training)
+- **ClaudeBot** (Anthropic AI training)
+- **Claude-User** (Anthropic real-time browsing)
+- **PerplexityBot** (Perplexity AI)
+- **CCBot** (Common Crawl datasets)
+- **Applebot-Extended** (Apple Intelligence)
+- **FacebookBot** (Meta AI)
+- **anthropic-ai** (Anthropic general)
 
-Modern AI systems use different crawlers for different purposes:
+Traditional search engines (Googlebot, Bingbot) are always allowed unless using "Block All" mode.
 
-- **Training Crawlers** (GPTBot, ClaudeBot, Google-Extended, CCBot): Build AI training datasets
-- **Browsing Crawlers** (ChatGPT-User, Claude-User): Serve real-time user queries with attribution
-- **Traditional Search** (Googlebot, Bingbot): Power search engines
+**Technical Notes:**
+- A physical `robots.txt` file in your `public/` directory will override these settings
+- All modes preserve traditional search engine access (except "Block All")
+- See [AI & Search Strategy](#ai--search-strategy) for detailed configuration guidance
 
-**Strategic Recommendation:** Use "Allow Search, Block AI Training" mode. This approach:
-- ✅ Maintains traditional search rankings (confirmed by Google)
-- ✅ Allows AI Overview and AI-powered search features
-- ✅ Permits real-time AI browsing for user queries
-- ❌ Blocks contribution to AI training datasets
-- ❌ Protects proprietary content and intellectual property
-
-**Important:** Blocking Google-Extended does NOT affect traditional Google Search rankings. Google has confirmed that AI training crawler access is separate from search indexing.
-
-**Selective Mode:** For fine-grained control, use Selective mode to choose specific AI crawlers:
-- GPTBot (OpenAI ChatGPT training)
-- ChatGPT-User (OpenAI real-time browsing)
-- Google-Extended (Google AI training)
-- ClaudeBot (Anthropic AI training)
-- Claude-User (Anthropic real-time browsing)
-- PerplexityBot (Perplexity AI)
-- CCBot (Common Crawl datasets)
-- Applebot-Extended (Apple Intelligence)
-- FacebookBot (Meta AI)
-- anthropic-ai (Anthropic general)
-
-**Note:** A physical `robots.txt` file in your `public/` directory will override these settings.
+**Related:** This module also provides automated [llms.txt generation](#ai-crawler-control-llmstxt) for policy communication.
 
 ### AI Crawler Control (llms.txt)
 
@@ -213,6 +446,240 @@ export default {
 
 **For multisite projects using ApostropheCMS Assembly:**
 The base URL is automatically configured through the `baseUrlDomains` option. [Learn more about Assembly multisite hosting](https://apostrophecms.com/assembly).
+
+### Google Analytics Integration
+
+Enable Google Analytics tracking:
+
+```javascript
+import apostrophe from 'apostrophe';
+
+apostrophe({
+  root: import.meta,
+  shortName: 'my-project',
+  modules: {
+    '@apostrophecms/seo': {},
+    '@apostrophecms/global': {
+      options: {
+        seoGoogleAnalytics: true
+      }
+    }
+  }
+});
+```
+
+This adds a field in the global configuration for your Google Analytics Measurement ID (e.g., `G-XXXXXXXXXX`).
+
+### Google Tag Manager Integration
+
+For advanced tracking and marketing campaigns:
+
+```javascript
+import apostrophe from 'apostrophe';
+
+apostrophe({
+  root: import.meta,
+  shortName: 'my-project',
+  modules: {
+    '@apostrophecms/seo': {},
+    '@apostrophecms/global': {
+      options: {
+        seoGoogleTagManager: true
+      }
+    }
+  }
+});
+```
+
+Add your GTM container ID (e.g., `GTM-XXXXXXX`) in the global configuration.
+
+### Google Site Verification
+
+Verify site ownership for Google Search Console:
+
+```javascript
+import apostrophe from 'apostrophe';
+
+apostrophe({
+  root: import.meta,
+  shortName: 'my-project',
+  modules: {
+    '@apostrophecms/seo': {},
+    '@apostrophecms/global': {
+      options: {
+        seoGoogleVerification: true
+      }
+    }
+  }
+});
+```
+
+Enter your verification meta tag content from Google Search Console in the global settings.
+
+### Sitemap Installation
+
+> [!TIP]
+> Installations of the sitemap module is optional, but highly recommended for better search rankings
+
+Install the companion sitemap module for XML sitemap generation:
+
+```bash
+npm install @apostrophecms/sitemap
+```
+
+```javascript
+import apostrophe from 'apostrophe';
+
+apostrophe({
+  root: import.meta,
+  shortName: 'my-project',
+  modules: {
+    '@apostrophecms/seo': {},
+    '@apostrophecms/sitemap': {}
+  }
+});
+```
+## Setup Examples
+
+### Simple Blog Setup (Minimal Configuration)
+
+For a basic blog, you can use simple fields:
+```javascript
+// modules/article/index.js
+export default {
+  extend: '@apostrophecms/piece-type',
+  options: {
+    label: 'Article',
+    pluralLabel: 'Articles'
+  },
+  fields: {
+    add: {
+      author: {
+        type: 'string',
+        label: 'Author Name',
+        def: 'Editorial Team'
+      },
+      publishedAt: {
+        type: 'date',
+        label: 'Publication Date'
+      },
+      excerpt: {
+        type: 'string',
+        textarea: true,
+        label: 'Excerpt',
+        max: 160
+      },
+      featuredImage: {
+        type: 'object',
+        label: 'Featured Image',
+        fields: {
+          add: {
+            url: {
+              type: 'url',
+              label: 'Image URL',
+              required: true
+            },
+            alt: {
+              type: 'string',
+              label: 'Alt Text'
+            }
+          }
+        }
+      }
+    },
+    group: {
+      basics: {
+        fields: ['title', 'author', 'publishedAt', 'excerpt', 'featuredImage']
+      }
+    }
+  }
+};
+```
+
+This minimal setup provides everything needed for rich Article schema.
+
+---
+
+### Advanced Blog Setup (Full Featured)
+
+For a multi-author platform with profiles:
+```javascript
+// modules/article/index.js
+export default {
+  extend: '@apostrophecms/piece-type',
+  options: {
+    label: 'Article',
+    pluralLabel: 'Articles'
+  },
+  fields: {
+    add: {
+      _author: {
+        type: 'relationship',
+        label: 'Author',
+        withType: '@apostrophecms/user',
+        max: 1,
+        required: true
+      },
+      publishedAt: {
+        type: 'date',
+        label: 'Publication Date',
+        required: true
+      },
+      _featuredImage: {
+        type: 'relationship',
+        label: 'Featured Image',
+        withType: '@apostrophecms/image',
+        max: 1,
+        required: true
+      }
+    },
+    group: {
+      basics: {
+        fields: ['title', '_author', 'publishedAt', '_featuredImage']
+      }
+    }
+  }
+};
+```
+
+This advanced setup provides full relationship management.
+
+---
+
+### E-commerce Product (Simple)
+
+For a basic product catalog:
+```javascript
+// modules/product/index.js
+export default {
+  extend: '@apostrophecms/piece-type',
+  options: {
+    label: 'Product',
+    pluralLabel: 'Products'
+  },
+  fields: {
+    add: {
+      productImage: {
+        type: 'object',
+        label: 'Product Image',
+        fields: {
+          add: {
+            url: { type: 'url', required: true },
+            alt: { type: 'string' }
+          }
+        }
+      },
+      price: {
+        type: 'float',
+        label: 'Price',
+        required: true
+      }
+    }
+  }
+};
+```
+
+The module maps `productImage` to structured data automatically (if named `image` or `featuredImage`).
 
 ## Structured Data & Schema Types
 
@@ -451,7 +918,7 @@ For question and answer pages where a single question has one or more answers (l
 
 **Best for:** Community forums, support forums, Q&A platforms, discussion boards, knowledge bases with user-contributed answers
 
-**Difference from FAQ:** 
+**Difference from FAQ:**
 - **FAQPage** is for curated, official FAQs written by your organization
 - **QAPage** is for community-driven Q&A with voting, multiple answers, and user attribution
 
@@ -468,7 +935,7 @@ For question and answer pages where a single question has one or more answers (l
 - Add author names for credibility
 - Use for pages with single questions only (not question listings)
 
-**Note:** For question listing/index pages, use CollectionPage schema instead.
+**Note:** For question listing/index pages, use the `CollectionPage` schema instead.
 
 #### **Video Object**
 For video content pages, including educational videos and tutorials.
@@ -630,156 +1097,122 @@ For online courses and training programs.
 
 ## AI & Search Strategy
 
+Modern search and AI systems use different types of crawlers for different purposes. Understanding these differences helps you make informed decisions about your content's visibility and protection.
+
+### Understanding Crawler Types
+
+**Training Crawlers** (GPTBot, ClaudeBot, Google-Extended, CCBot):
+- Build AI training datasets from your content
+- Used to improve AI models
+- Your content may be synthesized into AI responses without attribution
+
+**Browsing Crawlers** (ChatGPT-User, Claude-User, PerplexityBot):
+- Serve real-time user queries
+- Typically provide attribution and links back to your site
+- Drive referral traffic
+
+**Traditional Search** (Googlebot, Bingbot):
+- Power traditional search engines
+- Include AI-enhanced features (Google AI Overview, Bing Chat)
+- Essential for search rankings and organic traffic
+
 ### Recommended Configuration for Most Sites
 
 For optimal search visibility while protecting intellectual property:
 
 **robots.txt Settings:**
-- Mode: "Allow Search, Block AI Training"
-- This maintains Google Search rankings while preventing your content from being used in AI training datasets
+- Mode: **"Allow Search, Block AI Training"**
 
 **llms.txt Settings:**
-- Mode: "Disallow AI Training"
-- This clearly communicates your AI usage policies to compliant systems
+- Mode: **"Disallow AI Training"**
 
 **Why This Works:**
-- Traditional search engines (Google, Bing) continue normal indexing
-- AI Overview and AI-powered search features remain functional
-- Real-time AI browsing (ChatGPT browsing, Claude Projects) still works
-- Your content is protected from AI training datasets
-- No negative impact on search rankings (confirmed by Google)
+- ✅ Traditional search engines continue normal indexing
+- ✅ AI Overview and AI-powered search features remain functional  
+- ✅ Real-time AI browsing for user queries still works
+- ✅ Your content drives referral traffic from AI systems
+- ❌ Your content is protected from AI training datasets
+- ❌ No contribution to training commercial AI models
+
+**Impact on Rankings:**
+- **No negative impact** on Google Search rankings (confirmed by Google)
+- Blocking Google-Extended does **not** affect Google Search
+- AI training crawler access is completely separate from search indexing
 
 ### For Maximum AI Visibility
 
-If you want your content widely used by AI systems:
+If you want your content widely used by AI systems for training and responses:
 
 **robots.txt Settings:**
-- Mode: "Allow All (Search + AI)"
+- Mode: **"Allow All (Search + AI)"**
 
 **llms.txt Settings:**
-- Mode: "Allow AI Crawling"
+- Mode: **"Allow AI Crawling"**
+
+**Use this when:**
+- You want maximum exposure in AI-generated content
+- Your business model benefits from AI-driven traffic
+- You're comfortable with your content training AI models
+- You want to contribute to open AI datasets
 
 ### For Maximum Privacy/Protection
 
-If you want to restrict all AI access:
+If you want to restrict most or all AI access:
 
 **robots.txt Settings:**
-- Mode: "Selective AI Crawlers"
-- Check only: ChatGPT-User, Claude-User (if you want to allow real-time queries)
-- Or use "Block All" for complete restriction
+- Mode: **"Selective AI Crawlers"**
+- Check only: ChatGPT-User, Claude-User (optional - allows real-time queries)
+- Or use **"Block All"** for complete restriction
 
 **llms.txt Settings:**
-- Mode: "Disabled"
+- Mode: **"Disabled"**
 
-### Understanding the Difference
+**Use this when:**
+- You have proprietary or competitive content
+- Legal/compliance restrictions on AI training
+- You want maximum control over content usage
+- Privacy is a primary concern
+
+### Understanding robots.txt vs llms.txt
+
+Both tools work together but serve different purposes:
 
 | Feature | robots.txt | llms.txt |
 |---------|-----------|----------|
-| **Purpose** | Enforceable crawler control | Policy communication |
-| **Technical** | Bots must respect (enforceable) | Informational only |
-| **Affects** | Which bots can crawl | How content may be used |
-| **Best for** | Access control | Terms of use |
-| **Required?** | Yes (standard) | Optional (emerging) |
+| **Purpose** | Enforceable crawler access control | Policy communication & transparency |
+| **Technical** | Bots must respect (standard protocol) | Informational guidelines only |
+| **Controls** | Which bots can crawl your site | How content may be used if crawled |
+| **Best for** | Technical access restrictions | Terms of use & AI transparency |
+| **Required?** | Yes (web standard since 1994) | Optional (emerging standard) |
+| **Example** | "Block GPTBot from accessing /api/*" | "Content may be used for search, not training" |
+
+**Recommended approach:** Use both together:
+- **robots.txt** provides technical enforcement
+- **llms.txt** clearly communicates your policies to compliant AI systems
 
 ### Site Search Query Parameter
-Set the query parameter your site uses for search (e.g., `q`, `search`, `query`).
 
-**Example:**
-If your search URL is `/search?q=term`, set:
+Configure the query parameter your site uses for internal search. This enables the `SearchAction` structured data in your site's WebSite schema.
+
+**Configuration:**
+Set this in your global SEO settings. Common values:
+- `q` (most common) - for URLs like `/search?q=query`
+- `search` - for URLs like `/search?search=query`  
+- `query` - for URLs like `/search?query=query`
+- `s` (WordPress default) - for URLs like `/?s=query`
+
+**Example in global settings:**
 ```json
 "seoSearchQueryParam": "q"
 ```
-This enables the `SearchAction` JSON-LD in your site’s `WebSite` schema.
 
-### Google Analytics Integration
+**SEO Impact:**
+This creates a SearchAction schema that:
+- Helps search engines understand your site search
+- May enable a "Search this site" box in Google results
+- Improves your site's appearance as an authoritative source
 
-Enable Google Analytics tracking:
-
-```javascript
-import apostrophe from 'apostrophe';
-
-apostrophe({
-  root: import.meta,
-  shortName: 'my-project',
-  modules: {
-    '@apostrophecms/seo': {},
-    '@apostrophecms/global': {
-      options: {
-        seoGoogleAnalytics: true
-      }
-    }
-  }
-});
-```
-
-This adds a field in the global configuration for your Google Analytics Measurement ID (e.g., `G-XXXXXXXXXX`).
-
-### Google Tag Manager Integration
-
-For advanced tracking and marketing campaigns:
-
-```javascript
-import apostrophe from 'apostrophe';
-
-apostrophe({
-  root: import.meta,
-  shortName: 'my-project',
-  modules: {
-    '@apostrophecms/seo': {},
-    '@apostrophecms/global': {
-      options: {
-        seoGoogleTagManager: true
-      }
-    }
-  }
-});
-```
-
-Add your GTM container ID (e.g., `GTM-XXXXXXX`) in the global configuration.
-
-### Google Site Verification
-
-Verify site ownership for Google Search Console:
-
-```javascript
-import apostrophe from 'apostrophe';
-
-apostrophe({
-  root: import.meta,
-  shortName: 'my-project',
-  modules: {
-    '@apostrophecms/seo': {},
-    '@apostrophecms/global': {
-      options: {
-        seoGoogleVerification: true
-      }
-    }
-  }
-});
-```
-
-Enter your verification meta tag content from Google Search Console in the global settings.
-
-### Sitemap Installation
-
-Install the companion sitemap module for XML sitemap generation:
-
-```bash
-npm install @apostrophecms/sitemap
-```
-
-```javascript
-import apostrophe from 'apostrophe';
-
-apostrophe({
-  root: import.meta,
-  shortName: 'my-project',
-  modules: {
-    '@apostrophecms/seo': {},
-    '@apostrophecms/sitemap': {}
-  }
-});
-```
+**Note:** This should match whatever parameter your actual search functionality uses. Check your site's search URL to determine the correct value.
 
 ## Advanced Configuration
 
@@ -826,23 +1259,44 @@ This allows editors to designate another page or piece as the canonical source f
 
 ### Pagination Support
 
-For listing pages with pagination, the module automatically adds `rel="prev"` and `rel="next"` link tags when pagination data is provided:
+The module **automatically** adds `rel="prev"` and `rel="next"` link tags for paginated content. No manual configuration required.
 
+**Automatic detection works for:**
+
+1. **Index pages** (piece-page-type listing pages):
+   - Uses ApostropheCMS's built-in `req.data.currentPage` and `req.data.totalPages`
+   - Automatically detects pagination from standard piece-page-type queries
+   - Page 1 gets clean URLs (no `?page=1` query string)
+
+2. **Show pages** (individual pieces with navigation):
+   - Uses `req.data.next` and `req.data.previous` when configured
+   - Works when you enable `next: true` and `previous: true` options on your piece-page-type
+
+**Example piece-page-type with next/previous:**
 ```javascript
-// In your index page or piece-page-type
+// modules/article-page/index.js
+export default {
+  extend: '@apostrophecms/piece-page-type',
+  options: {
+    // Enable automatic next/previous navigation
+    next: true,
+    previous: true
+  }
+};
+```
+
+**Manual override (backwards compatibility):**
+
+If you need custom pagination logic, you can still manually set `req.data.pagination`:
+```javascript
+// In your route handler (only if you need custom behavior)
 module.exports = {
   async index(req) {
-    const currentPage = parseInt(req.query.page) || 1;
-    const perPage = 10;
-
-    // Your query logic here...
-
     req.data.pagination = {
-      currentPage,
-      totalPages: Math.ceil(totalCount / perPage),
-      baseUrl: req.data.page._url
+      currentPage: customPage,
+      totalPages: customTotal,
+      baseUrl: customBaseUrl
     };
-
     return {};
   }
 };
@@ -865,11 +1319,27 @@ This automatically sends 404 events when a tracking ID is configured, helping yo
 
 ## Implementation Guidelines for Developers
 
-When using this SEO module, there are specific guidelines your content types and templates must follow for certain schema types to work correctly.
+When using this SEO module, you have flexibility in how you structure your fields. The module supports multiple field formats through an intelligent fallback system. This section documents both the simple and advanced approaches you can take.
+
+### Field Format Options
+
+The SEO module supports two approaches for most fields:
+
+**Simple Approach (Recommended for most projects):**
+- Use string fields for author names
+- Use object fields for images (with url, alt, etc.)
+- Use standard field names: `author`, `featuredImage`, `description`, `publishedAt`
+
+**Advanced Approach (When you need more features):**
+- Use relationship fields: `_author`, `_featuredImage`
+- Link to user profiles, image management, etc.
+- Full power of ApostropheCMS relationships
+
+**The module automatically detects which format you're using** and generates correct structured data either way.
 
 ### Featured Images
 
-Several schema types rely on a `_featuredImage` relationship field being present on your document. If you want rich results for these schema types, **your page or piece type must include this field**:
+Several schema types rely on a `_featuredImage` relationship field being present on your document.
 
 **Schema types that use featured images:**
 - **Product** - Product image
@@ -878,10 +1348,9 @@ Several schema types rely on a `_featuredImage` relationship field being present
 - **Video Object** - Video thumbnail (falls back to featured image)
 
 **Example implementation:**
-
 ```javascript
 // modules/article/index.js
-module.exports = {
+export default {
   extend: '@apostrophecms/piece-type',
   options: {
     label: 'Article'
@@ -894,11 +1363,11 @@ module.exports = {
         withType: '@apostrophecms/image',
         max: 1,
         required: true  // Make required if using Product or Recipe schemas
-      }
+      },
     },
     group: {
       basics: {
-        fields: ['title', '_featuredImage', 'excerpt']
+        fields: ['title', '_featuredImage']
       }
     }
   }
@@ -967,63 +1436,45 @@ If you mark content as paywalled, your templates must use consistent CSS classes
 
 ### Author Information
 
-For **Article** and **Recipe** schemas, the module looks for an `_author` relationship field to populate author information in structured data.
+For **Article** and **Recipe** schemas, you can provide author information in multiple formats:
 
-**Example implementation:**
-
+**Option 1: Simple string (easiest):**
 ```javascript
-// modules/article/index.js
-module.exports = {
-  extend: '@apostrophecms/piece-type',
-  options: {
-    label: 'Article'
-  },
-  fields: {
-    add: {
-      _author: {
-        label: 'Author',
-        type: 'relationship',
-        withType: '@apostrophecms/user',
-        max: 1
-      }
-    },
-    group: {
-      basics: {
-        fields: ['title', '_author', 'publishedAt']
-      }
+fields: {
+  add: {
+    author: {
+      type: 'string',
+      label: 'Author Name'
     }
   }
-};
+}
 ```
 
-The module will use `_author[0].title` or `_author[0].username` for the author name in structured data.
+**Option 2: User relationship (for author profiles):**
+```javascript
+fields: {
+  add: {
+    _author: {
+      type: 'relationship',
+      withType: '@apostrophecms/user',
+      max: 1
+    }
+  }
+}
+```
+
+**Option 3: Automatic fallback:**
+If neither field is provided, the module uses the currently logged-in user's name.
+
+The module will use `_author[0].title` or `_author[0].username` for relationships, or the string value directly.
 
 ### URL Requirements
 
-Most schema types require that documents have a `_url` property. This is automatically provided by ApostropheCMS for pages and pieces with "show pages" enabled.
+The `_url` property is automatically provided by ApostropheCMS for:
+- All pages
+- Pieces displayed through piece-page-types
 
-**For pieces to have URLs**, ensure your piece type is configured properly:
-
-```javascript
-// modules/article/index.js
-module.exports = {
-  extend: '@apostrophecms/piece-type',
-  options: {
-    label: 'Article',
-    // This is required for pieces to have individual URLs
-    showPages: true
-  }
-};
-```
-
-And create a corresponding piece-page-type:
-
-```javascript
-// modules/article-page/index.js
-module.exports = {
-  extend: '@apostrophecms/piece-page-type'
-};
-```
+No configuration required - the SEO module uses these URLs automatically for structured data.
 
 ### Date Fields
 
@@ -1063,28 +1514,33 @@ Each item must have:
 
 ### Summary: Required Fields by Schema Type
 
-| Schema Type | Required Fields | Optional Fields | Developer Notes |
-|-------------|----------------|-----------------|-----------------|
-| **Article** | None (uses title) | `_author`, `publishedAt`, `_featuredImage` | Standard blog post setup |
-| **Product** | Product name (in schema settings) | `_featuredImage` (highly recommended) | Image critical for rich results |
-| **Recipe** | Recipe name, ingredients, instructions | `_featuredImage` (highly recommended), `_author` | Image essential for recipe cards |
-| **Event** | Event name, start date | Location details | None |
-| **Person** | Person name | Job title, organization | None |
-| **VideoObject** | Video name | `_featuredImage` (thumbnail), educational fields | See Learning Video features |
-| **HowTo** | Guide name, steps | `_featuredImage` (recommended), supplies, tools | Step images improve visibility |
-| **Review** | Item reviewed | `_author`, rating | None |
-| **Course** | Course name | Provider, pricing | None |
+**How to use this table:** For any page or piece using a specific structured data schema, you must implement the required fields shown below. Optional fields are highly recommended for richer search results. The "Fallback Logic" column shows alternative field names the module will check if primary fields are missing, as well as different ways to provide the same data (e.g., a string field instead of a relationship). When a field path includes a dot (e.g., `seoJsonLdProduct.name`), this refers to a nested field within the schema-specific settings group in your SEO tab.
+
+| Schema Type | Required Fields | Flexible Fields | Notes |
+|-------------|-----------------|-----------------|-------|
+| **Article** | None (uses title) | `author` (string) OR `_author` (rel), `publishedAt` OR `createdAt` | Any description field works |
+| **Product** | Product name (in schema settings) | `featuredImage` (obj) OR `_featuredImage` (rel) | Image highly recommended for rich results |
+| **Recipe** | Recipe name, ingredients, instructions | `author` (string) OR `_author` (rel), `featuredImage` (obj) OR `_featuredImage` (rel) | Image REQUIRED by Google |
+| **Event** | Event name, start date | Location details | Description from any description field |
+| **Person** | Person name | Job title, organization | Description from any description field |
+| **VideoObject** | Video name | `featuredImage` (obj) OR `_featuredImage` (rel), educational fields | See Learning Video features |
+| **HowTo** | Guide name, steps | `featuredImage` (obj) OR `_featuredImage` (rel), supplies, tools | Step images improve visibility |
+| **Review** | Item reviewed | `author` (string) OR `_author` (rel), rating | Uses description fallbacks |
+| **Course** | Course name | Provider, pricing | Description from any field |
 | **JobPosting** | Job title, dates, location | Salary, requirements | Organization logo from global |
 | **QAPage** | Question text | Answers, authors, votes | For single Q&A pages only |
 | **FAQPage** | Q&A pairs | None | For curated FAQs |
 | **WebPage/CollectionPage** | None | None | Standard pages |
-| **LocalBusiness** | Business name | Address, hours, phone | None |
-| **Offer** | Name, price | Availability, shipping | Falls back to global org |
-| **AggregateOffer** | Name, price range | Individual offers array | For products with variants |
+| **LocalBusiness** | Business name | Address, hours, phone, `image` (obj) OR `_featuredImage` (rel) | Image optional but helpful |
+| **Offer** | Name, price | Availability, shipping, description from any field | Falls back to global org |
+| **AggregateOffer** | Name, price range | Individual offers array, description from any field | For products with variants |
 
-**Paywalled content (any type):** Must implement CSS wrapper with matching selector (see [Paywalled Content](#paywalled-content) section)
+**Legend:**
+- **Required** = Must be provided for valid schema
+- **Flexible** = Supports multiple formats (string/object OR relationship)
+- All fields support description fallbacks (schema.description → seoDescription → excerpt → description)
+- All date fields support multiple names (publishedAt, publicationDate, datePublished)
 
-**Learning Videos:** VideoObject schema includes optional educational metadata - enable "Is Educational Video" checkbox to access additional fields for tutorials and courses
 ### Best Practices
 
 - **One primary schema per page**: Use a single primary entity type (Article, Product, etc.) per detail page
@@ -1092,6 +1548,41 @@ Each item must have:
 - **Fill all relevant fields**: The more complete your structured data, the better search engines can understand your content
 - **Test your markup**: Use Google's Rich Results Test to validate your structured data
 - **Pricing consistency**: Ensure prices in your structured data match what's displayed on the page
+
+**Field Naming:**
+- Use consistent naming: `author`, `featuredImage`, `description`, `publishedAt`
+- The module recognizes these standard names automatically
+- Avoid inventing new field names unless necessary
+
+**When to Use Simple Fields:**
+- Your site has a small editorial team (just enter names)
+- Images are hosted externally (CDN, S3, etc.)
+- You want the simplest possible setup
+- Content structure is straightforward
+
+**When to Use Relationships:**
+- You need author bio pages and profiles
+- You want centralized image management
+- You're building a complex multi-author platform
+- You need relationship-based queries and filtering
+
+**Mixing Approaches:**
+It's perfectly fine to use relationships for some fields and simple types for others:
+```javascript
+fields: {
+  add: {
+    _featuredImage: {
+      type: 'relationship',
+      withType: '@apostrophecms/image',
+      max: 1
+    },
+    author: {
+      type: 'string',  // Simple string instead of user relationship
+      label: 'Author Name'
+    }
+  }
+}
+```
 
 ### ItemList Generation
 
@@ -1115,6 +1606,83 @@ This is particularly useful when testing new schema types or diagnosing missing 
 - **Learning Video** - Extension of VideoObject, shown as standard Video
 
 Use the [Rich Results Test](https://search.google.com/test/rich-results) and [Schema Markup Validator](https://validator.schema.org/) for comprehensive testing of all schema types.
+
+## Troubleshooting
+
+### Fallbacks Not Working
+
+**Problem:** Expected fallback field is not being used
+
+**Solutions:**
+1. Enable debug mode: `export APOS_SEO_DEBUG=true`
+2. Check field name matches expected pattern (e.g., `author`, not `authorName`)
+3. Verify field has actual value (not empty string or null)
+4. Check server logs for fallback messages
+5. Ensure the value passes `.trim()` check (not just whitespace)
+
+---
+
+### Images Not Appearing in Structured Data
+
+**Problem:** Image object provided but not showing in JSON-LD
+
+**Solutions:**
+1. For object fields, ensure it has a `url` property
+2. Field name should be `featuredImage`, `image`, or `_image`
+3. For relationship fields, ensure image is published
+4. Check if URL is accessible (not 404)
+5. View debug logs to see which image source was attempted
+
+---
+
+### Author Shows as "undefined"
+
+**Problem:** Author appears but shows as "undefined" or null
+
+**Solutions:**
+1. If using `_author` relationship, ensure user has `title` or `username`
+2. If using string field, ensure it's not an empty string
+3. Check if user relationship is properly populated (use `.toObject()` in async context)
+4. Enable debug mode to see which field is being used
+
+---
+
+### Date Format Errors
+
+**Problem:** Invalid date in JSON-LD
+
+**Solutions:**
+1. Ensure dates are proper Date objects or ISO strings
+2. Use ApostropheCMS `date` field type, not `string`
+3. If manually setting dates, use ISO format:
+```javascript
+   publishedAt: new Date('2024-01-15').toISOString()
+```
+
+---
+
+### Schema Not Generated
+
+**Problem:** No JSON-LD appears on page
+
+**Solutions:**
+1. Check if `seoFields: false` is set (disables SEO for that type)
+2. Verify schema type is selected in the SEO tab
+3. For Recipe, ensure image is provided (required)
+4. Check browser console for JavaScript errors
+5. View page source (not DevTools) to see server-rendered JSON-LD
+
+---
+
+### Debug Logs Not Appearing
+
+**Problem:** `APOS_SEO_DEBUG=true` but no logs
+
+**Solutions:**
+1. Restart server after setting environment variable
+2. Check you're viewing server logs, not browser console
+3. Verify fallbacks are actually being used (not primary fields)
+4. Logs only appear when fallback fields are used, not primary fields
 
 ## Extending the SEO Module with Custom JSON-LD Schemas
 

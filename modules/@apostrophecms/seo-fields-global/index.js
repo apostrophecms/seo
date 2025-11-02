@@ -362,13 +362,6 @@ module.exports = {
           }
         }
       },
-      _seoOpenGraphImage: {
-        label: 'aposSeo:defaultOGImage',
-        type: 'relationship',
-        withType: '@apostrophecms/image',
-        max: 1,
-        help: 'aposSeo:defaultOGImageHelp'
-      },
       seoSearchQueryParam: {
         label: 'aposSeo:searchQueryParam',
         type: 'string',
@@ -392,7 +385,6 @@ module.exports = {
           'seoThemeColor',
           'seoJsonLdOrganization',
           'seoSocialProfiles',
-          '_seoOpenGraphImage',
           'seoSearchQueryParam'
         ],
         last: true
@@ -609,7 +601,11 @@ Allow: /
                 archived: { $ne: true }
               })
                 .permission('view')
-                .project({ title: 1, _url: 1, seoDescription: 1 })
+                .project({
+                  title: 1,
+                  _url: 1,
+                  seoDescription: 1
+                })
                 .limit(10)
                 .toArray();
 
@@ -665,8 +661,12 @@ Allow: /
             content += `- Robots: ${baseUrl}/robots.txt\n`;
 
             const schemaTypes = new Set();
-            if (global.seoJsonLdOrganization?.name) schemaTypes.add('Organization');
-            if (global.seoSiteName) schemaTypes.add('WebSite');
+            if (global.seoJsonLdOrganization?.name) {
+              schemaTypes.add('Organization');
+            }
+            if (global.seoSiteName) {
+              schemaTypes.add('WebSite');
+            }
 
             if (schemaTypes.size > 0) {
               content += `- Structured Data: ${Array.from(schemaTypes).join(', ')}\n`;

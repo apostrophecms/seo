@@ -24,8 +24,7 @@ module.exports = {
   methods(self, options) {
     return {
       metaHead(req) {
-        const theSchema = getMetaHead(req.data, options);
-        return theSchema;
+        return getMetaHead(req.data, options);
       },
       tagManagerHead(req) {
         return getTagManagerHead(req.data);
