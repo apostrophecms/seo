@@ -21,13 +21,6 @@ module.exports = {
           type: 'string',
           htmlHelp: 'aposSeo:descriptionHtmlHelp'
         },
-        _seoOpenGraphImage: {
-          label: 'aposSeo:ogImage',
-          type: 'relationship',
-          withType: '@apostrophecms/image',
-          max: 1,
-          help: 'aposSeo:ogImageHelp'
-        },
         seoRobots: {
           label: 'aposSeo:robots',
           htmlHelp: 'aposSeo:robotsHtmlHelp',
@@ -1647,7 +1640,6 @@ module.exports = {
           fields: [
             'seoTitle',
             'seoDescription',
-            '_seoOpenGraphImage',
             'seoRobots',
             'seoIsPaywalled',
             'seoPaywallSelector',

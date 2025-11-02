@@ -68,8 +68,6 @@
   "profileUrl": "URL profilu",
   "profileUrlHelp": "Úplná adresa URL vášho profilu (napr. https://twitter.com/vaseuzivatelskemeno)",
 
-  "defaultOGImage": "Predvolený obrázok pre sociálne siete",
-  "defaultOGImageHelp": "Predvolený obrázok na zdieľanie na sociálnych sieťach, keď stránka nemá vlastný obrázok (odporúčané: 1200x630px).",
   "searchQueryParam": "Parametr URL vyhľadávania na stránke",
   "searchQueryParamHelp": "Parameter dotazu, ktorý váš web používa na vyhľadávanie (napr. 'q', 'search', 'query')",
 

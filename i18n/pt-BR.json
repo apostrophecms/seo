@@ -67,8 +67,6 @@
   "profileUrl": "URL do perfil",
   "profileUrlHelp": "URL completa do seu perfil (por exemplo, https://twitter.com/seunomeusuario)",
 
-  "defaultOGImage": "Imagem padrão para redes sociais",
-  "defaultOGImageHelp": "Imagem padrão para compartilhamento em redes sociais quando a página não tem imagem destacada (recomendado: 1200x630px).",
   "searchQueryParam": "Parâmetro de URL de pesquisa do site",
   "searchQueryParamHelp": "O parâmetro de consulta que seu site usa para pesquisa (por exemplo, 'q', 'search', 'query')",
 

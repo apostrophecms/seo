@@ -68,8 +68,6 @@
   "profileUrl": "Profil-URL",
   "profileUrlHelp": "Vollständige URL zu Ihrem Profil (z. B. https://twitter.com/ihreusername)",
 
-  "defaultOGImage": "Standardbild für Social Media",
-  "defaultOGImageHelp": "Standardbild für Social-Media-Sharing, wenn eine Seite kein eigenes Bild hat (empfohlen: 1200x630px).",
   "searchQueryParam": "Parameter für die Website-Such-URL",
   "searchQueryParamHelp": "Der Abfrageparameter, den Ihre Website für die Suche verwendet (z. B. 'q', 'search', 'query')",
 
