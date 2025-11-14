@@ -15,7 +15,7 @@
   </p>
 </div>
 
-**Ensure your content gets found by search engines and AI systems** with comprehensive SEO management for ApostropheCMS. Essential meta fields, Google Analytics integration, automated `robots.txt` and `llms.txt` generation—everything you need to boost your search rankings, control AI training usage, and drive organic traffic.
+**Ensure your content gets found by search engines and AI systems** with comprehensive SEO management for ApostropheCMS. Essential meta fields, Google Analytics integration, automated `robots.txt` and `llms.txt` generation — everything you need to boost your search rankings, control AI training usage, and drive organic traffic.
 <!-- omit in toc-->
 ## Why ApostropheCMS SEO Tools?
 
@@ -23,7 +23,6 @@
 - **📊 Analytics Ready**: Built-in Google Analytics, Tag Manager, and Site Verification integration
 - **🤖 Smart Automation**: Automatic robots.txt generation with granular control
 - **🤖 AI-Ready**: Automatic llms.txt generation for AI crawler control and training transparency
-- **⚡ Zero Configuration**: Works out of the box with all page and piece types
 - **🔍 Search Engine Friendly**: Proper canonical linking prevents duplicate content issues
 - **📈 Marketing Team Ready**: Easy-to-use interface for non-technical content creators
 - **💰 E-commerce Ready**: Rich structured data for products, offers, and pricing
@@ -60,10 +59,6 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
 - [Before You Start](#before-you-start)
   - [✅ Works Immediately (No Setup Required)](#-works-immediately-no-setup-required)
   - [⚙️ Requires Content Structure Setup](#️-requires-content-structure-setup)
-- [Field Flexibility](#field-flexibility)
-  - [Flexible Field Formats](#flexible-field-formats)
-  - [Debug Mode](#debug-mode)
-  - [When to Use Each Approach](#when-to-use-each-approach)
 - [Core Features](#core-features)
   - [Automatic SEO Fields](#automatic-seo-fields)
   - [Google Analytics \& Tag Manager](#google-analytics--tag-manager)
@@ -76,10 +71,6 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
   - [Google Tag Manager Integration](#google-tag-manager-integration)
   - [Google Site Verification](#google-site-verification)
   - [Sitemap Installation](#sitemap-installation)
-- [Setup Examples](#setup-examples)
-  - [Simple Blog Setup (Minimal Configuration)](#simple-blog-setup-minimal-configuration)
-  - [Advanced Blog Setup (Full Featured)](#advanced-blog-setup-full-featured)
-  - [E-commerce Product (Simple)](#e-commerce-product-simple)
 - [Structured Data \& Schema Types](#structured-data--schema-types)
   - [How It Works](#how-it-works)
   - [Choosing the Right Schema](#choosing-the-right-schema)
@@ -98,6 +89,10 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
   - [Pagination Support](#pagination-support)
   - [Custom 404 Tracking](#custom-404-tracking)
 - [Implementation Guidelines for Developers](#implementation-guidelines-for-developers)
+- [Field Flexibility](#field-flexibility)
+  - [Flexible Field Formats](#flexible-field-formats)
+  - [Debug Mode](#debug-mode)
+  - [When to Use Each Approach](#when-to-use-each-approach)
   - [Field Format Options](#field-format-options)
   - [Featured Images](#featured-images)
   - [Paywalled Content](#paywalled-content)
@@ -179,153 +174,19 @@ Advanced structured data types need specific fields in your content types:
 - **Event, LocalBusiness**: Need address/location fields
 - **FAQPage, QAPage**: Need question and answer content
 
-## Field Flexibility
-
-The SEO module provides flexible field formats to accommodate different project needs. Whether you're building a simple blog or a complex application, you can choose the field structure that works best for your use case.
-
-### Flexible Field Formats
-
-#### Author Information
-
-Provide author information in any of these formats:
-
-**Simple string field (easiest):**
-```javascript
-fields: {
-  add: {
-    author: {
-      type: 'string',
-      label: 'Author Name',
-      def: 'Editorial Team'
-    }
-  }
-}
-```
-
-**User relationship (full featured):**
-```javascript
-fields: {
-  add: {
-    _author: {
-      type: 'relationship',
-      withType: '@apostrophecms/user',
-      max: 1
-    }
-  }
-}
-```
-
-**Automatic fallback:** When neither is provided, the module falls back to the logged-in user (if available).
-
----
-
-#### Images
-
-Images can be provided as:
-
-**Simple object (for external images):**
-```javascript
-fields: {
-  add: {
-    featuredImage: {
-      type: 'object',
-      fields: {
-        add: {
-          url: { type: 'url', required: true },
-          alt: { type: 'string' },
-          width: { type: 'integer' },
-          height: { type: 'integer' }
-        }
-      }
-    }
-  }
-}
-```
-
-**ApostropheCMS image relationship (for uploaded images):**
-```javascript
-fields: {
-  add: {
-    _featuredImage: {
-      type: 'relationship',
-      withType: '@apostrophecms/image',
-      max: 1
-    }
-  }
-}
-```
-
-The module checks multiple field names: `_featuredImage`, `featuredImage`, `image`
-
----
-
-#### Descriptions
-
-Descriptions are automatically sourced from the first available field:
-
-1. Schema-specific description (e.g., `product.description`)
-2. `seoDescription` (SEO-optimized content)
-3. `excerpt` (content preview)
-4. `description` (general description)
-
-This means you don't need to duplicate content across multiple fields.
-
----
-
-#### Publication Dates
-
-The module accepts multiple date field names:
-
-- `publishedAt` (standard ApostropheCMS field)
-- `publicationDate`
-- `datePublished`
-- Automatically falls back to `createdAt` if none are provided
-```javascript
-fields: {
-  add: {
-    publicationDate: {
-      type: 'date',
-      label: 'Publication Date'
-    }
-  }
-}
-```
-
----
-
-### Debug Mode
-
-Enable debug mode to see which fallback fields are being used:
-```bash
-export APOS_SEO_DEBUG=true
-npm run dev
-```
-
-You'll see helpful log messages like:
-
-```bash
-[SEO] Author fallback used: document.author = "John Doe"
-[SEO] Image fallback used: document.featuredImage
-[SEO] Description fallback used: document.excerpt
-```
----
-
-### When to Use Each Approach
-
-**Use simple fields when:**
-- Building a basic blog or content site
-- You don't need the full power of relationships
-- You want to minimize database complexity
-- Content editors just need to enter text
-
-**Use relationships when:**
-- You need author profiles with multiple fields
-- You're using ApostropheCMS image management features
-- You want to reuse content across multiple pieces
-- You need relationship-based queries
-
-**Mix and match:**
-You can use relationships for some fields and simple types for others. The fallback system handles both seamlessly.
+> [!IMPORTANT]
+> ### ⚠️ Important: Field Names Must Match Expected Names for Structured Data
+>
+> Some structured data types **require specific field names** so that the SEO module can automatically find the right values in your documents. If your content types use different field names, and you don’t configure them accordingly, your JSON-LD may be missing required properties and **fail validation in Google’s tools**.
+>
+> The module also supports **fallbacks and flexible formats** (e.g., string vs. relationship fields) for authors, images, descriptions, and dates.
+>
+> 👉 For the full list of supported field names, fallbacks, and recommended patterns, see **[Field Flexibility](#field-flexibility)**.
+>
+> If you plan to rely heavily on structured data (especially for products, recipes, jobs, or video), it’s a good idea to:
+>
+> - Design your content types with these field names in mind, or
+> - Refactor existing types to match, before enabling those schema types in production.
 
 ## Core Features
 
@@ -539,147 +400,6 @@ apostrophe({
   }
 });
 ```
-## Setup Examples
-
-### Simple Blog Setup (Minimal Configuration)
-
-For a basic blog, you can use simple fields:
-```javascript
-// modules/article/index.js
-export default {
-  extend: '@apostrophecms/piece-type',
-  options: {
-    label: 'Article',
-    pluralLabel: 'Articles'
-  },
-  fields: {
-    add: {
-      author: {
-        type: 'string',
-        label: 'Author Name',
-        def: 'Editorial Team'
-      },
-      publishedAt: {
-        type: 'date',
-        label: 'Publication Date'
-      },
-      excerpt: {
-        type: 'string',
-        textarea: true,
-        label: 'Excerpt',
-        max: 160
-      },
-      featuredImage: {
-        type: 'object',
-        label: 'Featured Image',
-        fields: {
-          add: {
-            url: {
-              type: 'url',
-              label: 'Image URL',
-              required: true
-            },
-            alt: {
-              type: 'string',
-              label: 'Alt Text'
-            }
-          }
-        }
-      }
-    },
-    group: {
-      basics: {
-        fields: ['title', 'author', 'publishedAt', 'excerpt', 'featuredImage']
-      }
-    }
-  }
-};
-```
-
-This minimal setup provides everything needed for rich Article schema.
-
----
-
-### Advanced Blog Setup (Full Featured)
-
-For a multi-author platform with profiles:
-```javascript
-// modules/article/index.js
-export default {
-  extend: '@apostrophecms/piece-type',
-  options: {
-    label: 'Article',
-    pluralLabel: 'Articles'
-  },
-  fields: {
-    add: {
-      _author: {
-        type: 'relationship',
-        label: 'Author',
-        withType: '@apostrophecms/user',
-        max: 1,
-        required: true
-      },
-      publishedAt: {
-        type: 'date',
-        label: 'Publication Date',
-        required: true
-      },
-      _featuredImage: {
-        type: 'relationship',
-        label: 'Featured Image',
-        withType: '@apostrophecms/image',
-        max: 1,
-        required: true
-      }
-    },
-    group: {
-      basics: {
-        fields: ['title', '_author', 'publishedAt', '_featuredImage']
-      }
-    }
-  }
-};
-```
-
-This advanced setup provides full relationship management.
-
----
-
-### E-commerce Product (Simple)
-
-For a basic product catalog:
-```javascript
-// modules/product/index.js
-export default {
-  extend: '@apostrophecms/piece-type',
-  options: {
-    label: 'Product',
-    pluralLabel: 'Products'
-  },
-  fields: {
-    add: {
-      productImage: {
-        type: 'object',
-        label: 'Product Image',
-        fields: {
-          add: {
-            url: { type: 'url', required: true },
-            alt: { type: 'string' }
-          }
-        }
-      },
-      price: {
-        type: 'float',
-        label: 'Price',
-        required: true
-      }
-    }
-  }
-};
-```
-
-The module maps `productImage` to structured data automatically (if named `image` or `featuredImage`).
 
 ## Structured Data & Schema Types
 
@@ -899,6 +619,9 @@ For frequently asked questions pages.
 
 #### **QA Page**
 For question and answer pages where a single question has one or more answers (like Stack Overflow, forums, or community Q&A).
+
+> [!TIP]
+> The `FAQ` schema is valuable for SEO and AEO, but Google no longer shows rich search fragments from this structured data unless you are a governmental or recognized health site.
 
 **Required fields:**
 - Question title
@@ -1197,7 +920,7 @@ Configure the query parameter your site uses for internal search. This enables t
 **Configuration:**
 Set this in your global SEO settings. Common values:
 - `q` (most common) - for URLs like `/search?q=query`
-- `search` - for URLs like `/search?search=query`  
+- `search` - for URLs like `/search?search=query`
 - `query` - for URLs like `/search?query=query`
 - `s` (WordPress default) - for URLs like `/?s=query`
 
@@ -1320,6 +1043,154 @@ This automatically sends 404 events when a tracking ID is configured, helping yo
 ## Implementation Guidelines for Developers
 
 When using this SEO module, you have flexibility in how you structure your fields. The module supports multiple field formats through an intelligent fallback system. This section documents both the simple and advanced approaches you can take.
+
+## Field Flexibility
+
+The SEO module provides flexible field formats to accommodate different project needs. Whether you're building a simple blog or a complex application, you can choose the field structure that works best for your use case.
+
+### Flexible Field Formats
+
+#### Author Information
+
+Provide author information in any of these formats:
+
+**Simple string field (easiest):**
+```javascript
+fields: {
+  add: {
+    author: {
+      type: 'string',
+      label: 'Author Name',
+      def: 'Editorial Team'
+    }
+  }
+}
+```
+
+**User relationship (full featured):**
+```javascript
+fields: {
+  add: {
+    _author: {
+      type: 'relationship',
+      withType: '@apostrophecms/user',
+      max: 1
+    }
+  }
+}
+```
+
+**Automatic fallback:** When neither is provided, the module falls back to the logged-in user (if available).
+
+---
+
+#### Images
+
+Images can be provided as:
+
+**Simple object (for external images):**
+```javascript
+fields: {
+  add: {
+    featuredImage: {
+      type: 'object',
+      fields: {
+        add: {
+          url: { type: 'url', required: true },
+          alt: { type: 'string' },
+          width: { type: 'integer' },
+          height: { type: 'integer' }
+        }
+      }
+    }
+  }
+}
+```
+
+**ApostropheCMS image relationship (for uploaded images):**
+```javascript
+fields: {
+  add: {
+    _featuredImage: {
+      type: 'relationship',
+      withType: '@apostrophecms/image',
+      max: 1
+    }
+  }
+}
+```
+
+The module checks multiple field names: `_featuredImage`, `featuredImage`, `image`
+
+---
+
+#### Descriptions
+
+Descriptions are automatically sourced from the first available field:
+
+1. Schema-specific description (e.g., `product.description`)
+2. `seoDescription` (SEO-optimized content)
+3. `excerpt` (content preview)
+4. `description` (general description)
+
+This means you don't need to duplicate content across multiple fields.
+
+---
+
+#### Publication Dates
+
+The module accepts multiple date field names:
+
+- `publishedAt` (standard ApostropheCMS field)
+- `publicationDate`
+- `datePublished`
+- Automatically falls back to `createdAt` if none are provided
+```javascript
+fields: {
+  add: {
+    publicationDate: {
+      type: 'date',
+      label: 'Publication Date'
+    }
+  }
+}
+```
+
+---
+
+### Debug Mode
+
+Enable debug mode to see which fallback fields are being used:
+```bash
+export APOS_SEO_DEBUG=true
+npm run dev
+```
+
+You'll see helpful log messages like:
+
+```bash
+[SEO] Author fallback used: document.author = "John Doe"
+[SEO] Image fallback used: document.featuredImage
+[SEO] Description fallback used: document.excerpt
+```
+---
+
+### When to Use Each Approach
+
+**Use simple fields when:**
+- Building a basic blog or content site
+- You don't need the full power of relationships
+- You want to minimize database complexity
+- Content editors just need to enter text
+
+**Use relationships when:**
+- You need author profiles with multiple fields
+- You're using ApostropheCMS image management features
+- You want to reuse content across multiple pieces
+- You need relationship-based queries
+
+**Mix and match:**
+You can use relationships for some fields and simple types for others. The fallback system handles both seamlessly.
 
 ### Field Format Options
 
