@@ -117,9 +117,9 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
   - [Schema Not Generated](#schema-not-generated)
   - [Debug Logs Not Appearing](#debug-logs-not-appearing)
 - [Extending the SEO Module with Custom JSON-LD Schemas](#extending-the-seo-module-with-custom-json-ld-schemas)
-  - [Available Helper Methods](#available-helper-methods)
-  - [Complete Example: Software Application Schema](#complete-example-software-application-schema)
-  - [Testing Your Custom Schema](#testing-your-custom-schema)
+  - [1. Register a Custom Schema on `@apostrophecms/seo`](#1-register-a-custom-schema-on-apostrophecmsseo)
+  - [2. Add the Type to the Schema Dropdown (`@apostrophecms/seo-fields-doc-type`)](#2-add-the-type-to-the-schema-dropdown-apostrophecmsseo-fields-doc-type)
+  - [3. Add Fields on `@apostrophecms/doc-type`](#3-add-fields-on-apostrophecmsdoc-type)
 - [Performance Optimization](#performance-optimization)
   - [Critical Font Preloading](#critical-font-preloading)
   - [Mobile Optimization](#mobile-optimization)
@@ -1686,31 +1686,30 @@ Use the [Rich Results Test](https://search.google.com/test/rich-results) and [Sc
 
 ## Extending the SEO Module with Custom JSON-LD Schemas
 
-You can add your own Schema.org types without touching this package. Custom schemas are registered on the base SEO module, made available in the schema type dropdown, and wired up to your own fields.
+You can add custom Schema.org types to the SEO module without modifying this package. At a high level, you will:
 
-At a high level you will:
+1. **Register** a new JSON-LD schema type on `@apostrophecms/seo`.
+2. **Expose** that type in the schema type dropdown via `@apostrophecms/seo-fields-doc-type`.
+3. **Add** the fields that power your schema on `@apostrophecms/doc-type`.
 
-* Register a new schema type on @apostrophecms/seo
-* Add that type to the schema type choices via seo-fields-doc-type
-* Define the editor fields on @apostrophecms/doc-type
+Apostrophe automatically merges project-level modules with the same name as core/pro modules, so you only need the right folder structure.
 
-No extend/improve keys are required — Apostrophe will implicitly improve the core/pro modules based on folder names.
+---
 
-1. Register a Custom Schema on @apostrophecms/seo
+### 1. Register a Custom Schema on `@apostrophecms/seo`
 
-Create a project-level module that matches the SEO module name:
+Create a project-level module to register your custom Schema.org type. In this example, we’ll add a `Book` schema.
 
-``` javascript
+```js
 // modules/@apostrophecms/seo/index.js
 export default {
   init(self) {
-    // Register a "Book" schema generator
-    self.registerSchema('Book', function (data) {
+    self.registerSchema('Book', (data) => {
       const { piece, page } = data;
       const doc = piece || page;
       const book = doc?.seoJsonLdBook;
 
-      // Skip if we don’t have enough data
+      // Require a document and a title to emit the schema
       if (!doc || !book || !book.title?.trim()) {
         return null;
       }
@@ -1720,18 +1719,23 @@ export default {
         name: book.title
       };
 
-      // Optional but recommended: URL
+      // URL / @id
       if (doc._url) {
         schema['@id'] = doc._url;
         schema.url = doc._url;
       }
 
-      // Optional: author
+      // Author
       if (book.author?.trim()) {
         schema.author = {
           '@type': 'Person',
           name: book.author
         };
+      }
+
+      // ISBN
+      if (book.isbn?.trim()) {
+        schema.isbn = book.isbn;
       }
 
       return schema;
@@ -1740,40 +1744,46 @@ export default {
 };
 ```
 
-`self.registerSchema(type, handler)` hooks into the SEO module’s JSON-LD pipeline. Your handler is called with the same data object used to render the head (page, piece, global, req, etc.).
+The handler receives the same `data` object used to render SEO tags (`page`, `piece`, `global`, `req`, etc.). Return a JSON-LD object or `null` to skip output.
 
-2. Add the Type to the Schema Dropdown (`seo-fields-doc-type`)
+---
 
-Next, extend the schema type choices so your new type appears in the SEO tab selector.
+### 2. Add the Type to the Schema Dropdown (`@apostrophecms/seo-fields-doc-type`)
 
-``` javascript
-// modules/@apostrophecms/seo/seo-fields-doc-type/index.js
+Next, make the new type available in the schema type selector. Use `extendMethods` on the `@apostrophecms/seo-fields-doc-type` module.
+
+```js
+// modules/@apostrophecms/seo-fields-doc-type/index.js
 export default {
-  methods(self) {
+  extendMethods(self) {
     return {
       getSchemaTypeChoices(_super) {
-        const baseChoices = _super();
+        return function () {
+          const baseChoices = _super();
 
-        return [
-          ...baseChoices,
-          {
-            label: 'Book',
-            value: 'Book'
-          }
-        ];
+          return [
+            ...baseChoices,
+            {
+              label: 'Book',
+              value: 'Book'
+            }
+          ];
+        };
       }
     };
   }
 };
 ```
 
-This improves the internal `seo-fields-doc-type` module shipped with the SEO package. The folder name is what wires it up; you don’t need extend or improve.
+This appends a `Book` option to the existing schema type choices. When editors select **Book** in the SEO tab, you can show Book-specific fields.
 
-3. Add Fields to`@apostrophecms/doc-type`
+---
 
-Finally, add the editor fields that will power your schema. These can be reused on any page or piece type.
+### 3. Add Fields on `@apostrophecms/doc-type`
 
-``` javascript
+Finally, define the fields that power the `Book` schema on `@apostrophecms/doc-type`. These fields will be available to all page and piece types.
+
+```js
 // modules/@apostrophecms/doc-type/index.js
 export default {
   fields(self, options) {
@@ -1782,9 +1792,9 @@ export default {
         seoJsonLdBook: {
           label: 'Book Details',
           type: 'object',
-          help: 'Structured data fields for Book schema.',
+          help: 'Structured data fields for the Book schema.',
           if: {
-            // Only show when the "Book" schema type is selected
+            // Only show when the JSON-LD schema type is `Book`
             seoJsonLdType: 'Book'
           },
           fields: {
@@ -1808,7 +1818,7 @@ export default {
       },
       group: {
         seo: {
-          // Append our field to the existing SEO group
+          // Add our field to the existing SEO group
           fields: [ 'seoJsonLdBook' ]
         }
       }
@@ -1817,190 +1827,11 @@ export default {
 };
 ```
 
-ApostropheCMS will merge these fields into the core doc-type configuration, and the SEO extension will automatically pick up `seoJsonLdBook` when generating the Book schema.
+With these three pieces in place:
 
-### Available Helper Methods
-
-Schema generators can access these utility methods via `this`:
-
-| Method | Purpose | Example |
-|--------|---------|---------|
-| `getBaseUrl(data)` | Get site base URL | `const baseUrl = this.getBaseUrl(data);` |
-| `getImageData(relationship)` | Extract image URLs | `const img = this.getImageData(doc._featuredImage);` |
-| `getListingItems(data)` | Get items from listing pages | `const items = this.getListingItems(data);` |
-| `validateSchema(schema)` | Validate against requirements | `this.validateSchema(schema);` |
-
-### Complete Example: Software Application Schema
-
-Here's a complete implementation showing all parts working together:
-
-**Schema Registration:**
-```javascript
-// modules/software-app-schema/index.js
-export default {
-  improve: '@apostrophecms/seo',
-  
-  init(self) {
-    self.registerSchema('SoftwareApplication', function(data) {
-      const { piece, page } = data;
-      const document = piece || page;
-      const app = document?.seoJsonLdSoftwareApp;
-
-      if (!document || !app || !app.name?.trim()) {
-        return null;
-      }
-
-      const schema = {
-        '@type': 'SoftwareApplication',
-        name: app.name,
-        applicationCategory: app.category || 'WebApplication',
-        operatingSystem: app.operatingSystem || 'Any'
-      };
-
-      if (document._url) {
-        schema.url = document._url;
-      }
-
-      if (app.description?.trim()) {
-        schema.description = app.description;
-      }
-
-      // Add pricing
-      if (app.price !== undefined) {
-        schema.offers = {
-          '@type': 'Offer',
-          price: app.price.toString(),
-          priceCurrency: app.currency || 'USD'
-        };
-      }
-
-      // Add rating
-      if (app.rating && app.reviewCount) {
-        schema.aggregateRating = {
-          '@type': 'AggregateRating',
-          ratingValue: app.rating.toString(),
-          reviewCount: app.reviewCount.toString()
-        };
-      }
-
-      return schema;
-    });
-  },
-  
-  extendMethods(self) {
-    return {
-      getSchemaChoices(_super) {
-        return [
-          ..._super(),
-          { label: 'Software Application', value: 'SoftwareApplication' }
-        ];
-      }
-    };
-  }
-};
-```
-
-**Field Definitions:**
-```javascript
-// modules/software-app-fields/index.js
-export default {
-  improve: '@apostrophecms/doc-type',
-  
-  fields(self, options) {
-    return {
-      add: {
-        seoJsonLdSoftwareApp: {
-          label: 'Software Application Details',
-          type: 'object',
-          if: {
-            seoJsonLdType: 'SoftwareApplication'
-          },
-          fields: {
-            add: {
-              name: {
-                label: 'Application Name',
-                type: 'string',
-                required: true
-              },
-              description: {
-                label: 'Description',
-                type: 'string',
-                textarea: true
-              },
-              category: {
-                label: 'Application Category',
-                type: 'select',
-                choices: [
-                  { label: 'Web Application', value: 'WebApplication' },
-                  { label: 'Mobile Application', value: 'MobileApplication' },
-                  { label: 'Desktop Application', value: 'DesktopApplication' }
-                ]
-              },
-              operatingSystem: {
-                label: 'Operating System',
-                type: 'string',
-                help: 'e.g., "Windows 10", "macOS", "Any"'
-              },
-              price: {
-                label: 'Price',
-                type: 'float',
-                help: 'Enter 0 for free apps'
-              },
-              currency: {
-                label: 'Currency',
-                type: 'string',
-                def: 'USD'
-              },
-              rating: {
-                label: 'Average Rating',
-                type: 'float',
-                min: 0,
-                max: 5
-              },
-              reviewCount: {
-                label: 'Number of Reviews',
-                type: 'integer',
-                min: 0
-              }
-            }
-          }
-        }
-      },
-      group: {
-        seo: {
-          fields: ['seoJsonLdSoftwareApp']
-        }
-      }
-    };
-  }
-};
-```
-
-**Project Configuration:**
-```javascript
-// app.js
-import apostrophe from 'apostrophe';
-
-apostrophe({
-  root: import.meta,
-  shortName: 'my-project',
-  modules: {
-    '@apostrophecms/seo': {},
-    'software-app-schema': {},
-    'software-app-fields': {}
-  }
-});
-```
-
-### Testing Your Custom Schema
-
-1. **Enable Debug Mode**: Set `APOS_SEO_DEBUG=true` to see generation warnings in server logs
-
-2. **Test in Google's Tools**:
-   - [Rich Results Test](https://search.google.com/test/rich-results)
-   - [Schema Markup Validator](https://validator.schema.org/)
-
-3. **Check the Output**: View page source and look for your schema in the `@graph` array
+* Editors can select **Book** as a JSON-LD type in the SEO tab.
+* A Book-specific fieldset appears when that type is selected.
+* The SEO module outputs a valid `Book` JSON-LD object (including `isbn`) based on those fields.
 
 ## Performance Optimization
 
