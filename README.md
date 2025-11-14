@@ -117,9 +117,9 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
   - [Schema Not Generated](#schema-not-generated)
   - [Debug Logs Not Appearing](#debug-logs-not-appearing)
 - [Extending the SEO Module with Custom JSON-LD Schemas](#extending-the-seo-module-with-custom-json-ld-schemas)
-  - [Adding Custom JSON-LD Schemas (Project-Level Extension)](#adding-custom-json-ld-schemas-project-level-extension)
-  - [Notes](#notes)
-  - [Example Use Cases](#example-use-cases)
+  - [Available Helper Methods](#available-helper-methods)
+  - [Complete Example: Software Application Schema](#complete-example-software-application-schema)
+  - [Testing Your Custom Schema](#testing-your-custom-schema)
 - [Performance Optimization](#performance-optimization)
   - [Critical Font Preloading](#critical-font-preloading)
   - [Mobile Optimization](#mobile-optimization)
@@ -1686,59 +1686,321 @@ Use the [Rich Results Test](https://search.google.com/test/rich-results) and [Sc
 
 ## Extending the SEO Module with Custom JSON-LD Schemas
 
-While the `@apostrophecms/seo` module provides a wide range of built-in structured data types, developers may want to add new custom schema types for specialized content. This section explains how to safely extend structured data generation at the **project level** without modifying the package itself.
+You can add your own Schema.org types without touching this package. Custom schemas are registered on the base SEO module, made available in the schema type dropdown, and wired up to your own fields.
 
-### Adding Custom JSON-LD Schemas (Project-Level Extension)
+At a high level you will:
 
-ApostropheCMS allows you to inject additional `<script type="application/ld+json">` tags from any project-level module. This is the simplest and safest way to extend structured data generation without altering the SEO module’s internal logic.
+* Register a new schema type on @apostrophecms/seo
+* Add that type to the schema type choices via seo-fields-doc-type
+* Define the editor fields on @apostrophecms/doc-type
 
-**Steps:**
+No extend/improve keys are required — Apostrophe will implicitly improve the core/pro modules based on folder names.
 
-1. Create a new project-level module and inside that file, add the following code:
+1. Register a Custom Schema on @apostrophecms/seo
 
-   ```js
-   // modules/custom-jsonld/index.js
-   export default {
-     handlers(self) {
-       return {
-         '@apostrophecms/page:beforeSend': {
-           addCustomJsonLd(req) {
-             const { page, piece, global } = req.data;
-             const document = piece || page;
-             if (!document) return;
+Create a project-level module that matches the SEO module name:
 
-             const schema = {
-               '@context': 'https://schema.org',
-               '@type': 'YourNewType',
-               'name': document.title || document.seoTitle,
-               'description': document.seoDescription,
-               'url': document._url || global?.seoSiteCanonicalUrl
-             };
+``` javascript
+// modules/@apostrophecms/seo/index.js
+export default {
+  init(self) {
+    // Register a "Book" schema generator
+    self.registerSchema('Book', function (data) {
+      const { piece, page } = data;
+      const doc = piece || page;
+      const book = doc?.seoJsonLdBook;
 
-             // Push an additional JSON-LD script into the head
-             (req.data.head || (req.data.head = [])).push({
-               name: 'script',
-               attrs: { type: 'application/ld+json' },
-               body: [{ raw: JSON.stringify(schema, null, 2) }]
-             });
-           }
-         }
-       };
-     }
-   };
-   ```
+      // Skip if we don’t have enough data
+      if (!doc || !book || !book.title?.trim()) {
+        return null;
+      }
 
-### Notes
+      const schema = {
+        '@type': 'Book',
+        name: book.title
+      };
 
-* This approach adds an **additional** `<script type="application/ld+json">` tag to the HTML head. Google and other search engines fully support multiple JSON-LD blocks per page.
-* You can add multiple schema types by repeating the push block or by creating several modules.
-* If you also need editors to set values for your new schema fields, extend the `@apostrophecms/doc-type` module to add new schema fields and conditionally display them when your schema type is selected.
+      // Optional but recommended: URL
+      if (doc._url) {
+        schema['@id'] = doc._url;
+        schema.url = doc._url;
+      }
 
-### Example Use Cases
+      // Optional: author
+      if (book.author?.trim()) {
+        schema.author = {
+          '@type': 'Person',
+          name: book.author
+        };
+      }
 
-* Adding specialized schema types like `PodcastEpisode`, `SoftwareApplication`, or `Book`.
-* Integrating external APIs that require custom structured data.
-* Providing enhanced metadata for niche verticals such as healthcare, education, or media.
+      return schema;
+    });
+  }
+};
+```
+
+`self.registerSchema(type, handler)` hooks into the SEO module’s JSON-LD pipeline. Your handler is called with the same data object used to render the head (page, piece, global, req, etc.).
+
+2. Add the Type to the Schema Dropdown (`seo-fields-doc-type`)
+
+Next, extend the schema type choices so your new type appears in the SEO tab selector.
+
+``` javascript
+// modules/@apostrophecms/seo/seo-fields-doc-type/index.js
+export default {
+  methods(self) {
+    return {
+      getSchemaTypeChoices(_super) {
+        const baseChoices = _super();
+
+        return [
+          ...baseChoices,
+          {
+            label: 'Book',
+            value: 'Book'
+          }
+        ];
+      }
+    };
+  }
+};
+```
+
+This improves the internal `seo-fields-doc-type` module shipped with the SEO package. The folder name is what wires it up; you don’t need extend or improve.
+
+3. Add Fields to`@apostrophecms/doc-type`
+
+Finally, add the editor fields that will power your schema. These can be reused on any page or piece type.
+
+``` javascript
+// modules/@apostrophecms/doc-type/index.js
+export default {
+  fields(self, options) {
+    return {
+      add: {
+        seoJsonLdBook: {
+          label: 'Book Details',
+          type: 'object',
+          help: 'Structured data fields for Book schema.',
+          if: {
+            // Only show when the "Book" schema type is selected
+            seoJsonLdType: 'Book'
+          },
+          fields: {
+            add: {
+              title: {
+                label: 'Book Title',
+                type: 'string',
+                required: true
+              },
+              author: {
+                label: 'Author',
+                type: 'string'
+              },
+              isbn: {
+                label: 'ISBN',
+                type: 'string'
+              }
+            }
+          }
+        }
+      },
+      group: {
+        seo: {
+          // Append our field to the existing SEO group
+          fields: [ 'seoJsonLdBook' ]
+        }
+      }
+    };
+  }
+};
+```
+
+ApostropheCMS will merge these fields into the core doc-type configuration, and the SEO extension will automatically pick up `seoJsonLdBook` when generating the Book schema.
+
+### Available Helper Methods
+
+Schema generators can access these utility methods via `this`:
+
+| Method | Purpose | Example |
+|--------|---------|---------|
+| `getBaseUrl(data)` | Get site base URL | `const baseUrl = this.getBaseUrl(data);` |
+| `getImageData(relationship)` | Extract image URLs | `const img = this.getImageData(doc._featuredImage);` |
+| `getListingItems(data)` | Get items from listing pages | `const items = this.getListingItems(data);` |
+| `validateSchema(schema)` | Validate against requirements | `this.validateSchema(schema);` |
+
+### Complete Example: Software Application Schema
+
+Here's a complete implementation showing all parts working together:
+
+**Schema Registration:**
+```javascript
+// modules/software-app-schema/index.js
+export default {
+  improve: '@apostrophecms/seo',
+  
+  init(self) {
+    self.registerSchema('SoftwareApplication', function(data) {
+      const { piece, page } = data;
+      const document = piece || page;
+      const app = document?.seoJsonLdSoftwareApp;
+
+      if (!document || !app || !app.name?.trim()) {
+        return null;
+      }
+
+      const schema = {
+        '@type': 'SoftwareApplication',
+        name: app.name,
+        applicationCategory: app.category || 'WebApplication',
+        operatingSystem: app.operatingSystem || 'Any'
+      };
+
+      if (document._url) {
+        schema.url = document._url;
+      }
+
+      if (app.description?.trim()) {
+        schema.description = app.description;
+      }
+
+      // Add pricing
+      if (app.price !== undefined) {
+        schema.offers = {
+          '@type': 'Offer',
+          price: app.price.toString(),
+          priceCurrency: app.currency || 'USD'
+        };
+      }
+
+      // Add rating
+      if (app.rating && app.reviewCount) {
+        schema.aggregateRating = {
+          '@type': 'AggregateRating',
+          ratingValue: app.rating.toString(),
+          reviewCount: app.reviewCount.toString()
+        };
+      }
+
+      return schema;
+    });
+  },
+  
+  extendMethods(self) {
+    return {
+      getSchemaChoices(_super) {
+        return [
+          ..._super(),
+          { label: 'Software Application', value: 'SoftwareApplication' }
+        ];
+      }
+    };
+  }
+};
+```
+
+**Field Definitions:**
+```javascript
+// modules/software-app-fields/index.js
+export default {
+  improve: '@apostrophecms/doc-type',
+  
+  fields(self, options) {
+    return {
+      add: {
+        seoJsonLdSoftwareApp: {
+          label: 'Software Application Details',
+          type: 'object',
+          if: {
+            seoJsonLdType: 'SoftwareApplication'
+          },
+          fields: {
+            add: {
+              name: {
+                label: 'Application Name',
+                type: 'string',
+                required: true
+              },
+              description: {
+                label: 'Description',
+                type: 'string',
+                textarea: true
+              },
+              category: {
+                label: 'Application Category',
+                type: 'select',
+                choices: [
+                  { label: 'Web Application', value: 'WebApplication' },
+                  { label: 'Mobile Application', value: 'MobileApplication' },
+                  { label: 'Desktop Application', value: 'DesktopApplication' }
+                ]
+              },
+              operatingSystem: {
+                label: 'Operating System',
+                type: 'string',
+                help: 'e.g., "Windows 10", "macOS", "Any"'
+              },
+              price: {
+                label: 'Price',
+                type: 'float',
+                help: 'Enter 0 for free apps'
+              },
+              currency: {
+                label: 'Currency',
+                type: 'string',
+                def: 'USD'
+              },
+              rating: {
+                label: 'Average Rating',
+                type: 'float',
+                min: 0,
+                max: 5
+              },
+              reviewCount: {
+                label: 'Number of Reviews',
+                type: 'integer',
+                min: 0
+              }
+            }
+          }
+        }
+      },
+      group: {
+        seo: {
+          fields: ['seoJsonLdSoftwareApp']
+        }
+      }
+    };
+  }
+};
+```
+
+**Project Configuration:**
+```javascript
+// app.js
+import apostrophe from 'apostrophe';
+
+apostrophe({
+  root: import.meta,
+  shortName: 'my-project',
+  modules: {
+    '@apostrophecms/seo': {},
+    'software-app-schema': {},
+    'software-app-fields': {}
+  }
+});
+```
+
+### Testing Your Custom Schema
+
+1. **Enable Debug Mode**: Set `APOS_SEO_DEBUG=true` to see generation warnings in server logs
+
+2. **Test in Google's Tools**:
+   - [Rich Results Test](https://search.google.com/test/rich-results)
+   - [Schema Markup Validator](https://validator.schema.org/)
+
+3. **Check the Output**: View page source and look for your schema in the `@graph` array
 
 ## Performance Optimization
 

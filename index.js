@@ -31,6 +31,19 @@ module.exports = {
       },
       tagManagerBody(req) {
         return getTagManagerBody(req.data);
+      },
+      // Register a custom JSON-LD schema generator
+      // schemaType: string - the schema type name (e.g., 'Book', 'SoftwareApplication')
+      // schemaGenerator: function(data) - function that returns a schema object or null
+      registerSchema(schemaType, schemaGenerator) {
+        if (!self.customSchemas) {
+          self.customSchemas = {};
+        }
+        self.customSchemas[schemaType] = schemaGenerator;
+      },
+      // Get all registered custom schemas
+      getCustomSchemas() {
+        return self.customSchemas || {};
       }
     };
   }

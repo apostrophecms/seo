@@ -51,92 +51,13 @@ module.exports = {
             seoIsPaywalled: true
           }
         },
-
         // SCHEMA TYPE SELECTOR
         seoJsonLdType: {
           label: 'aposSeo:schemaType',
           type: 'select',
           help: 'aposSeo:schemaTypeHelp',
-          choices: [
-            {
-              label: 'None',
-              value: ''
-            },
-            {
-              label: 'Web Page',
-              value: 'WebPage'
-            },
-            {
-              label: 'Collection Page',
-              value: 'CollectionPage'
-            },
-            {
-              label: 'Article',
-              value: 'Article'
-            },
-            {
-              label: 'Product',
-              value: 'Product'
-            },
-            {
-              label: 'Event',
-              value: 'Event'
-            },
-            {
-              label: 'Person',
-              value: 'Person'
-            },
-            {
-              label: 'Local Business',
-              value: 'LocalBusiness'
-            },
-            {
-              label: 'Job Posting',
-              value: 'JobPosting'
-            },
-            {
-              label: 'FAQ Page',
-              value: 'FAQPage'
-            },
-            {
-              label: 'Q&A Page',
-              value: 'QAPage'
-            },
-            {
-              label: 'Video',
-              value: 'VideoObject'
-            },
-            {
-              label: 'How-To',
-              value: 'HowTo'
-            },
-            {
-              label: 'Review',
-              value: 'Review'
-            },
-            {
-              label: 'Recipe',
-              value: 'Recipe'
-            },
-            {
-              label: 'Course',
-              value: 'Course'
-            },
-            {
-              label: 'Offer',
-              value: 'Offer'
-            },
-            {
-              label: 'Aggregate Offer',
-              value: 'AggregateOffer'
-            }
-          ]
+          choices: 'getSchemaTypeChoices()'
         },
-
-        // CONDITIONAL: Article-specific fields
-        // Article uses seoTitle/seoDescription from above,
-        // so no extra fields needed currently
-
         // CONDITIONAL: Product Schema Fields
         seoJsonLdProduct: {
           label: 'aposSeo:productDetails',
@@ -243,7 +164,6 @@ module.exports = {
             }
           }
         },
-
         // CONDITIONAL: Event Schema Fields
         seoJsonLdEvent: {
           label: 'aposSeo:eventDetails',
@@ -292,7 +212,6 @@ module.exports = {
             }
           }
         },
-
         // CONDITIONAL: Person Schema Fields
         seoJsonLdPerson: {
           label: 'aposSeo:personDetails',
@@ -325,7 +244,6 @@ module.exports = {
             }
           }
         },
-
         // CONDITIONAL: Local Business Schema Fields
         seoJsonLdBusiness: {
           label: 'aposSeo:businessDetails',
@@ -395,7 +313,6 @@ module.exports = {
             }
           }
         },
-
         // CONDITIONAL: Local Business Schema Fields
         seoJsonLdJobPosting: {
           label: 'aposSeo:jobPostingDetails',
@@ -703,7 +620,6 @@ module.exports = {
             }
           }
         },
-
         // CONDITIONAL: FAQ Page Fields
         seoJsonLdFAQ: {
           label: 'aposSeo:faqDetails',
@@ -737,7 +653,6 @@ module.exports = {
             }
           }
         },
-
         // CONDITIONAL: Q&A Page Fields
         seoJsonLdQAPage: {
           label: 'aposSeo:qaPageDetails',
@@ -836,7 +751,6 @@ module.exports = {
             }
           }
         },
-
         // CONDITIONAL: Video Object Fields
         seoJsonLdVideo: {
           label: 'aposSeo:videoDetails',
@@ -948,7 +862,6 @@ module.exports = {
             }
           }
         },
-
         // CONDITIONAL: HowTo Schema Fields
         seoJsonLdHowTo: {
           label: 'aposSeo:howToDetails',
@@ -1039,7 +952,6 @@ module.exports = {
             }
           }
         },
-
         // CONDITIONAL: Review Schema Fields
         seoJsonLdReview: {
           label: 'aposSeo:reviewDetails',
@@ -1111,7 +1023,6 @@ module.exports = {
             }
           }
         },
-
         // CONDITIONAL: Recipe Schema Fields
         seoJsonLdRecipe: {
           label: 'aposSeo:recipeDetails',
@@ -1254,7 +1165,6 @@ module.exports = {
             }
           }
         },
-
         // CONDITIONAL: Course Schema Fields
         seoJsonLdCourse: {
           label: 'aposSeo:courseDetails',
@@ -1350,7 +1260,6 @@ module.exports = {
             }
           }
         },
-
         // CONDITIONAL: ItemList toggle (only for collection/listing pages)
         seoIncludeItemList: {
           label: 'aposSeo:includeItemList',
@@ -1361,7 +1270,6 @@ module.exports = {
             seoJsonLdType: 'CollectionPage'
           }
         },
-
         // CONDITIONAL: Offer Schema Fields
         seoJsonLdOffer: {
           label: 'aposSeo:offerDetails',
@@ -1503,7 +1411,6 @@ module.exports = {
             }
           }
         },
-
         // CONDITIONAL: AggregateOffer Schema Fields
         seoJsonLdAggregateOffer: {
           label: 'aposSeo:aggregateOfferDetails',
@@ -1663,7 +1570,6 @@ module.exports = {
         }
       }
     };
-
     // Canonical linking for pieces (if configured)
     if (self.options.seoCanonicalTypes &&
       Array.isArray(self.options.seoCanonicalTypes) &&
@@ -1713,5 +1619,85 @@ module.exports = {
     }
 
     return configuration;
+  },
+  methods(self) {
+    return {
+      getSchemaTypeChoices() {
+        return [
+          {
+            label: 'None',
+            value: ''
+          },
+          {
+            label: 'Web Page',
+            value: 'WebPage'
+          },
+          {
+            label: 'Collection Page',
+            value: 'CollectionPage'
+          },
+          {
+            label: 'Article',
+            value: 'Article'
+          },
+          {
+            label: 'Product',
+            value: 'Product'
+          },
+          {
+            label: 'Event',
+            value: 'Event'
+          },
+          {
+            label: 'Person',
+            value: 'Person'
+          },
+          {
+            label: 'Local Business',
+            value: 'LocalBusiness'
+          },
+          {
+            label: 'Job Posting',
+            value: 'JobPosting'
+          },
+          {
+            label: 'FAQ Page',
+            value: 'FAQPage'
+          },
+          {
+            label: 'Q&A Page',
+            value: 'QAPage'
+          },
+          {
+            label: 'Video',
+            value: 'VideoObject'
+          },
+          {
+            label: 'How-To',
+            value: 'HowTo'
+          },
+          {
+            label: 'Review',
+            value: 'Review'
+          },
+          {
+            label: 'Recipe',
+            value: 'Recipe'
+          },
+          {
+            label: 'Course',
+            value: 'Course'
+          },
+          {
+            label: 'Offer',
+            value: 'Offer'
+          },
+          {
+            label: 'Aggregate Offer',
+            value: 'AggregateOffer'
+          }
+        ];
+      }
+    };
   }
 };
