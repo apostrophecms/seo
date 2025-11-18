@@ -1368,11 +1368,6 @@ module.exports = {
                 type: 'date',
                 help: 'aposSeo:priceValidUntilHelp'
               },
-              url: {
-                label: 'aposSeo:offerUrl',
-                type: 'url',
-                help: 'aposSeo:offerUrlHelp'
-              },
               seller: {
                 label: 'aposSeo:seller',
                 type: 'string',
@@ -1494,11 +1489,6 @@ module.exports = {
                     value: 'LimitedAvailability'
                   }
                 ]
-              },
-              url: {
-                label: 'aposSeo:aggregateOfferUrl',
-                type: 'url',
-                help: 'aposSeo:aggregateOfferUrlHelp'
               },
               seller: {
                 label: 'aposSeo:seller',
