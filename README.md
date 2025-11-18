@@ -22,10 +22,11 @@
 - **🎯 Complete SEO Control**: Essential meta fields for titles, descriptions, and canonical URLs
 - **📊 Analytics Ready**: Built-in Google Analytics, Tag Manager, and Site Verification integration
 - **🤖 Smart Automation**: Automatic robots.txt generation with granular control
-- **🤖 AI-Ready**: Automatic llms.txt generation for AI crawler control and training transparency
+- **⚡ Performance Optimization**: Critical font preloading improves Core Web Vitals scores
 - **🔍 Search Engine Friendly**: Proper canonical linking prevents duplicate content issues
 - **📈 Marketing Team Ready**: Easy-to-use interface for non-technical content creators
 - **💰 E-commerce Ready**: Rich structured data for products, offers, and pricing
+- **🤖 AI-Ready**: Automatic llms.txt generation for AI policy transparency (proposed standard for forward-thinking SEO)
 
 <!-- omit in toc -->
 ## Compatibility
@@ -65,6 +66,7 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
   - [Automated Robots.txt](#automated-robotstxt)
   - [AI Crawler Control (llms.txt)](#ai-crawler-control-llmstxt)
   - [Sitemap Integration](#sitemap-integration)
+  - [Performance Optimization](#performance-optimization)
 - [Essential Configuration](#essential-configuration)
   - [Setting the Base URL](#setting-the-base-url)
   - [Google Analytics Integration](#google-analytics-integration)
@@ -73,6 +75,7 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
   - [Sitemap Installation](#sitemap-installation)
 - [Structured Data \& Schema Types](#structured-data--schema-types)
   - [How It Works](#how-it-works)
+  - [Setting Default Schema Types](#setting-default-schema-types)
   - [Choosing the Right Schema](#choosing-the-right-schema)
   - [E-commerce Best Practices](#e-commerce-best-practices)
   - [Quick Schema Selection Guide](#quick-schema-selection-guide)
@@ -84,6 +87,7 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
   - [Understanding robots.txt vs llms.txt](#understanding-robotstxt-vs-llmstxt)
   - [Site Search Query Parameter](#site-search-query-parameter)
 - [Advanced Configuration](#advanced-configuration)
+  - [Setting Default Schema Types](#setting-default-schema-types-1)
   - [Disabling SEO Fields](#disabling-seo-fields)
   - [Canonical Link Configuration](#canonical-link-configuration)
   - [Pagination Support](#pagination-support)
@@ -115,7 +119,7 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
   - [1. Register a Custom Schema on `@apostrophecms/seo`](#1-register-a-custom-schema-on-apostrophecmsseo)
   - [2. Add the Type to the Schema Dropdown (`@apostrophecms/seo-fields-doc-type`)](#2-add-the-type-to-the-schema-dropdown-apostrophecmsseo-fields-doc-type)
   - [3. Add Fields on `@apostrophecms/doc-type`](#3-add-fields-on-apostrophecmsdoc-type)
-- [Performance Optimization](#performance-optimization)
+- [Performance Optimization](#performance-optimization-1)
   - [Critical Font Preloading](#critical-font-preloading)
   - [Mobile Optimization](#mobile-optimization)
 - [Field Reference](#field-reference)
@@ -256,6 +260,8 @@ The module automatically provides an `/llms.txt` route to communicate your AI us
 - **robots.txt**: Enforceable crawler access control (blocks/allows bots)
 - **llms.txt**: Informational policy declaration (informs AI systems about usage terms)
 
+> **⚠️ Important Note:** `llms.txt` is a proposed standard that is not yet widely adopted. As of this writing, most LLMs and AI systems do not respect or read `llms.txt` files. This feature is included for forward-thinking SEO strategies and may gain broader adoption in the future. For enforceable crawler control, rely on `robots.txt` settings.
+
 **Configuration options:**
 
 1. **Allow AI Crawling (Default)**: Generates a comprehensive `llms.txt` file that permits responsible AI crawling with site structure information
@@ -284,6 +290,14 @@ The module automatically provides an `/llms.txt` route to communicate your AI us
 
 Works seamlessly with `@apostrophecms/sitemap` to generate XML sitemaps that help search engines discover and index your content. The sitemap is automatically referenced in the `/llms.txt` file for AI crawlers.
 
+### Performance Optimization
+
+**Critical Font Preloading** - Automatically preload critical fonts to improve Core Web Vitals scores and SEO performance:
+- Reduces Cumulative Layout Shift (CLS) by preventing font-loading jank
+- Improves Largest Contentful Paint (LCP) with faster font rendering
+- Optimizes First Contentful Paint (FCP) by eliminating render-blocking requests
+
+Configure once in your `app.js` and the module handles the rest. See [Performance Optimization](#performance-optimization) for details.
 
 ## Essential Configuration
 
@@ -415,6 +429,38 @@ The module automatically generates appropriate Schema.org markup based on the sc
 - **Page-level schemas**: WebPage, CollectionPage, or your chosen primary entity type
 - **Primary entities**: Article, Product, Event, Person, LocalBusiness, and more for detail pages
 - **Item listings**: Automatic ItemList generation for index/listing pages
+
+### Setting Default Schema Types
+
+You can configure a default schema type for any piece or page type using the `seoSchemaType` option. When set, this type will be pre-selected and locked for all content of that type.
+
+**Example configuration:**
+```javascript
+// modules/product/index.js
+export default {
+  extend: '@apostrophecms/piece-type',
+  options: {
+    label: 'Product',
+    seoSchemaType: 'Product'  // Always use Product schema
+  }
+};
+```
+
+**Pre-configured defaults:**
+
+The following ApostropheCMS extensions automatically set appropriate schema types:
+
+- **`@apostrophecms/blog`**: Defaults to `Article` schema for blog posts
+- **`@apostrophecms/event`**: Defaults to `Event` schema for events
+
+When a default is configured, the schema type selector becomes read-only in the editor UI, ensuring consistency across all content of that type.
+
+**When to use defaults:**
+
+- Content types with a clear, single schema purpose (products, events, recipes)
+- Ensuring editors can't accidentally select the wrong schema type
+- Maintaining consistency across large content collections
+- Integration with specific Schema.org requirements (e.g., job boards must use JobPosting)
 
 ### Choosing the Right Schema
 
@@ -906,14 +952,19 @@ Both tools work together but serve different purposes:
 |---------|-----------|----------|
 | **Purpose** | Enforceable crawler access control | Policy communication & transparency |
 | **Technical** | Bots must respect (standard protocol) | Informational guidelines only |
+| **Adoption** | Universal web standard since 1994 | **Proposed standard, limited adoption** |
+| **Enforcement** | Technical blocking mechanism | **Voluntary compliance only** |
 | **Controls** | Which bots can crawl your site | How content may be used if crawled |
 | **Best for** | Technical access restrictions | Terms of use & AI transparency |
 | **Required?** | Yes (web standard since 1994) | Optional (emerging standard) |
+| **AI Support** | Most AI crawlers respect robots.txt | **Most AI systems do not read llms.txt** |
 | **Example** | "Block GPTBot from accessing /api/*" | "Content may be used for search, not training" |
 
+> **⚠️ Important:** While `llms.txt` represents forward-thinking SEO strategy, it should not be relied upon for actual crawler control. Use `robots.txt` for enforceable policies. The `llms.txt` file serves as a policy statement and may gain broader adoption over time.
+
 **Recommended approach:** Use both together:
-- **robots.txt** provides technical enforcement
-- **llms.txt** clearly communicates your policies to compliant AI systems
+- **robots.txt** provides technical enforcement (works now)
+- **llms.txt** clearly communicates your policies (may work in the future)
 
 ### Site Search Query Parameter
 
@@ -940,6 +991,26 @@ This creates a SearchAction schema that:
 **Note:** This should match whatever parameter your actual search functionality uses. Check your site's search URL to determine the correct value.
 
 ## Advanced Configuration
+
+### Setting Default Schema Types
+
+Lock a specific schema type for a piece or page type to ensure consistency:
+```javascript
+// modules/article/index.js
+export default {
+  extend: '@apostrophecms/piece-type',
+  options: {
+    label: 'Article',
+    seoSchemaType: 'Article'  // Pre-select and lock to Article schema
+  }
+};
+```
+
+When configured, editors cannot change the schema type - it's automatically set and read-only in the UI.
+
+**Pre-configured in official extensions:**
+- `@apostrophecms/blog` → `Article`
+- `@apostrophecms/event` → `Event`
 
 ### Disabling SEO Fields
 
@@ -1082,7 +1153,7 @@ fields: {
 }
 ```
 
-**Automatic fallback:** When neither is provided, the module falls back to the logged-in user (if available).
+**Automatic fallback:** When neither is provided, the module falls back to the user that last updated (if available).
 
 ---
 
@@ -1721,11 +1792,22 @@ apostrophe({
 });
 ```
 
-The module automatically generates `<link rel="preload">` tags for each configured font. The `crossorigin` attribute is automatically added for absolute URLs (CDN/external fonts) and omitted for relative URLs (self-hosted fonts).
+The module automatically generates `<link rel="preload">` tags for each configured font.
+
+```css
+/* Your existing CSS - keep this! */
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter-variable.woff2') format('woff2');
+  font-display: swap;
+}
+```
+
+The `crossorigin` attribute is automatically added for absolute URLs (CDN/external fonts) and omitted for relative URLs (self-hosted fonts).
 
 **Where to store fonts:**
 
-1. **Self-hosted (recommended)**: Place font files in `public/fonts/` and reference as `/fonts/filename.woff2`
+1. **Simple single-server deployments**: Place font files in `public/fonts/` and reference as `/fonts/filename.woff2`
    - No CORS configuration needed
    - Simple deployment
    - Example: `{ url: '/fonts/inter.woff2' }`
@@ -1735,7 +1817,11 @@ The module automatically generates `<link rel="preload">` tags for each configur
    - Requires CORS: `Access-Control-Allow-Origin: *`
    - Example: `{ url: 'https://cdn.yoursite.com/fonts/inter.woff2' }`
 
-3. **Don't use with Google Fonts**: They have their own optimization and don't benefit from preload
+3. **Self-host Google Fonts instead of using their CDN**:
+   - Google's CDN uses hashed URLs that make preloading impossible
+   - Download Google Fonts and self-host them to enable preloading
+   - Tools: [google-webfonts-helper](https://gwfh.mranftl.com/fonts) or [Google Fonts Helper](https://fonts.google.com/knowledge/using_type/self_hosting_web_fonts)
+   - Once self-hosted, preload them like any other font
 
 **Advanced options:**
 ```javascript
@@ -1764,6 +1850,8 @@ criticalFonts: [
 - Use `woff2` format for best compression (supported by all modern browsers)
 - Ensure font files are actually available at the specified URLs before deployment
 - Test with Google PageSpeed Insights to verify Core Web Vitals improvements
+- Keep your existing `@font-face` CSS - preloading enhances it, doesn't replace it
+
 
 **Example project structure:**
 ```
