@@ -203,11 +203,11 @@ module.exports = {
               },
               startDate: {
                 label: 'aposSeo:startDate',
-                type: 'date'
+                type: 'dateAndTime'
               },
               endDate: {
                 label: 'aposSeo:endDate',
-                type: 'date'
+                type: 'dateAndTime'
               },
               location: {
                 label: 'aposSeo:eventLocation',
