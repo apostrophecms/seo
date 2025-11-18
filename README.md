@@ -164,7 +164,7 @@ These features work out-of-the-box with any ApostropheCMS site:
 
 ### ⚙️ Requires Content Structure Setup
 
-Advanced structured data types need specific fields in your content types:
+Advanced structured data types need [specific fields](#summary-required-fields-by-schema-type) in your content types:
 
 - **Article, Review**: Work best with author information
 - **Product, HowTo**: Benefit from featured images for richer results
@@ -220,10 +220,12 @@ The module automatically provides a `/robots.txt` route with strategic control o
 **Available Modes:**
 
 1. **Allow All (Search + AI)** - Default open access for all crawlers
-2. **Allow Search, Block AI Training** - Maintains search rankings while protecting content from AI training
-3. **Selective AI Crawlers** - Granular control over individual AI crawlers
+2. **Allow Search, Block AI Training** - Maintains search rankings while protecting content from AI training by AI agents that choose to respect this standard
+3. **Selective AI Crawlers** - Granular control over individual AI crawlers that support this standard
 4. **Block All** - Prevents all indexing
 5. **Custom** - Write your own robots.txt content
+
+> ⚠️ Make sure that if you block all indexing during development, make sure to change the policy when you launch your final site.
 
 **Selective Mode Crawlers:**
 For fine-grained control, use Selective mode to choose specific AI crawlers:
@@ -241,7 +243,7 @@ For fine-grained control, use Selective mode to choose specific AI crawlers:
 Traditional search engines (Googlebot, Bingbot) are always allowed unless using "Block All" mode.
 
 **Technical Notes:**
-- A physical `robots.txt` file in your `public/` directory will override these settings
+- A physical `robots.txt` file in your `public/` directory for a single-site project, or `sites/public` and `dashboard/public` directories for multisite will override these settings
 - All modes preserve traditional search engine access (except "Block All")
 - See [AI & Search Strategy](#ai--search-strategy) for detailed configuration guidance
 
@@ -403,7 +405,7 @@ apostrophe({
 
 ## Structured Data & Schema Types
 
-This module generates rich structured data (JSON-LD) that helps search engines understand your content. All structured data is output in a single `<script type="application/ld+json">` tag with an `@graph` array for optimal performance.
+This module generates rich structured data (JSON-LD) that helps search engines understand your content. All structured data is output in a single `<script type="application/ld+json">` tag with a `@graph` array for optimal performance.
 
 ### How It Works
 
@@ -1067,13 +1069,13 @@ fields: {
 }
 ```
 
-**User relationship (full featured):**
+**Author relationship (full featured):**
 ```javascript
 fields: {
   add: {
     _author: {
       type: 'relationship',
-      withType: '@apostrophecms/user',
+      withType: 'author',
       max: 1
     }
   }
@@ -1162,7 +1164,7 @@ fields: {
 
 Enable debug mode to see which fallback fields are being used:
 ```bash
-export APOS_SEO_DEBUG=true
+export APOS_SEO_DEBUG=1
 npm run dev
 ```
 
@@ -1307,32 +1309,11 @@ If you mark content as paywalled, your templates must use consistent CSS classes
 
 ### Author Information
 
-For **Article** and **Recipe** schemas, you can provide author information in multiple formats:
+For **Article** and **Recipe** schemas, you can provide author information in multiple formats. Authors can be stored either as a simple string field or as a relationship to
+`@apostrophecms/user`. The SEO module supports both.
 
-**Option 1: Simple string (easiest):**
-```javascript
-fields: {
-  add: {
-    author: {
-      type: 'string',
-      label: 'Author Name'
-    }
-  }
-}
-```
-
-**Option 2: User relationship (for author profiles):**
-```javascript
-fields: {
-  add: {
-    _author: {
-      type: 'relationship',
-      withType: '@apostrophecms/user',
-      max: 1
-    }
-  }
-}
-```
+For full details on how author fields are resolved and mapped into structured data
+(including fallbacks), see [Author Information](#author-information).
 
 **Option 3: Automatic fallback:**
 If neither field is provided, the module uses the currently logged-in user's name.
@@ -1467,7 +1448,7 @@ Each item should provide `_url` (or `url`) and `title` (or `seoTitle`). Toggle t
 
 ### Debugging Structured Data
 
-Set the environment variable `APOS_SEO_DEBUG=true` to print JSON-LD generation diagnostics to your server logs during development. When enabled, any errors or malformed data encountered during schema generation will be logged to your server console along with the offending data payload.
+Set the environment variable `APOS_SEO_DEBUG=1` to print JSON-LD generation diagnostics to your server logs during development. When enabled, any errors or malformed data encountered during schema generation will be logged to your server console along with the offending data payload.
 This is particularly useful when testing new schema types or diagnosing missing fields in custom templates.
 
 **Important:** Not all schema types show rich results in Google Search Console's URL Inspection Tool. The following schemas are valid and will be indexed, but may not appear in the rich results preview:
@@ -1485,7 +1466,7 @@ Use the [Rich Results Test](https://search.google.com/test/rich-results) and [Sc
 **Problem:** Expected fallback field is not being used
 
 **Solutions:**
-1. Enable debug mode: `export APOS_SEO_DEBUG=true`
+1. Enable debug mode: `export APOS_SEO_DEBUG=1`
 2. Check field name matches expected pattern (e.g., `author`, not `authorName`)
 3. Verify field has actual value (not empty string or null)
 4. Check server logs for fallback messages
@@ -1511,10 +1492,11 @@ Use the [Rich Results Test](https://search.google.com/test/rich-results) and [Sc
 **Problem:** Author appears but shows as "undefined" or null
 
 **Solutions:**
-1. If using `_author` relationship, ensure user has `title` or `username`
-2. If using string field, ensure it's not an empty string
-3. Check if user relationship is properly populated (use `.toObject()` in async context)
-4. Enable debug mode to see which field is being used
+1. Confirm the author field is configured as described in the [Author Information](#author-information).
+2. If using `_author` relationship, ensure user has `title` or `username`
+3. If using string field, ensure it's not an empty string
+4. Check if user relationship is properly populated (use `.toObject()` in async context)
+5. Enable debug mode to see which field is being used
 
 ---
 
@@ -1547,7 +1529,7 @@ Use the [Rich Results Test](https://search.google.com/test/rich-results) and [Sc
 
 ### Debug Logs Not Appearing
 
-**Problem:** `APOS_SEO_DEBUG=true` but no logs
+**Problem:** `APOS_SEO_DEBUG=1` but no logs
 
 **Solutions:**
 1. Restart server after setting environment variable

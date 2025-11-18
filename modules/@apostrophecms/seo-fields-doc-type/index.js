@@ -8,6 +8,18 @@ module.exports = {
       return;
     }
 
+    // Determine schema type - explicit option takes precedence
+    let defaultSchemaType = options.seoSchemaType;
+
+    // Fallback to known module types if no explicit setting
+    if (!defaultSchemaType) {
+      if (options.apos.instanceOf(self.__meta.name, '@apostrophecms/blog')) {
+        defaultSchemaType = 'Article';
+      } else if (options.apos.instanceOf(self.__meta.name, '@apostrophecms/event')) {
+        defaultSchemaType = 'Event';
+      }
+    }
+
     const configuration = {
       add: {
         // ALWAYS VISIBLE - Basic SEO fields (used for meta tags regardless of schema)
@@ -56,7 +68,11 @@ module.exports = {
           label: 'aposSeo:schemaType',
           type: 'select',
           help: 'aposSeo:schemaTypeHelp',
-          choices: 'getSchemaTypeChoices()'
+          choices: 'getSchemaTypeChoices()',
+          ...(defaultSchemaType && {
+            def: defaultSchemaType,
+            readOnly: true
+          })
         },
         // CONDITIONAL: Product Schema Fields
         seoJsonLdProduct: {
