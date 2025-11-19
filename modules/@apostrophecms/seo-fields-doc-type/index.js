@@ -13,9 +13,9 @@ module.exports = {
 
     // Fallback to known module types if no explicit setting
     if (!defaultSchemaType) {
-      if (options.apos.instanceOf(self.__meta.name, '@apostrophecms/blog')) {
+      if (self.apos.instanceOf(self.__meta.name, '@apostrophecms/blog')) {
         defaultSchemaType = 'Article';
-      } else if (options.apos.instanceOf(self.__meta.name, '@apostrophecms/event')) {
+      } else if (self.apos.instanceOf(self.__meta.name, '@apostrophecms/event')) {
         defaultSchemaType = 'Event';
       }
     }

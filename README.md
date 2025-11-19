@@ -105,8 +105,10 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
   - [Date Fields](#date-fields)
   - [Listing Pages (Item List)](#listing-pages-item-list)
   - [Summary: Required Fields by Schema Type](#summary-required-fields-by-schema-type)
+- [Required Developer Fields by Schema Type](#required-developer-fields-by-schema-type)
+  - [Schema Types That Require No Developer Fields](#schema-types-that-require-no-developer-fields)
   - [Best Practices](#best-practices)
-  - [ItemList Generation](#itemlist-generation)
+  - [ItemList for Collection Pages](#itemlist-for-collection-pages)
   - [Debugging Structured Data](#debugging-structured-data)
 - [Troubleshooting](#troubleshooting)
   - [Fallbacks Not Working](#fallbacks-not-working)
@@ -1439,37 +1441,40 @@ Each item must have:
 
 **How to use this table:** For any page or piece using a specific structured data schema, you must implement the required fields shown below. Optional fields are highly recommended for richer search results. The "Fallback Logic" column shows alternative field names the module will check if primary fields are missing, as well as different ways to provide the same data (e.g., a string field instead of a relationship). When a field path includes a dot (e.g., `seoJsonLdProduct.name`), this refers to a nested field within the schema-specific settings group in your SEO tab.
 
-| Schema Type | Required Fields | Flexible Fields | Notes |
-|-------------|-----------------|-----------------|-------|
-| **Article** | None (uses title) | `author` (string) OR `_author` (rel), `publishedAt` OR `createdAt` | Any description field works |
-| **Product** | Product name (in schema settings) | `featuredImage` (obj) OR `_featuredImage` (rel) | Image highly recommended for rich results |
-| **Recipe** | Recipe name, ingredients, instructions | `author` (string) OR `_author` (rel), `featuredImage` (obj) OR `_featuredImage` (rel) | Image REQUIRED by Google |
-| **Event** | Event name, start date | Location details | Description from any description field |
-| **Person** | Person name | Job title, organization | Description from any description field |
-| **VideoObject** | Video name | `featuredImage` (obj) OR `_featuredImage` (rel), educational fields | See Learning Video features |
-| **HowTo** | Guide name, steps | `featuredImage` (obj) OR `_featuredImage` (rel), supplies, tools | Step images improve visibility |
-| **Review** | Item reviewed | `author` (string) OR `_author` (rel), rating | Uses description fallbacks |
-| **Course** | Course name | Provider, pricing | Description from any field |
-| **JobPosting** | Job title, dates, location | Salary, requirements | Organization logo from global |
-| **QAPage** | Question text | Answers, authors, votes | For single Q&A pages only |
-| **FAQPage** | Q&A pairs | None | For curated FAQs |
-| **WebPage/CollectionPage** | None | None | Standard pages |
-| **LocalBusiness** | Business name | Address, hours, phone, `image` (obj) OR `_featuredImage` (rel) | Image optional but helpful |
-| **Offer** | Name, price | Availability, shipping, description from any field | Falls back to global org |
-| **AggregateOffer** | Name, price range | Individual offers array, description from any field | For products with variants |
+## Required Developer Fields by Schema Type
 
-**Legend:**
-- **Required** = Must be provided for valid schema
-- **Flexible** = Supports multiple formats (string/object OR relationship)
-- All fields support description fallbacks (schema.description → seoDescription → excerpt → description)
-- All date fields support multiple names (publishedAt, publicationDate, datePublished)
+This table shows the minimum fields your piece/page type must provide for each schema, plus the field names the SEO module will look for (string/object/relationship).
+
+| Schema Type | Expected Field with fallbacks |
+|-------------|-------------------------------|
+| **Article** | Author → `author` (string) OR `_author` (relationship)<br>Date → `publishedAt`, `publicationDate`, `datePublished`, fallback `createdAt` |
+| **Product** | Primary image → `featuredImage` (object) OR `_featuredImage` (relationship) |
+| **Recipe** | Author → `author` OR `_author`<br>Primary image → same as Product |
+| **Event** | Start date → `startDate`, `startTime`, `eventStart`<br>Location → `location`, `eventLocation`, or nested address object |
+| **Person** | Job title → `jobTitle`, `title`<br>Organization → `organization` (string/object) OR `_organization` (relationship) |
+| **VideoObject** | Thumbnail → `featuredImage` OR `_featuredImage`<br>Upload date → `uploadDate`, `datePublished` |
+| **HowTo** | Step images → inside steps OR global `featuredImage` / `_featuredImage` |
+| **Review** | Rating → `rating`, `ratingValue`<br>Author → `author` OR `_author` |
+| **Course** | Provider → `provider` (string/object) OR `_provider` (relationship)<br>Pricing → `price`, `priceCurrency` |
+| **JobPosting** | Salary → `salary`, `baseSalary`, `salaryCurrency` |
+| **LocalBusiness** | Address → `address` (nested fields)<br>Image → `image` OR `_featuredImage` |
+| **Offer** | Availability → `availability`, `stockStatus` |
+| **AggregateOffer** | Individual offers array → developer-defined structure |
+
+### Schema Types That Require No Developer Fields
+
+The following schema types do not depend on project-level fields. They are generated entirely from the SEO UI and built-in ApostropheCMS fields (title, URL, SEO tab configuration):
+
+- **WebPage** – basic page metadata
+- **CollectionPage** – ItemList is autogenerated from `req.data.pieces` / `items`
+- **FAQPage** – uses fields in the `seoJsonLdFAQPage` UI group
+- **QAPage** – uses fields in the `seoJsonLdQAPage` UI group
 
 ### Best Practices
 
-- **One primary schema per page**: Use a single primary entity type (Article, Product, etc.) per detail page
 - **Use CollectionPage for listings**: For index pages, use CollectionPage with ItemList enabled rather than individual entity schemas
 - **Fill all relevant fields**: The more complete your structured data, the better search engines can understand your content
-- **Test your markup**: Use Google's Rich Results Test to validate your structured data
+- **Test your markup**: Use [Google's Rich Results Test](https://search.google.com/test/rich-results) to validate your structured data
 - **Pricing consistency**: Ensure prices in your structured data match what's displayed on the page
 
 **Field Naming:**
@@ -1507,15 +1512,27 @@ fields: {
 }
 ```
 
-### ItemList Generation
+### ItemList for Collection Pages
 
-For CollectionPage schemas, the module automatically detects listing items from:
-- `req.data.pieces`
-- `req.data.items`
-- `req.data._pieces`
-- `req.data.docs`
+Collection pages (listing pages) can optionally include an **ItemList** schema in JSON-LD.
+This describes the items displayed on the page (articles, products, events, etc.) and can improve how search engines understand category, listing, or archive pages.
 
-Each item should provide `_url` (or `url`) and `title` (or `seoTitle`). Toggle the "Include ItemList in JSON-LD" field to control whether ItemList appears in your structured data.
+You can enable or disable this using the **“Include ItemList in JSON-LD”** toggle in the SEO tab.
+
+#### When you should enable ItemList
+- The page is a true index/list of items
+- Blog indexes, product category pages, news archives
+- You want richer structured data for list/search pages
+
+#### When you should NOT enable ItemList
+- The page mixes unrelated content types
+- The page is heavily personalized per user
+- The listing is extremely large (hundreds+ items)
+- The content shown changes frequently based on filters or user input
+- It’s not actually a listing page (e.g., About, Contact)
+
+ItemList content is generated automatically based on the items displayed by the page’s piece-page-type query (no developer configuration required).
+
 
 ### Debugging Structured Data
 
