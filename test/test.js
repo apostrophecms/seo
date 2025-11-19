@@ -281,6 +281,264 @@ describe('@apostrophecms/seo', function () {
     });
   });
 
+  describe('Custom Field Mappings', function () {
+
+    it('should use mapped author field when generating Article schema', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      // Simulate project-level field mapping configuration
+      handler.seoFieldMappings = {
+        author: 'writerName'
+      };
+
+      const data = {
+        page: {
+          title: 'Mapped Author Article',
+          seoTitle: 'Mapped Author SEO Title',
+          seoJsonLdType: 'Article',
+          writerName: 'Mapped Author Name',
+          author: 'Default Author Name',
+          _url: 'https://example.com/mapped-article',
+          createdAt: new Date('2024-01-01')
+        },
+        global: {
+          seoJsonLdOrganization: {
+            name: 'Test Organization'
+          }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const articleSchema = schemas.find(s => s['@type'] === 'Article');
+
+      assert(articleSchema, 'Article schema should exist');
+      assert(articleSchema.author, 'author should exist');
+      assert.strictEqual(
+        articleSchema.author.name,
+        'Mapped Author Name',
+        'Mapped author field should win over default author'
+      );
+    });
+
+    it('should fall back to default author fields when mapped author field is empty', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      handler.seoFieldMappings = {
+        author: 'writerName'
+      };
+
+      const data = {
+        page: {
+          title: 'Fallback Author Article',
+          seoJsonLdType: 'Article',
+          // Mapped field exists but is empty/whitespace
+          writerName: '',
+          author: 'Fallback Author',
+          _url: 'https://example.com/fallback-article',
+          createdAt: new Date('2024-01-02')
+        },
+        global: {
+          seoJsonLdOrganization: {
+            name: 'Test Organization'
+          }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const articleSchema = schemas.find(s => s['@type'] === 'Article');
+
+      assert(articleSchema, 'Article schema should exist');
+      assert(articleSchema.author, 'author should exist');
+      assert.strictEqual(
+        articleSchema.author.name,
+        'Fallback Author',
+        'Default author field should be used when mapped field is empty'
+      );
+    });
+
+    it('should use mapped description field before seoDescription and description', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      handler.seoFieldMappings = {
+        description: 'summary'
+      };
+
+      const data = {
+        page: {
+          title: 'Mapped Description Article',
+          seoJsonLdType: 'Article',
+          summary: 'Summary description from mapped field',
+          seoDescription: 'SEO description fallback',
+          description: 'Generic description',
+          _url: 'https://example.com/mapped-description'
+        },
+        global: {
+          seoJsonLdOrganization: {
+            name: 'Test Organization'
+          }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const articleSchema = schemas.find(s => s['@type'] === 'Article');
+
+      assert(articleSchema, 'Article schema should exist');
+      assert.strictEqual(
+        articleSchema.description,
+        'Summary description from mapped field',
+        'Mapped description field should be used first'
+      );
+    });
+
+    it('should fall back from mapped description to standard fallbacks when mapped field is missing', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      handler.seoFieldMappings = {
+        description: 'summary'
+      };
+
+      const data = {
+        page: {
+          title: 'Fallback Description Article',
+          seoJsonLdType: 'Article',
+          // No summary field at all
+          seoDescription: 'SEO description value',
+          description: 'Generic description value',
+          _url: 'https://example.com/fallback-description'
+        },
+        global: {
+          seoJsonLdOrganization: {
+            name: 'Test Organization'
+          }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const articleSchema = schemas.find(s => s['@type'] === 'Article');
+
+      assert(articleSchema, 'Article schema should exist');
+      assert.strictEqual(
+        articleSchema.description,
+        'SEO description value',
+        'Should fall back to seoDescription when mapped description field is missing'
+      );
+    });
+
+    it('should use mapped image relationship when generating Product schema', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      handler.seoFieldMappings = {
+        image: '_heroImage'
+      };
+
+      const data = {
+        piece: {
+          title: 'Mapped Product',
+          seoJsonLdType: 'Product',
+          seoJsonLdProduct: {
+            name: 'Mapped Product Name',
+            price: 10,
+            currency: 'USD'
+          },
+          _url: 'https://example.com/mapped-product',
+          // Mapped image relationship
+          _heroImage: [
+            {
+              attachment: {
+                _urls: {
+                  original: 'https://example.com/uploads/hero-original.jpg',
+                  full: 'https://example.com/uploads/hero-full.jpg'
+                },
+                width: 800,
+                height: 600,
+                title: 'Hero Image'
+              },
+              alt: 'Hero alt text'
+            }
+          ],
+          // Default field that should be ignored when mapping is present
+          _featuredImage: [
+            {
+              attachment: {
+                _urls: {
+                  original: 'https://example.com/uploads/featured-original.jpg'
+                },
+                width: 640,
+                height: 480,
+                title: 'Featured Image'
+              },
+              alt: 'Featured alt text'
+            }
+          ]
+        },
+        global: {},
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const productSchema = schemas.find(s => s['@type'] === 'Product');
+
+      assert(productSchema, 'Product schema should exist');
+      assert(productSchema.image, 'Product schema should include image');
+      assert.strictEqual(
+        productSchema.image,
+        'https://example.com/uploads/hero-original.jpg',
+        'Mapped image field should drive Product image'
+      );
+    });
+
+    it('should use mapped published date field when generating Article schema', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      handler.seoFieldMappings = {
+        publishedAt: 'publicationDate'
+      };
+
+      const publicationDate = new Date('2024-05-01T12:00:00Z');
+      const createdAt = new Date('2024-04-01T12:00:00Z');
+
+      const data = {
+        page: {
+          title: 'Mapped Date Article',
+          seoJsonLdType: 'Article',
+          publicationDate,
+          publishedAt: createdAt, // would normally win without mapping
+          _url: 'https://example.com/mapped-date'
+        },
+        global: {
+          seoJsonLdOrganization: {
+            name: 'Test Organization'
+          }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const articleSchema = schemas.find(s => s['@type'] === 'Article');
+
+      assert(articleSchema, 'Article schema should exist');
+      assert(articleSchema.datePublished, 'datePublished should exist');
+
+      // Normalise to ISO string for comparison
+      const schemaDate = new Date(articleSchema.datePublished).toISOString();
+      assert.strictEqual(
+        schemaDate,
+        publicationDate.toISOString(),
+        'Mapped published date field should be used for datePublished'
+      );
+    });
+  });
+
   describe('Custom Schema Registration', function () {
 
     it('should register and retrieve custom schemas', function () {
