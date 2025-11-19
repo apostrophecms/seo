@@ -75,10 +75,9 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
   - [Sitemap Installation](#sitemap-installation)
 - [Structured Data \& Schema Types](#structured-data--schema-types)
   - [How It Works](#how-it-works)
-  - [Setting Default Schema Types](#setting-default-schema-types)
   - [Choosing the Right Schema](#choosing-the-right-schema)
-  - [E-commerce Best Practices](#e-commerce-best-practices)
   - [Quick Schema Selection Guide](#quick-schema-selection-guide)
+  - [Best Practices](#best-practices)
 - [AI \& Search Strategy](#ai--search-strategy)
   - [Understanding Crawler Types](#understanding-crawler-types)
   - [Recommended Configuration for Most Sites](#recommended-configuration-for-most-sites)
@@ -87,36 +86,25 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
   - [Understanding robots.txt vs llms.txt](#understanding-robotstxt-vs-llmstxt)
   - [Site Search Query Parameter](#site-search-query-parameter)
 - [Advanced Configuration](#advanced-configuration)
-  - [Setting Default Schema Types](#setting-default-schema-types-1)
   - [Disabling SEO Fields](#disabling-seo-fields)
+  - [Setting Default Schema Types](#setting-default-schema-types)
   - [Canonical Link Configuration](#canonical-link-configuration)
   - [Pagination Support](#pagination-support)
   - [Custom 404 Tracking](#custom-404-tracking)
+  - [Paywalled Content](#paywalled-content)
+  - [Custom Field Mappings](#custom-field-mappings)
 - [Implementation Guidelines for Developers](#implementation-guidelines-for-developers)
-- [Field Flexibility](#field-flexibility)
+  - [Field Flexibility](#field-flexibility)
   - [Flexible Field Formats](#flexible-field-formats)
   - [Debug Mode](#debug-mode)
-  - [When to Use Each Approach](#when-to-use-each-approach)
-  - [Field Format Options](#field-format-options)
   - [Featured Images](#featured-images)
-  - [Paywalled Content](#paywalled-content)
   - [Author Information](#author-information-1)
   - [URL Requirements](#url-requirements)
   - [Date Fields](#date-fields)
   - [Listing Pages (Item List)](#listing-pages-item-list)
-  - [Summary: Required Fields by Schema Type](#summary-required-fields-by-schema-type)
-- [Required Developer Fields by Schema Type](#required-developer-fields-by-schema-type)
+  - [Summary: Required Developer Fields by Schema Type](#summary-required-developer-fields-by-schema-type)
   - [Schema Types That Require No Developer Fields](#schema-types-that-require-no-developer-fields)
-  - [Best Practices](#best-practices)
-  - [ItemList for Collection Pages](#itemlist-for-collection-pages)
   - [Debugging Structured Data](#debugging-structured-data)
-- [Troubleshooting](#troubleshooting)
-  - [Fallbacks Not Working](#fallbacks-not-working)
-  - [Images Not Appearing in Structured Data](#images-not-appearing-in-structured-data)
-  - [Author Shows as "undefined"](#author-shows-as-undefined)
-  - [Date Format Errors](#date-format-errors)
-  - [Schema Not Generated](#schema-not-generated)
-  - [Debug Logs Not Appearing](#debug-logs-not-appearing)
 - [Extending the SEO Module with Custom JSON-LD Schemas](#extending-the-seo-module-with-custom-json-ld-schemas)
   - [1. Register a Custom Schema on `@apostrophecms/seo`](#1-register-a-custom-schema-on-apostrophecmsseo)
   - [2. Add the Type to the Schema Dropdown (`@apostrophecms/seo-fields-doc-type`)](#2-add-the-type-to-the-schema-dropdown-apostrophecmsseo-fields-doc-type)
@@ -170,7 +158,7 @@ These features work out-of-the-box with any ApostropheCMS site:
 
 ### ⚙️ Requires Content Structure Setup
 
-Advanced structured data types need [specific fields](#summary-required-fields-by-schema-type) in your content types:
+Advanced structured data types need [fields with specific names](#summary-required-fields-by-schema-type) in your content types:
 
 - **Article, Review**: Work best with author information
 - **Product, HowTo**: Benefit from featured images for richer results
@@ -188,6 +176,8 @@ Advanced structured data types need [specific fields](#summary-required-fields-b
 > The module also supports **fallbacks and flexible formats** (e.g., string vs. relationship fields) for authors, images, descriptions, and dates.
 >
 > 👉 For the full list of supported field names, fallbacks, and recommended patterns, see **[Field Flexibility](#field-flexibility)**.
+>
+> You can also map existing field names to required field names using the [`fieldMappings`](#custom-field-mappings) option of the module.
 >
 > If you plan to rely heavily on structured data (especially for products, recipes, jobs, or video), it’s a good idea to:
 >
@@ -254,6 +244,8 @@ Traditional search engines (Googlebot, Bingbot) are always allowed unless using 
 - See [AI & Search Strategy](#ai--search-strategy) for detailed configuration guidance
 
 **Related:** This module also provides automated [llms.txt generation](#ai-crawler-control-llmstxt) for policy communication.
+
+> **Note:** A global `Disallow: /` in `robots.txt` may cause some AI crawlers to skip reading `llms.txt`, depending on their behavior, but the file remains publicly accessible.
 
 ### AI Crawler Control (llms.txt)
 
@@ -432,41 +424,33 @@ The module automatically generates appropriate Schema.org markup based on the sc
 - **Primary entities**: Article, Product, Event, Person, LocalBusiness, and more for detail pages
 - **Item listings**: Automatic ItemList generation for index/listing pages
 
-### Setting Default Schema Types
-
-You can configure a default schema type for any piece or page type using the `seoSchemaType` option. When set, this type will be pre-selected and locked for all content of that type.
-
-**Example configuration:**
-```javascript
-// modules/product/index.js
-export default {
-  extend: '@apostrophecms/piece-type',
-  options: {
-    label: 'Product',
-    seoSchemaType: 'Product'  // Always use Product schema
-  }
-};
-```
-
-**Pre-configured defaults:**
-
-The following ApostropheCMS extensions automatically set appropriate schema types:
-
-- **`@apostrophecms/blog`**: Defaults to `Article` schema for blog posts
-- **`@apostrophecms/event`**: Defaults to `Event` schema for events
-
-When a default is configured, the schema type selector becomes read-only in the editor UI, ensuring consistency across all content of that type.
-
-**When to use defaults:**
-
-- Content types with a clear, single schema purpose (products, events, recipes)
-- Ensuring editors can't accidentally select the wrong schema type
-- Maintaining consistency across large content collections
-- Integration with specific Schema.org requirements (e.g., job boards must use JobPosting)
-
 ### Choosing the Right Schema
 
-Select the schema type in the SEO tab of any page or piece editor. Only use one primary schema per page for best results.
+Select the schema type in the SEO tab of any page or piece editor.
+
+
+### Quick Schema Selection Guide
+See details for any schema below the table.
+
+| Content Type | Recommended Schema |
+|--------------|-------------------|
+| Standard pages | WebPage |
+| Blog index, Category pages | CollectionPage |
+| Blog posts, Articles | Article |
+| Product pages | Product |
+| Single offers, service packages | Offer |
+| Products with variants, tiered pricing | AggregateOffer |
+| Event listings | Event |
+| Author bios, Team pages | Person |
+| Business locations | LocalBusiness |
+| Job postings | JobPosting |
+| Help/Support pages | FAQPage |
+| Video pages | VideoObject |
+| Tutorials, Guides | HowTo |
+| Review articles | Review |
+| Recipes | Recipe |
+| Online courses | Course |
+
 
 #### **Web Page**
 Use for standard pages like About, Contact, or general information pages.
@@ -486,6 +470,29 @@ Use for index and listing pages that display multiple items.
 - Toggle "Include ItemList in JSON-LD" to control ItemList output
 
 **Best for:** Blog indexes, product catalogs, category pages, archives, search results
+
+---
+
+#### ItemList for Collection Pages
+
+Collection pages (listing pages) can optionally include an **ItemList** schema in JSON-LD.
+This describes the items displayed on the page (articles, products, events, etc.) and can improve how search engines understand category, listing, or archive pages.
+
+You can enable or disable this using the **“Include ItemList in JSON-LD”** toggle in the SEO tab.
+
+##### When you should enable ItemList
+- The page is a true index/list of items
+- Blog indexes, product category pages, news archives
+- You want richer structured data for list/search pages
+
+##### When you should NOT enable ItemList
+- The page mixes unrelated content types
+- The page is heavily personalized per user
+- The listing is extremely large (hundreds+ items)
+- The content shown changes frequently based on filters or user input
+- It’s not actually a listing page (e.g., About, Contact)
+
+ItemList content is generated automatically based on the items displayed by the page’s piece-page-type query (no developer configuration required).
 
 ---
 
@@ -821,7 +828,9 @@ For online courses and training programs.
 
 ---
 
-### E-commerce Best Practices
+### Best Practices
+
+**Test your markup**: Use [Google's Rich Results Test](https://search.google.com/test/rich-results) to validate your structured data
 
 **For product catalogs:**
 - Use **Product** schema on individual product detail pages
@@ -845,28 +854,6 @@ For online courses and training programs.
 - Seller information automatically falls back to your global Organization settings
 
 ---
-
-### Quick Schema Selection Guide
-
-| Content Type | Recommended Schema |
-|--------------|-------------------|
-| Standard pages | WebPage |
-| Blog index, Category pages | CollectionPage |
-| Blog posts, Articles | Article |
-| Product pages | Product |
-| Single offers, service packages | Offer |
-| Products with variants, tiered pricing | AggregateOffer |
-| Event listings | Event |
-| Author bios, Team pages | Person |
-| Business locations | LocalBusiness |
-| Job postings | JobPosting |
-| Help/Support pages | FAQPage |
-| Video pages | VideoObject |
-| Tutorials, Guides | HowTo |
-| Review articles | Review |
-| Recipes | Recipe |
-| Online courses | Course |
-
 
 ## AI & Search Strategy
 
@@ -994,26 +981,6 @@ This creates a SearchAction schema that:
 
 ## Advanced Configuration
 
-### Setting Default Schema Types
-
-Lock a specific schema type for a piece or page type to ensure consistency:
-```javascript
-// modules/article/index.js
-export default {
-  extend: '@apostrophecms/piece-type',
-  options: {
-    label: 'Article',
-    seoSchemaType: 'Article'  // Pre-select and lock to Article schema
-  }
-};
-```
-
-When configured, editors cannot change the schema type - it's automatically set and read-only in the UI.
-
-**Pre-configured in official extensions:**
-- `@apostrophecms/blog` → `Article`
-- `@apostrophecms/event` → `Event`
-
 ### Disabling SEO Fields
 
 Disable SEO fields for specific page or piece types:
@@ -1035,6 +1002,40 @@ The following modules disable SEO fields by default:
 - `@apostrophecms/image-tag`
 - `@apostrophecms/file`
 - `@apostrophecms/file-tag`
+
+
+### Setting Default Schema Types
+
+You can configure a default schema type for any piece or page type using the `seoSchemaType` option. When set, this type will be pre-selected and locked for all content of that type.
+
+**Example configuration:**
+```javascript
+// modules/product/index.js
+export default {
+  extend: '@apostrophecms/piece-type',
+  options: {
+    label: 'Product',
+    seoSchemaType: 'Product'  // Always use Product schema
+  }
+};
+```
+
+**Pre-configured defaults:**
+
+The following ApostropheCMS extensions automatically set appropriate schema types:
+
+- **`@apostrophecms/blog`**: Defaults to `Article` schema for blog posts
+- **`@apostrophecms/event`**: Defaults to `Event` schema for events
+- The pages for each of these modules defaults the `CollectionPage` schema
+
+When a default is configured, the schema type selector becomes read-only in the editor UI, ensuring consistency across all content of that type. These can be overridden at project level.
+
+**When to use defaults:**
+
+- Content types with a clear, single schema purpose (products, events, recipes)
+- Ensuring editors can't accidentally select the wrong schema type
+- Maintaining consistency across large content collections
+- Integration with specific Schema.org requirements (e.g., job boards must use JobPosting)
 
 ### Canonical Link Configuration
 
@@ -1115,11 +1116,94 @@ Track 404 errors in Google Analytics by adding this to your `notFound.html` temp
 
 This automatically sends 404 events when a tracking ID is configured, helping you identify broken links.
 
+
+### Paywalled Content
+
+If you mark content as paywalled, your templates must use consistent CSS classes or IDs to wrap premium content. The module needs to know which HTML element contains the paywalled content.
+
+**How it works:**
+
+1. Add a wrapper element around your paywalled content in your template
+2. Configure the CSS selector in the SEO settings to match your wrapper
+
+**Example template implementation:**
+
+```nunjucks
+{# views/show.html #}
+<article>
+  <h1>{{ data.piece.title }}</h1>
+  
+  {# Free preview content #}
+  <div class="article-preview">
+    {{ data.piece.excerpt }}
+  </div>
+  
+  {# Paywalled content - note the class name #}
+  <div class="paywall">
+    {% if data.user %}
+      {# Show full content to subscribers #}
+      {{ data.piece.body }}
+    {% else %}
+      {# Show paywall message to non-subscribers #}
+      <div class="paywall-notice">
+        <p>Subscribe to read more...</p>
+      </div>
+    {% endif %}
+  </div>
+</article>
+```
+
+**Common CSS selector patterns:**
+
+```css
+/* By class (most common) */
+.paywall
+.premium-content
+.members-only
+
+/* By ID */
+#paywalled-content
+
+/* By data attribute */
+[data-paywall="true"]
+
+/* Multiple classes */
+.article-body.premium
+```
+
+**In the SEO settings**, set the "Paywall CSS Selector" field to match your implementation (e.g., `.paywall`).
+
+**Why this matters:** Google requires you to explicitly mark which parts of your page require payment. The CSS selector tells search engines exactly where the paywall boundary is, helping them show appropriate content previews without penalties.
+
+### Custom Field Mappings
+
+If your project uses different field names than the SEO module's defaults, you can configure custom field mappings to avoid refactoring existing content types:
+
+```javascript
+// app.js
+modules: {
+  '@apostrophecms/seo': {
+    options: {
+      fieldMappings: {
+        author: 'authorName',           // Use authorName instead of author/_author
+        image: 'heroImage',             // Use heroImage instead of _featuredImage
+        description: 'summary',         // Use summary instead of description/excerpt
+        publishedAt: 'publicationDate'  // Use publicationDate instead of publishedAt
+      }
+    }
+  }
+}
+```
+
+The module checks your custom field names first, then falls back to standard field names if the custom field is empty. This works with all field formats (strings, relationships, objects, and attachments), making it ideal for migrating from another CMS or maintaining project-specific naming conventions. Enable debug mode (`APOS_SEO_DEBUG=1`) to see which fields are being used.
+
+> **Note:** Field mappings are global and apply to all content types. If different content types use different field names (e.g., articles use `authorName` but products use `createdBy`), use the `registerSchema()` method to create custom schema generators for those specific types instead.
+
 ## Implementation Guidelines for Developers
 
 When using this SEO module, you have flexibility in how you structure your fields. The module supports multiple field formats through an intelligent fallback system. This section documents both the simple and advanced approaches you can take.
 
-## Field Flexibility
+### Field Flexibility
 
 The SEO module provides flexible field formats to accommodate different project needs. Whether you're building a simple blog or a complex application, you can choose the field structure that works best for your use case.
 
@@ -1250,39 +1334,6 @@ You'll see helpful log messages like:
 ```
 ---
 
-### When to Use Each Approach
-
-**Use simple fields when:**
-- Building a basic blog or content site
-- You don't need the full power of relationships
-- You want to minimize database complexity
-- Content editors just need to enter text
-
-**Use relationships when:**
-- You need author profiles with multiple fields
-- You're using ApostropheCMS image management features
-- You want to reuse content across multiple pieces
-- You need relationship-based queries
-
-**Mix and match:**
-You can use relationships for some fields and simple types for others. The fallback system handles both seamlessly.
-
-### Field Format Options
-
-The SEO module supports two approaches for most fields:
-
-**Simple Approach (Recommended for most projects):**
-- Use string fields for author names
-- Use object fields for images (with url, alt, etc.)
-- Use standard field names: `author`, `featuredImage`, `description`, `publishedAt`
-
-**Advanced Approach (When you need more features):**
-- Use relationship fields: `_author`, `_featuredImage`
-- Link to user profiles, image management, etc.
-- Full power of ApostropheCMS relationships
-
-**The module automatically detects which format you're using** and generates correct structured data either way.
-
 ### Featured Images
 
 Several schema types rely on a `_featuredImage` relationship field being present on your document.
@@ -1321,64 +1372,6 @@ export default {
 ```
 
 **Note:** The field name **must be** `_featuredImage` (with the leading underscore) for the SEO module to find it automatically.
-
-### Paywalled Content
-
-If you mark content as paywalled, your templates must use consistent CSS classes or IDs to wrap premium content. The module needs to know which HTML element contains the paywalled content.
-
-**How it works:**
-
-1. Add a wrapper element around your paywalled content in your template
-2. Configure the CSS selector in the SEO settings to match your wrapper
-
-**Example template implementation:**
-
-```nunjucks
-{# views/show.html #}
-<article>
-  <h1>{{ data.piece.title }}</h1>
-  
-  {# Free preview content #}
-  <div class="article-preview">
-    {{ data.piece.excerpt }}
-  </div>
-  
-  {# Paywalled content - note the class name #}
-  <div class="paywall">
-    {% if data.user %}
-      {# Show full content to subscribers #}
-      {{ data.piece.body }}
-    {% else %}
-      {# Show paywall message to non-subscribers #}
-      <div class="paywall-notice">
-        <p>Subscribe to read more...</p>
-      </div>
-    {% endif %}
-  </div>
-</article>
-```
-
-**Common CSS selector patterns:**
-
-```css
-/* By class (most common) */
-.paywall
-.premium-content
-.members-only
-
-/* By ID */
-#paywalled-content
-
-/* By data attribute */
-[data-paywall="true"]
-
-/* Multiple classes */
-.article-body.premium
-```
-
-**In the SEO settings**, set the "Paywall CSS Selector" field to match your implementation (e.g., `.paywall`).
-
-**Why this matters:** Google requires you to explicitly mark which parts of your page require payment. The CSS selector tells search engines exactly where the paywall boundary is, helping them show appropriate content previews without penalties.
 
 ### Author Information
 
@@ -1437,11 +1430,7 @@ Each item must have:
 
 **Standard piece-page-type index pages work automatically** without additional configuration.
 
-### Summary: Required Fields by Schema Type
-
-**How to use this table:** For any page or piece using a specific structured data schema, you must implement the required fields shown below. Optional fields are highly recommended for richer search results. The "Fallback Logic" column shows alternative field names the module will check if primary fields are missing, as well as different ways to provide the same data (e.g., a string field instead of a relationship). When a field path includes a dot (e.g., `seoJsonLdProduct.name`), this refers to a nested field within the schema-specific settings group in your SEO tab.
-
-## Required Developer Fields by Schema Type
+### Summary: Required Developer Fields by Schema Type
 
 This table shows the minimum fields your piece/page type must provide for each schema, plus the field names the SEO module will look for (string/object/relationship).
 
@@ -1461,6 +1450,11 @@ This table shows the minimum fields your piece/page type must provide for each s
 | **Offer** | Availability → `availability`, `stockStatus` |
 | **AggregateOffer** | Individual offers array → developer-defined structure |
 
+**Field Naming:**
+- Use consistent naming: `author`, `featuredImage`, `description`, `publishedAt`
+- The module recognizes these standard names automatically
+- Avoid inventing new field names unless necessary
+
 ### Schema Types That Require No Developer Fields
 
 The following schema types do not depend on project-level fields. They are generated entirely from the SEO UI and built-in ApostropheCMS fields (title, URL, SEO tab configuration):
@@ -1469,70 +1463,6 @@ The following schema types do not depend on project-level fields. They are gener
 - **CollectionPage** – ItemList is autogenerated from `req.data.pieces` / `items`
 - **FAQPage** – uses fields in the `seoJsonLdFAQPage` UI group
 - **QAPage** – uses fields in the `seoJsonLdQAPage` UI group
-
-### Best Practices
-
-- **Use CollectionPage for listings**: For index pages, use CollectionPage with ItemList enabled rather than individual entity schemas
-- **Fill all relevant fields**: The more complete your structured data, the better search engines can understand your content
-- **Test your markup**: Use [Google's Rich Results Test](https://search.google.com/test/rich-results) to validate your structured data
-- **Pricing consistency**: Ensure prices in your structured data match what's displayed on the page
-
-**Field Naming:**
-- Use consistent naming: `author`, `featuredImage`, `description`, `publishedAt`
-- The module recognizes these standard names automatically
-- Avoid inventing new field names unless necessary
-
-**When to Use Simple Fields:**
-- Your site has a small editorial team (just enter names)
-- Images are hosted externally (CDN, S3, etc.)
-- You want the simplest possible setup
-- Content structure is straightforward
-
-**When to Use Relationships:**
-- You need author bio pages and profiles
-- You want centralized image management
-- You're building a complex multi-author platform
-- You need relationship-based queries and filtering
-
-**Mixing Approaches:**
-It's perfectly fine to use relationships for some fields and simple types for others:
-```javascript
-fields: {
-  add: {
-    _featuredImage: {
-      type: 'relationship',
-      withType: '@apostrophecms/image',
-      max: 1
-    },
-    author: {
-      type: 'string',  // Simple string instead of user relationship
-      label: 'Author Name'
-    }
-  }
-}
-```
-
-### ItemList for Collection Pages
-
-Collection pages (listing pages) can optionally include an **ItemList** schema in JSON-LD.
-This describes the items displayed on the page (articles, products, events, etc.) and can improve how search engines understand category, listing, or archive pages.
-
-You can enable or disable this using the **“Include ItemList in JSON-LD”** toggle in the SEO tab.
-
-#### When you should enable ItemList
-- The page is a true index/list of items
-- Blog indexes, product category pages, news archives
-- You want richer structured data for list/search pages
-
-#### When you should NOT enable ItemList
-- The page mixes unrelated content types
-- The page is heavily personalized per user
-- The listing is extremely large (hundreds+ items)
-- The content shown changes frequently based on filters or user input
-- It’s not actually a listing page (e.g., About, Contact)
-
-ItemList content is generated automatically based on the items displayed by the page’s piece-page-type query (no developer configuration required).
-
 
 ### Debugging Structured Data
 
@@ -1546,84 +1476,6 @@ This is particularly useful when testing new schema types or diagnosing missing 
 - **Learning Video** - Extension of VideoObject, shown as standard Video
 
 Use the [Rich Results Test](https://search.google.com/test/rich-results) and [Schema Markup Validator](https://validator.schema.org/) for comprehensive testing of all schema types.
-
-## Troubleshooting
-
-### Fallbacks Not Working
-
-**Problem:** Expected fallback field is not being used
-
-**Solutions:**
-1. Enable debug mode: `export APOS_SEO_DEBUG=1`
-2. Check field name matches expected pattern (e.g., `author`, not `authorName`)
-3. Verify field has actual value (not empty string or null)
-4. Check server logs for fallback messages
-5. Ensure the value passes `.trim()` check (not just whitespace)
-
----
-
-### Images Not Appearing in Structured Data
-
-**Problem:** Image object provided but not showing in JSON-LD
-
-**Solutions:**
-1. For object fields, ensure it has a `url` property
-2. Field name should be `featuredImage`, `image`, or `_image`
-3. For relationship fields, ensure image is published
-4. Check if URL is accessible (not 404)
-5. View debug logs to see which image source was attempted
-
----
-
-### Author Shows as "undefined"
-
-**Problem:** Author appears but shows as "undefined" or null
-
-**Solutions:**
-1. Confirm the author field is configured as described in the [Author Information](#author-information).
-2. If using `_author` relationship, ensure user has `title` or `username`
-3. If using string field, ensure it's not an empty string
-4. Check if user relationship is properly populated (use `.toObject()` in async context)
-5. Enable debug mode to see which field is being used
-
----
-
-### Date Format Errors
-
-**Problem:** Invalid date in JSON-LD
-
-**Solutions:**
-1. Ensure dates are proper Date objects or ISO strings
-2. Use ApostropheCMS `date` field type, not `string`
-3. If manually setting dates, use ISO format:
-```javascript
-   publishedAt: new Date('2024-01-15').toISOString()
-```
-
----
-
-### Schema Not Generated
-
-**Problem:** No JSON-LD appears on page
-
-**Solutions:**
-1. Check if `seoFields: false` is set (disables SEO for that type)
-2. Verify schema type is selected in the SEO tab
-3. For Recipe, ensure image is provided (required)
-4. Check browser console for JavaScript errors
-5. View page source (not DevTools) to see server-rendered JSON-LD
-
----
-
-### Debug Logs Not Appearing
-
-**Problem:** `APOS_SEO_DEBUG=1` but no logs
-
-**Solutions:**
-1. Restart server after setting environment variable
-2. Check you're viewing server logs, not browser console
-3. Verify fallbacks are actually being used (not primary fields)
-4. Logs only appear when fallback fields are used, not primary fields
 
 ## Extending the SEO Module with Custom JSON-LD Schemas
 
