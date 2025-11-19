@@ -416,7 +416,7 @@ describe('@apostrophecms/seo', function () {
         page: {
           seoTitle: 'Test Page Title',
           seoDescription: 'Test page description',
-          seoRobots: ['noindex', 'nofollow']
+          seoRobots: [ 'noindex', 'nofollow' ]
         },
         global: {
           seoGoogleVerificationId: 'test-verification-id'
@@ -459,9 +459,9 @@ describe('@apostrophecms/seo', function () {
 
       const data = {
         page: {
-          _seoCanonical: [{
+          _seoCanonical: [ {
             _url: 'https://example.com/canonical-page'
-          }]
+          } ]
         },
         global: {}
       };
@@ -544,7 +544,7 @@ describe('@apostrophecms/seo', function () {
     it('should extract image data from relationship', function () {
       const { getImageData } = require('../lib/utils');
 
-      const imageRelationship = [{
+      const imageRelationship = [ {
         attachment: {
           _urls: {
             original: 'https://example.com/uploads/image.jpg',
@@ -555,7 +555,7 @@ describe('@apostrophecms/seo', function () {
           title: 'Test Image'
         },
         alt: 'Alt text override'
-      }];
+      } ];
 
       const result = getImageData(imageRelationship);
 
@@ -571,7 +571,7 @@ describe('@apostrophecms/seo', function () {
 
       assert.strictEqual(getImageData(null), null);
       assert.strictEqual(getImageData([]), null);
-      assert.strictEqual(getImageData([{}]), null);
+      assert.strictEqual(getImageData([ {} ]), null);
     });
   });
 
@@ -585,8 +585,14 @@ describe('@apostrophecms/seo', function () {
         '@type': 'Article',
         headline: 'Test Article',
         datePublished: new Date().toISOString(),
-        author: { '@type': 'Person', name: 'John Doe' },
-        publisher: { '@type': 'Organization', name: 'Test Org' }
+        author: {
+          '@type': 'Person',
+          name: 'John Doe'
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Test Org'
+        }
       };
 
       const isValid = handler.validateSchema(validSchema);

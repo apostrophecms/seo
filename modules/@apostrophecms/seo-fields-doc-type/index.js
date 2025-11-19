@@ -17,6 +17,7 @@ module.exports = {
         defaultSchemaType = 'Article';
       } else if (options.apos.instanceOf(self, '@apostrophecms/event')) {
         defaultSchemaType = 'Event';
+      }
     }
 
     const configuration = {
