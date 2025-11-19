@@ -13,11 +13,10 @@ module.exports = {
 
     // Fallback to known module types if no explicit setting
     if (!defaultSchemaType) {
-      if (self.apos.instanceOf(self.__meta.name, '@apostrophecms/blog')) {
+      if (options.apos.instanceOf(self, '@apostrophecms/blog')) {
         defaultSchemaType = 'Article';
-      } else if (self.apos.instanceOf(self.__meta.name, '@apostrophecms/event')) {
+      } else if (options.apos.instanceOf(self, '@apostrophecms/event')) {
         defaultSchemaType = 'Event';
-      }
     }
 
     const configuration = {
