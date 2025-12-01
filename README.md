@@ -102,7 +102,7 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
   - [URL Requirements](#url-requirements)
   - [Date Fields](#date-fields)
   - [Listing Pages (Item List)](#listing-pages-item-list)
-  - [Summary: Required Developer Fields by Schema Type](#summary-required-developer-fields-by-schema-type)
+  - [Summary: Key Document-Level Fields by Schema Type](#summary-key-document-level-fields-by-schema-type)
   - [Schema Types That Require No Developer Fields](#schema-types-that-require-no-developer-fields)
   - [Debugging Structured Data](#debugging-structured-data)
 - [Extending the SEO Module with Custom JSON-LD Schemas](#extending-the-seo-module-with-custom-json-ld-schemas)
@@ -111,6 +111,8 @@ This version requires the latest ApostropheCMS. When adding this module to an ex
   - [3. Add Fields on `@apostrophecms/doc-type`](#3-add-fields-on-apostrophecmsdoc-type)
 - [Performance Optimization](#performance-optimization-1)
   - [Critical Font Preloading](#critical-font-preloading)
+- [1. Place Your Fonts in a Module’s `public/` Directory](#1-place-your-fonts-in-a-modules-public-directory)
+- [2. Configure the SEO Module to Preload Fonts](#2-configure-the-seo-module-to-preload-fonts)
   - [Mobile Optimization](#mobile-optimization)
 - [Field Reference](#field-reference)
 - [🚀 Ready for AI-Powered SEO?](#-ready-for-ai-powered-seo)
@@ -224,7 +226,7 @@ The module automatically provides a `/robots.txt` route with strategic control o
 > ⚠️ Make sure that if you block all indexing during development, make sure to change the policy when you launch your final site.
 
 **Selective Mode Crawlers:**
-For fine-grained control, use Selective mode to choose specific AI crawlers:
+For fine-grained control, use Selective mode to choose specific AI crawlers. These crawlers currently indicate they honor robots.txt directives.
 - **GPTBot** (OpenAI ChatGPT training)
 - **ChatGPT-User** (OpenAI real-time browsing)
 - **Google-Extended** (Google AI training)
@@ -237,6 +239,17 @@ For fine-grained control, use Selective mode to choose specific AI crawlers:
 - **anthropic-ai** (Anthropic general)
 
 Traditional search engines (Googlebot, Bingbot) are always allowed unless using "Block All" mode.
+
+> ### ⚠️ Important Note About Robots.txt Enforcement
+> The `robots.txt` standard is a **voluntary convention**, not a security mechanism.
+> While the crawlers listed here currently **state that they honor `robots.txt`**, real-world behavior can differ:
+>
+> - Some crawlers only respect `robots.txt` in certain contexts (e.g., indexing vs. real-time browsing).
+> - User-agent policies may change over time.
+> - New crawlers may appear that do not publicly disclose their behavior.
+>
+> ApostropheCMS provides fine-grained controls for compliant crawlers, but it **cannot guarantee enforcement** against bots that ignore `robots.txt` or do not implement the standard. We recommend periodically reviewing crawler policies to ensure ongoing compliance.
+
 
 **Technical Notes:**
 - A physical `robots.txt` file in your `public/` directory for a single-site project, or `sites/public` and `dashboard/public` directories for multisite will override these settings
@@ -1279,7 +1292,7 @@ fields: {
 }
 ```
 
-The module checks multiple field names: `_featuredImage`, `featuredImage`, `image`
+The module checks multiple field names: `_image`, `_featuredImage`, `attachment`, `featuredImage`, and `image`
 
 ---
 
@@ -1375,16 +1388,22 @@ export default {
 
 ### Author Information
 
-For **Article** and **Recipe** schemas, you can provide author information in multiple formats. Authors can be stored either as a simple string field or as a relationship to
-`@apostrophecms/user`. The SEO module supports both.
+For **Article**, **Recipe**, and **Review** schemas, you can provide author information in multiple formats.
+
+- A simple string field named `author` in the SEO schema
+- A simple string field named `author` in the document schema
+- A `relationship` field named `_author` that points to an “author-like” piece-type
+  (for example: `author`, `person`, `staff-member`, etc.). The module reads the first relationship document’s `title` (preferred), then `name` to determine the author name.
+
+**Resolution order:**
+
+1. `schema.author` string (if present and non-empty)
+2. `document.author` string
+3. `_author` relationship: the first joined doc on `document._author`
+4. `updatedBy` user on the document: `title`, then `name`
 
 For full details on how author fields are resolved and mapped into structured data
 (including fallbacks), see [Author Information](#author-information).
-
-**Option 3: Automatic fallback:**
-If neither field is provided, the module uses the currently logged-in user's name.
-
-The module will use `_author[0].title` or `_author[0].username` for relationships, or the string value directly.
 
 ### URL Requirements
 
@@ -1430,30 +1449,35 @@ Each item must have:
 
 **Standard piece-page-type index pages work automatically** without additional configuration.
 
-### Summary: Required Developer Fields by Schema Type
+### Summary: Key Document-Level Fields by Schema Type
 
-This table shows the minimum fields your piece/page type must provide for each schema, plus the field names the SEO module will look for (string/object/relationship).
+Most schema types are driven primarily by their `seoJsonLd*` configuration fields  
+(e.g., `seoJsonLdArticle`, `seoJsonLdProduct`, `seoJsonLdRecipe`).  
+In addition, the SEO module can **reuse** certain document-level fields (outside the
+`seoJsonLd*` objects) and, for some schema types, those fields are effectively
+required for rich results.
 
-| Schema Type | Expected Field with fallbacks |
-|-------------|-------------------------------|
-| **Article** | Author → `author` (string) OR `_author` (relationship)<br>Date → `publishedAt`, `publicationDate`, `datePublished`, fallback `createdAt` |
-| **Product** | Primary image → `featuredImage` (object) OR `_featuredImage` (relationship) |
-| **Recipe** | Author → `author` OR `_author`<br>Primary image → same as Product |
-| **Event** | Start date → `startDate`, `startTime`, `eventStart`<br>Location → `location`, `eventLocation`, or nested address object |
-| **Person** | Job title → `jobTitle`, `title`<br>Organization → `organization` (string/object) OR `_organization` (relationship) |
-| **VideoObject** | Thumbnail → `featuredImage` OR `_featuredImage`<br>Upload date → `uploadDate`, `datePublished` |
-| **HowTo** | Step images → inside steps OR global `featuredImage` / `_featuredImage` |
-| **Review** | Rating → `rating`, `ratingValue`<br>Author → `author` OR `_author` |
-| **Course** | Provider → `provider` (string/object) OR `_provider` (relationship)<br>Pricing → `price`, `priceCurrency` |
-| **JobPosting** | Salary → `salary`, `baseSalary`, `salaryCurrency` |
-| **LocalBusiness** | Address → `address` (nested fields)<br>Image → `image` OR `_featuredImage` |
-| **Offer** | Availability → `availability`, `stockStatus` |
-| **AggregateOffer** | Individual offers array → developer-defined structure |
+The table below only lists **document-level fields** you may want to add to your
+piece/page schemas. Fields that live *inside* the `seoJsonLd*` blocks (such as
+`review.reviewRating`, `course.provider`, `job.baseSalary`, etc.) are documented
+with each schema and are not repeated here.
 
-**Field Naming:**
-- Use consistent naming: `author`, `featuredImage`, `description`, `publishedAt`
-- The module recognizes these standard names automatically
-- Avoid inventing new field names unless necessary
+| Schema Type | Suggested Document-level fields | Requirement level |
+|------------------|------------------------------------------------------------------------------|-------------------|
+| **Article** | **Author** → `author` (string) or `_author` (relationship)<br>**Dates** → `publishedAt` (or other mapped published date), `updatedAt` | Recommended for rich Article results (author + published date are strongly recommended) |
+| **Product** | **Primary image** → `_featuredImage` (relationship), or a mapped image field used by the image fallback helper | Strongly recommended – module logs a debug warning if missing; many product rich results expect an image |
+| **Recipe** | **Primary image** → `_featuredImage` (relationship) or mapped image field (resolved via image fallback helper)<br>**Author** → `author` or `_author`<br>**Dates** → `publishedAt` (or mapped) | Image is **required by the module** (no JSON-LD is emitted without one); author + published date are recommended for rich Recipe results |
+| **VideoObject** | **Thumbnail fallback** → `_featuredImage` relationship (used if `seoJsonLdVideo._thumbnail` is missing)<br>**Dates** → `publishedAt` / `createdAt` (upload date fallback) | Thumbnail and upload date are **treated as required** by the module; `_featuredImage` is a practical requirement if you don’t always set `_thumbnail` |
+| **HowTo** | **Top-level image** → `_featuredImage` relationship or mapped image field (via image fallback helper) | Optional in code but **strongly recommended** for rich HowTo results; step images are configured inside `seoJsonLdHowTo.steps` |
+| **Review** | **Author** → `author` or `_author`<br>**Date** → `publishedAt` (or mapped) | Recommended – author and date are important for Review rich results |
+
+> **Images and rich results:**
+> The module enforces images for **Recipe** and **VideoObject** (no schema is output
+> if none can be resolved). For **Product** and **HowTo**, images are not strictly
+> required in code, but search engines commonly treat them as required for rich
+> results. In practice, you should treat a `_featuredImage` relationship (or a
+> custom-mapped image field) as required for those schema types.
+
 
 ### Schema Types That Require No Developer Fields
 
@@ -1635,6 +1659,23 @@ Preload critical fonts to improve Core Web Vitals scores and SEO performance. Fo
 - **Largest Contentful Paint (LCP)**: Faster font loading improves render time
 - **First Contentful Paint (FCP)**: Reduces render-blocking font requests
 
+## 1. Place Your Fonts in a Module’s `public/` Directory
+
+For cloud deployments (UploadFS → S3, GCS, etc.), fonts **must be stored inside a module**, for example:
+
+```
+modules/my-fonts/public/fonts/inter-variable.woff2
+modules/my-fonts/public/fonts/geist-mono.woff
+```
+
+Apostrophe uploads assets only from module `public/` directories. These files become available at URLs like:
+
+```
+/modules/my-fonts/fonts/inter-variable.woff2
+```
+
+---
+## 2. Configure the SEO Module to Preload Fonts
 Configure critical fonts as a developer-level option in your `app.js`:
 ```javascript
 import apostrophe from 'apostrophe';
@@ -1647,7 +1688,7 @@ apostrophe({
       options: {
         criticalFonts: [
           {
-            url: '/fonts/inter-variable.woff2',
+            url: '/modules/my-fonts/fonts/inter-variable.woff2',
             type: 'font/woff2'  // Optional, defaults to 'font/woff2'
           },
           {
@@ -1662,24 +1703,29 @@ apostrophe({
 ```
 
 The module automatically generates `<link rel="preload">` tags for each configured font.
+**Important:** Font preloading is complementary to your existing CSS - it doesn't replace it. You must still include your `@font-face` rules:
 
 ```css
 /* Your existing CSS - keep this! */
 @font-face {
   font-family: 'Inter';
-  src: url('/fonts/inter-variable.woff2') format('woff2');
+  src: url('/modules/my-fonts/fonts/inter-variable.woff2') format('woff2');
   font-display: swap;
 }
 ```
+**How it works:**
+- **Without preload**: Browser parses HTML → parses CSS → discovers font → starts download (delayed)
+- **With preload**: Browser starts downloading font immediately → when CSS loads, font is already ready
+
 
 The `crossorigin` attribute is automatically added for absolute URLs (CDN/external fonts) and omitted for relative URLs (self-hosted fonts).
 
 **Where to store fonts:**
 
-1. **Simple single-server deployments**: Place font files in `public/fonts/` and reference as `/fonts/filename.woff2`
-   - No CORS configuration needed
-   - Simple deployment
-   - Example: `{ url: '/fonts/inter.woff2' }`
+1. **Simple single-server deployments**: Place font files in `modules/my-fonts/public/fonts/` and reference them as `/modules/my-fonts/fonts/filename.woff2`
+   - No CORS configuration needed for same-origin fonts
+   - Works in both local and cloud/UploadFS deployments
+   - Example: `{ url: '/modules/my-fonts/fonts/inter.woff2' }`
 
 2. **CDN/S3**: Use full URLs with proper CORS headers configured on your CDN
    - Better caching and global performance

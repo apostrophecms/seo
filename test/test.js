@@ -55,7 +55,7 @@ describe('@apostrophecms/seo', function () {
       assert.strictEqual(articleSchema.publisher.name, 'Test Organization');
     });
 
-    it('should use fallback for author from req.user', function () {
+    it('should use fallback from updatedBy.title', function () {
       const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
       const handler = new JsonLdSchemaHandler();
 
@@ -64,20 +64,21 @@ describe('@apostrophecms/seo', function () {
           title: 'Test Article',
           seoJsonLdType: 'Article',
           _url: 'https://example.com/test',
-          createdAt: new Date()
+          createdAt: new Date(),
+          updatedBy: {
+            title: 'John Doe'
+          }
         },
         global: {
-          seoJsonLdOrganization: { name: 'Test Org' }
-        },
-        req: {
-          user: {
-            title: 'John Doe'
+          seoJsonLdOrganization: {
+            name: 'Test Org'
           }
         }
       };
 
       const schemas = handler.generateSchemas(data);
       const articleSchema = schemas.find(s => s['@type'] === 'Article');
+      console.log(articleSchema);// eslint-disable-line no-console
 
       assert(articleSchema.author, 'author should exist');
       assert.strictEqual(articleSchema.author.name, 'John Doe');
@@ -635,11 +636,11 @@ describe('@apostrophecms/seo', function () {
       const result = handler.getAuthorName({}, document, req);
       assert.strictEqual(result, 'Jane Smith');
 
-      // Test fallback to req.user
-      const document2 = {};
-      const req2 = {
-        user: { title: 'Admin User' }
+      // Test fallback to updatedBy.title
+      const document2 = {
+        updatedBy: { title: 'Admin User' }
       };
+      const req2 = {};
 
       const result2 = handler.getAuthorName({}, document2, req2);
       assert.strictEqual(result2, 'Admin User');

@@ -79,7 +79,7 @@ module.exports = {
           },
           {
             label: 'aposSeo:crawlerFacebookBot',
-            value: 'FacebookBot'
+            value: 'Meta-WebIndexer'
           }
         ],
         // Default to allowing browsing bots but not training bots
@@ -472,7 +472,7 @@ Disallow: /
 User-agent: Applebot-Extended
 Disallow: /
 
-User-agent: FacebookBot
+User-agent: Meta-WebIndexer
 Disallow: /
 
 # Allow real-time browsing for user queries (not training)
@@ -493,7 +493,7 @@ Allow: /
                 const aiCrawlers = [
                   'GPTBot', 'ChatGPT-User', 'Google-Extended',
                   'ClaudeBot', 'Claude-User', 'PerplexityBot',
-                  'CCBot', 'anthropic-ai', 'Applebot-Extended', 'FacebookBot'
+                  'CCBot', 'anthropic-ai', 'Applebot-Extended', 'Meta-WebIndexer'
                 ];
                 robotsTxtContent = '# Traditional search engines (always allowed)\n';
                 robotsTxtContent += 'User-agent: Googlebot\nAllow: /\n\n';
