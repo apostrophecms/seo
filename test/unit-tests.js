@@ -280,6 +280,864 @@ describe('@apostrophecms/seo', function () {
       assert.strictEqual(aggOfferSchema.highPrice, '99.99');
       assert.strictEqual(aggOfferSchema.offerCount, 5);
     });
+
+    it('should generate JobPosting schema with required fields', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'Software Engineer Position',
+          seoTitle: 'Senior Software Engineer - Remote',
+          seoJsonLdType: 'JobPosting',
+          seoJsonLdJobPosting: {
+            title: 'Senior Software Engineer',
+            description: 'Join our team as a senior software engineer...',
+            datePosted: new Date('2024-01-01'),
+            validThrough: new Date('2024-03-01'),
+            employmentType: [ 'FULL_TIME' ],
+            hiringOrganization: {
+              name: 'Tech Corp',
+              sameAs: 'https://techcorp.com'
+            },
+            jobLocation: {
+              remote: true,
+              applicantLocationRequirements: [
+                { country: 'United States' }
+              ]
+            }
+          },
+          _url: 'https://example.com/jobs/senior-engineer',
+          publishedAt: new Date('2024-01-01')
+        },
+        global: {
+          seoSiteCanonicalUrl: 'https://example.com',
+          seoJsonLdOrganization: {
+            name: 'Tech Corp',
+            _logo: [ {
+              attachment: {
+                _urls: { original: 'https://example.com/logo.png' }
+              }
+            } ]
+          }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const jobSchema = schemas.find(s => s['@type'] === 'JobPosting');
+
+      assert(jobSchema, 'JobPosting schema should exist');
+      assert.strictEqual(jobSchema.title, 'Senior Software Engineer');
+      assert.strictEqual(jobSchema.description, 'Join our team as a senior software engineer...');
+      assert(jobSchema.datePosted, 'datePosted should exist');
+      assert(jobSchema.validThrough, 'validThrough should exist');
+      assert(Array.isArray(jobSchema.employmentType), 'employmentType should be array');
+      assert(jobSchema.hiringOrganization, 'hiringOrganization should exist');
+      assert.strictEqual(jobSchema.hiringOrganization.name, 'Tech Corp');
+    });
+
+    it('should handle remote job location with applicant requirements', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'Remote Developer',
+          seoJsonLdType: 'JobPosting',
+          seoJsonLdJobPosting: {
+            title: 'Remote Developer',
+            description: 'Work from anywhere',
+            validThrough: new Date('2024-12-31'),
+            jobLocation: {
+              remote: true,
+              applicantLocationRequirements: [
+                { country: 'United States' },
+                { country: 'Canada' }
+              ]
+            }
+          },
+          _url: 'https://example.com/jobs/remote-dev'
+        },
+        global: {
+          seoSiteCanonicalUrl: 'https://example.com',
+          seoJsonLdOrganization: { name: 'Test Corp' }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const jobSchema = schemas.find(s => s['@type'] === 'JobPosting');
+
+      assert(jobSchema, 'JobPosting schema should exist');
+      assert.strictEqual(jobSchema.jobLocationType, 'TELECOMMUTE');
+      assert(Array.isArray(jobSchema.applicantLocationRequirements));
+      assert.strictEqual(jobSchema.applicantLocationRequirements.length, 2);
+      assert.strictEqual(jobSchema.applicantLocationRequirements[0]['@type'], 'Country');
+      assert.strictEqual(jobSchema.applicantLocationRequirements[0].name, 'United States');
+    });
+
+    it('should handle physical job location', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'Office Manager',
+          seoJsonLdType: 'JobPosting',
+          seoJsonLdJobPosting: {
+            title: 'Office Manager',
+            description: 'Manage our downtown office',
+            validThrough: new Date('2024-12-31'),
+            jobLocation: {
+              remote: false,
+              address: {
+                street: '123 Main St',
+                city: 'San Francisco',
+                state: 'CA',
+                zip: '94102',
+                country: 'US'
+              }
+            }
+          },
+          _url: 'https://example.com/jobs/office-manager'
+        },
+        global: {
+          seoSiteCanonicalUrl: 'https://example.com',
+          seoJsonLdOrganization: { name: 'Test Corp' }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const jobSchema = schemas.find(s => s['@type'] === 'JobPosting');
+
+      assert(jobSchema, 'JobPosting schema should exist');
+      assert(jobSchema.jobLocation, 'jobLocation should exist');
+      assert.strictEqual(jobSchema.jobLocation['@type'], 'Place');
+      assert(jobSchema.jobLocation.address, 'address should exist');
+      assert.strictEqual(jobSchema.jobLocation.address.streetAddress, '123 Main St');
+      assert.strictEqual(jobSchema.jobLocation.address.addressLocality, 'San Francisco');
+      assert.strictEqual(jobSchema.jobLocation.address.addressRegion, 'CA');
+    });
+
+    it('should handle salary range', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'Developer with Salary Range',
+          seoJsonLdType: 'JobPosting',
+          seoJsonLdJobPosting: {
+            title: 'Developer',
+            description: 'Great opportunity',
+            validThrough: new Date('2024-12-31'),
+            baseSalary: {
+              minValue: 80000,
+              maxValue: 120000,
+              currency: 'USD',
+              unitText: 'YEAR'
+            }
+          },
+          _url: 'https://example.com/jobs/dev'
+        },
+        global: {
+          seoSiteCanonicalUrl: 'https://example.com',
+          seoJsonLdOrganization: { name: 'Test Corp' }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const jobSchema = schemas.find(s => s['@type'] === 'JobPosting');
+
+      assert(jobSchema, 'JobPosting schema should exist');
+      assert(jobSchema.baseSalary, 'baseSalary should exist');
+      assert.strictEqual(jobSchema.baseSalary['@type'], 'MonetaryAmount');
+      assert.strictEqual(jobSchema.baseSalary.currency, 'USD');
+      assert(jobSchema.baseSalary.value, 'salary value should exist');
+      assert.strictEqual(jobSchema.baseSalary.value['@type'], 'QuantitativeValue');
+      assert.strictEqual(jobSchema.baseSalary.value.minValue, 80000);
+      assert.strictEqual(jobSchema.baseSalary.value.maxValue, 120000);
+      assert.strictEqual(jobSchema.baseSalary.value.unitText, 'YEAR');
+    });
+
+    it('should handle fixed salary', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'Developer with Fixed Salary',
+          seoJsonLdType: 'JobPosting',
+          seoJsonLdJobPosting: {
+            title: 'Developer',
+            description: 'Great opportunity',
+            validThrough: new Date('2024-12-31'),
+            baseSalary: {
+              value: 100000,
+              currency: 'USD',
+              unitText: 'YEAR'
+            }
+          },
+          _url: 'https://example.com/jobs/dev'
+        },
+        global: {
+          seoSiteCanonicalUrl: 'https://example.com',
+          seoJsonLdOrganization: { name: 'Test Corp' }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const jobSchema = schemas.find(s => s['@type'] === 'JobPosting');
+
+      assert(jobSchema, 'JobPosting schema should exist');
+      assert(jobSchema.baseSalary, 'baseSalary should exist');
+      assert(jobSchema.baseSalary.value, 'salary value should exist');
+      assert.strictEqual(jobSchema.baseSalary.value.value, 100000);
+      assert(!jobSchema.baseSalary.value.minValue, 'should not have minValue for fixed salary');
+      assert(!jobSchema.baseSalary.value.maxValue, 'should not have maxValue for fixed salary');
+    });
+
+    it('should use global organization as hiring organization fallback', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'Job without explicit hiring org',
+          seoJsonLdType: 'JobPosting',
+          seoJsonLdJobPosting: {
+            title: 'Developer',
+            description: 'Join our team',
+            validThrough: new Date('2024-12-31')
+            // No hiringOrganization specified
+          },
+          _url: 'https://example.com/jobs/dev'
+        },
+        global: {
+          seoSiteCanonicalUrl: 'https://example.com',
+          seoJsonLdOrganization: {
+            name: 'Global Corp',
+            _logo: [ {
+              attachment: {
+                _urls: { original: 'https://example.com/logo.png' }
+              }
+            } ]
+          }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const jobSchema = schemas.find(s => s['@type'] === 'JobPosting');
+
+      assert(jobSchema, 'JobPosting schema should exist');
+      assert(jobSchema.hiringOrganization, 'hiringOrganization should exist');
+      assert.strictEqual(jobSchema.hiringOrganization.name, 'Global Corp');
+      assert.strictEqual(jobSchema.hiringOrganization['@id'], 'https://example.com/#org');
+      assert.strictEqual(jobSchema.hiringOrganization.logo, 'https://example.com/logo.png');
+    });
+
+    it('should handle skills array', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'Developer',
+          seoJsonLdType: 'JobPosting',
+          seoJsonLdJobPosting: {
+            title: 'Full Stack Developer',
+            description: 'Build amazing things',
+            validThrough: new Date('2024-12-31'),
+            skills: [
+              { skill: 'JavaScript' },
+              { skill: 'React' },
+              { skill: 'Node.js' }
+            ]
+          },
+          _url: 'https://example.com/jobs/fullstack'
+        },
+        global: {
+          seoSiteCanonicalUrl: 'https://example.com',
+          seoJsonLdOrganization: { name: 'Test Corp' }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const jobSchema = schemas.find(s => s['@type'] === 'JobPosting');
+
+      assert(jobSchema, 'JobPosting schema should exist');
+      assert(jobSchema.skills, 'skills should exist');
+      assert.strictEqual(jobSchema.skills, 'JavaScript, React, Node.js');
+    });
+
+    it('should handle employment types array', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'Flexible Position',
+          seoJsonLdType: 'JobPosting',
+          seoJsonLdJobPosting: {
+            title: 'Flexible Developer',
+            description: 'Full-time or part-time',
+            validThrough: new Date('2024-12-31'),
+            employmentType: [ 'FULL_TIME', 'PART_TIME' ]
+          },
+          _url: 'https://example.com/jobs/flexible'
+        },
+        global: {
+          seoSiteCanonicalUrl: 'https://example.com',
+          seoJsonLdOrganization: { name: 'Test Corp' }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const jobSchema = schemas.find(s => s['@type'] === 'JobPosting');
+
+      assert(jobSchema, 'JobPosting schema should exist');
+      assert(Array.isArray(jobSchema.employmentType), 'employmentType should be array');
+      assert.strictEqual(jobSchema.employmentType.length, 2);
+      assert(jobSchema.employmentType.includes('FULL_TIME'));
+      assert(jobSchema.employmentType.includes('PART_TIME'));
+    });
+
+    it('should not generate JobPosting without required title', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          seoJsonLdType: 'JobPosting',
+          seoJsonLdJobPosting: {
+            // Missing title
+            description: 'Great job',
+            validThrough: new Date('2024-12-31')
+          },
+          _url: 'https://example.com/jobs/no-title'
+        },
+        global: {
+          seoSiteCanonicalUrl: 'https://example.com',
+          seoJsonLdOrganization: { name: 'Test Corp' }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const jobSchema = schemas.find(s => s['@type'] === 'JobPosting');
+
+      assert.strictEqual(jobSchema, undefined, 'JobPosting should not be generated without title');
+    });
+
+    it('should use description fallback chain', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'Job with fallback description',
+          seoJsonLdType: 'JobPosting',
+          seoJsonLdJobPosting: {
+            title: 'Developer',
+            // No description in jobPosting
+            validThrough: new Date('2024-12-31')
+          },
+          seoDescription: 'SEO description fallback',
+          _url: 'https://example.com/jobs/fallback'
+        },
+        global: {
+          seoSiteCanonicalUrl: 'https://example.com',
+          seoJsonLdOrganization: { name: 'Test Corp' }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const jobSchema = schemas.find(s => s['@type'] === 'JobPosting');
+
+      assert(jobSchema, 'JobPosting schema should exist');
+      assert.strictEqual(jobSchema.description, 'SEO description fallback');
+    });
+
+    it('should use datePosted fallback to publishedAt', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const publishDate = new Date('2024-01-15');
+
+      const data = {
+        piece: {
+          title: 'Job with date fallback',
+          seoJsonLdType: 'JobPosting',
+          seoJsonLdJobPosting: {
+            title: 'Developer',
+            description: 'Join us',
+            // No datePosted
+            validThrough: new Date('2024-12-31')
+          },
+          publishedAt: publishDate,
+          _url: 'https://example.com/jobs/date-fallback'
+        },
+        global: {
+          seoSiteCanonicalUrl: 'https://example.com',
+          seoJsonLdOrganization: { name: 'Test Corp' }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const jobSchema = schemas.find(s => s['@type'] === 'JobPosting');
+
+      assert(jobSchema, 'JobPosting schema should exist');
+      assert.strictEqual(jobSchema.datePosted, publishDate);
+    });
+
+    it('should validate JobPosting required fields', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const validSchema = {
+        '@type': 'JobPosting',
+        title: 'Software Engineer',
+        description: 'Build great software',
+        datePosted: new Date().toISOString(),
+        hiringOrganization: {
+          '@type': 'Organization',
+          name: 'Tech Corp'
+        },
+        jobLocation: {
+          '@type': 'Place',
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'San Francisco'
+          }
+        }
+      };
+
+      const isValid = handler.validateSchema(validSchema);
+      assert.strictEqual(isValid, true);
+    });
+
+    it('should fail validation for incomplete JobPosting', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const invalidSchema = {
+        '@type': 'JobPosting',
+        title: 'Software Engineer'
+        // Missing description, datePosted, hiringOrganization, jobLocation
+      };
+
+      const isValid = handler.validateSchema(invalidSchema);
+      assert.strictEqual(isValid, false);
+    });
+
+    it('should generate Person schema with required fields', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'Jane Doe Profile',
+          seoJsonLdType: 'Person',
+          seoJsonLdPerson: {
+            name: 'Jane Doe',
+            description: 'Software engineer and tech writer',
+            jobTitle: 'Senior Software Engineer',
+            organization: 'Tech Corp'
+          },
+          _url: 'https://example.com/people/jane-doe'
+        },
+        global: {},
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const personSchema = schemas.find(s => s['@type'] === 'Person');
+
+      assert(personSchema, 'Person schema should exist');
+      assert.strictEqual(personSchema.name, 'Jane Doe');
+      assert.strictEqual(personSchema.description, 'Software engineer and tech writer');
+      assert.strictEqual(personSchema.jobTitle, 'Senior Software Engineer');
+      assert(personSchema.worksFor, 'worksFor should exist');
+      assert.strictEqual(personSchema.worksFor.name, 'Tech Corp');
+    });
+
+    it('should not generate Person schema without required name', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'Person without name',
+          seoJsonLdType: 'Person',
+          seoJsonLdPerson: {
+            // Missing name
+            description: 'A person'
+          },
+          _url: 'https://example.com/people/no-name'
+        },
+        global: {},
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const personSchema = schemas.find(s => s['@type'] === 'Person');
+
+      assert.strictEqual(personSchema, undefined, 'Person schema should not generate without name');
+    });
+
+    it('should generate LocalBusiness schema with document-specific data', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'Downtown Coffee Shop',
+          seoJsonLdType: 'LocalBusiness',
+          seoJsonLdBusiness: {
+            name: 'Coffee Haven',
+            description: 'Best coffee in town',
+            telephone: '555-1234',
+            address: {
+              street: '123 Main St',
+              city: 'San Francisco',
+              state: 'CA',
+              zip: '94102',
+              country: 'US'
+            },
+            openingHours: [
+              { hours: 'Mo-Fr 08:00-18:00' },
+              { hours: 'Sa-Su 09:00-17:00' }
+            ]
+          },
+          _url: 'https://example.com/locations/downtown'
+        },
+        global: {
+          seoSiteCanonicalUrl: 'https://example.com'
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const businessSchema = schemas.find(s => s['@type'] === 'LocalBusiness');
+
+      assert(businessSchema, 'LocalBusiness schema should exist');
+      assert.strictEqual(businessSchema.name, 'Coffee Haven');
+      assert.strictEqual(businessSchema.telephone, '555-1234');
+      assert(businessSchema.address, 'address should exist');
+      assert.strictEqual(businessSchema.address.streetAddress, '123 Main St');
+      assert(Array.isArray(businessSchema.openingHours), 'openingHours should be array');
+      assert.strictEqual(businessSchema.openingHours.length, 2);
+    });
+
+    it('should generate LocalBusiness from global configuration', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        page: {
+          title: 'Contact Us',
+          seoJsonLdType: 'LocalBusiness'
+        },
+        global: {
+          seoSiteCanonicalUrl: 'https://example.com',
+          seoJsonLdBusiness: {
+            name: 'Global Business Name',
+            telephone: '555-9999',
+            address: {
+              city: 'New York',
+              state: 'NY'
+            }
+          }
+        },
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const businessSchema = schemas.find(s => s['@type'] === 'LocalBusiness');
+
+      assert(businessSchema, 'LocalBusiness schema should exist');
+      assert.strictEqual(businessSchema.name, 'Global Business Name');
+      assert.strictEqual(businessSchema.url, 'https://example.com');
+    });
+
+    it('should generate QAPage with accepted answer', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        page: {
+          title: 'How to install Node.js?',
+          seoJsonLdType: 'QAPage',
+          seoJsonLdQAPage: {
+            question: 'How do I install Node.js?',
+            questionText: 'I want to install Node.js on my Mac. What are the steps?',
+            questionAuthor: 'John Developer',
+            questionDate: new Date('2024-01-01'),
+            questionUpvotes: 5,
+            acceptedAnswer: {
+              text: 'Download the installer from nodejs.org and run it.',
+              author: 'Jane Expert',
+              dateCreated: new Date('2024-01-02'),
+              upvotes: 10
+            }
+          },
+          _url: 'https://example.com/qa/install-nodejs'
+        },
+        global: {},
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const qaSchema = schemas.find(s => s['@type'] === 'QAPage');
+
+      assert(qaSchema, 'QAPage schema should exist');
+      assert(qaSchema.mainEntity, 'mainEntity should exist');
+      assert.strictEqual(qaSchema.mainEntity['@type'], 'Question');
+      assert.strictEqual(qaSchema.mainEntity.name, 'How do I install Node.js?');
+      assert(qaSchema.mainEntity.acceptedAnswer, 'acceptedAnswer should exist');
+      assert.strictEqual(qaSchema.mainEntity.acceptedAnswer['@type'], 'Answer');
+    });
+
+    it('should generate QAPage with suggested answers', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        page: {
+          title: 'Best JavaScript framework?',
+          seoJsonLdType: 'QAPage',
+          seoJsonLdQAPage: {
+            question: 'What is the best JavaScript framework?',
+            suggestedAnswers: [
+              {
+                text: 'React is great for building UIs',
+                author: 'Dev1',
+                upvotes: 8
+              },
+              {
+                text: 'Vue is simpler to learn',
+                author: 'Dev2',
+                upvotes: 5
+              }
+            ]
+          },
+          _url: 'https://example.com/qa/best-framework'
+        },
+        global: {},
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const qaSchema = schemas.find(s => s['@type'] === 'QAPage');
+
+      assert(qaSchema, 'QAPage schema should exist');
+      assert(qaSchema.mainEntity.suggestedAnswer, 'suggestedAnswer should exist');
+      assert.strictEqual(qaSchema.mainEntity.suggestedAnswer.length, 2);
+    });
+
+    it('should generate VideoObject with required fields', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'How to Code Tutorial',
+          seoJsonLdType: 'VideoObject',
+          seoJsonLdVideo: {
+            name: 'JavaScript Basics Tutorial',
+            description: 'Learn JavaScript basics in 30 minutes',
+            uploadDate: new Date('2024-01-01'),
+            duration: 'PT30M',
+            _thumbnail: [ {
+              attachment: {
+                _urls: { original: 'https://example.com/thumb.jpg' }
+              }
+            } ],
+            contentUrl: 'https://example.com/video.mp4',
+            embedUrl: 'https://example.com/embed/video'
+          },
+          _url: 'https://example.com/videos/js-basics'
+        },
+        global: {},
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const videoSchema = schemas.find(s => s['@type'] === 'VideoObject');
+
+      assert(videoSchema, 'VideoObject schema should exist');
+      assert.strictEqual(videoSchema.name, 'JavaScript Basics Tutorial');
+      assert(videoSchema.thumbnailUrl, 'thumbnailUrl should exist (required by Google)');
+      assert(videoSchema.uploadDate, 'uploadDate should exist (required by Google)');
+      assert(videoSchema.contentUrl, 'contentUrl should exist');
+    });
+
+    it('should generate educational video properties', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'Educational Video',
+          seoJsonLdType: 'VideoObject',
+          seoJsonLdVideo: {
+            name: 'Advanced Math Lecture',
+            description: 'Calculus lecture',
+            uploadDate: new Date('2024-01-01'),
+            _thumbnail: [ {
+              attachment: {
+                _urls: { original: 'https://example.com/thumb.jpg' }
+              }
+            } ],
+            contentUrl: 'https://example.com/video.mp4',
+            isEducational: true,
+            educationalUse: 'assignment',
+            learningResourceType: 'lecture'
+          },
+          _url: 'https://example.com/videos/calc'
+        },
+        global: {},
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const videoSchema = schemas.find(s => s['@type'] === 'VideoObject');
+
+      assert(videoSchema, 'VideoObject schema should exist');
+      assert.strictEqual(videoSchema.educationalUse, 'assignment');
+      assert.strictEqual(videoSchema.learningResourceType, 'lecture');
+    });
+
+    it('should generate HowTo with steps', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'How to Bake a Cake',
+          seoJsonLdType: 'HowTo',
+          seoJsonLdHowTo: {
+            name: 'Bake a Chocolate Cake',
+            description: 'Simple chocolate cake recipe',
+            totalTime: 'PT1H',
+            supply: [
+              { name: 'Flour' },
+              { name: 'Sugar' },
+              { name: 'Cocoa' }
+            ],
+            tool: [
+              { name: 'Mixing bowl' },
+              { name: 'Oven' }
+            ],
+            steps: [
+              {
+                name: 'Mix dry ingredients',
+                text: 'Combine flour, sugar, and cocoa'
+              },
+              {
+                name: 'Add wet ingredients',
+                text: 'Add eggs and milk'
+              },
+              {
+                name: 'Bake',
+                text: 'Bake at 350°F for 30 minutes'
+              }
+            ]
+          },
+          _url: 'https://example.com/howto/bake-cake'
+        },
+        global: {},
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const howToSchema = schemas.find(s => s['@type'] === 'HowTo');
+
+      assert(howToSchema, 'HowTo schema should exist');
+      assert.strictEqual(howToSchema.name, 'Bake a Chocolate Cake');
+      assert(Array.isArray(howToSchema.supply), 'supply should be array');
+      assert(Array.isArray(howToSchema.tool), 'tool should be array');
+      assert(Array.isArray(howToSchema.step), 'step should be array');
+      assert.strictEqual(howToSchema.step.length, 3);
+      assert.strictEqual(howToSchema.step[0].position, 1);
+    });
+
+    it('should generate Review schema', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'Product Review',
+          seoJsonLdType: 'Review',
+          seoJsonLdReview: {
+            itemReviewed: 'Amazing Widget',
+            itemType: 'Product',
+            reviewBody: 'This widget is fantastic!',
+            reviewRating: 4.5,
+            author: 'Jane Reviewer',
+            datePublished: new Date('2024-01-01')
+          },
+          _url: 'https://example.com/reviews/widget'
+        },
+        global: {},
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const reviewSchema = schemas.find(s => s['@type'] === 'Review');
+
+      assert(reviewSchema, 'Review schema should exist');
+      assert(reviewSchema.itemReviewed, 'itemReviewed should exist');
+      assert.strictEqual(reviewSchema.itemReviewed.name, 'Amazing Widget');
+      assert(reviewSchema.reviewRating, 'reviewRating should exist');
+      assert.strictEqual(reviewSchema.reviewRating.ratingValue, '4.5');
+    });
+
+    it('should generate Course schema', function () {
+      const JsonLdSchemaHandler = require('../lib/jsonld-schemas');
+      const handler = new JsonLdSchemaHandler();
+
+      const data = {
+        piece: {
+          title: 'Web Development Course',
+          seoJsonLdType: 'Course',
+          seoJsonLdCourse: {
+            name: 'Full Stack Web Development',
+            description: 'Learn to build web applications',
+            provider: 'Tech Academy',
+            courseCode: 'WEB-101',
+            educationalLevel: 'Beginner',
+            price: 99.99,
+            currency: 'USD',
+            rating: 4.8,
+            reviewCount: 150
+          },
+          _url: 'https://example.com/courses/web-dev'
+        },
+        global: {},
+        req: {}
+      };
+
+      const schemas = handler.generateSchemas(data);
+      const courseSchema = schemas.find(s => s['@type'] === 'Course');
+
+      assert(courseSchema, 'Course schema should exist');
+      assert.strictEqual(courseSchema.name, 'Full Stack Web Development');
+      assert(courseSchema.provider, 'provider should exist');
+      assert.strictEqual(courseSchema.provider.name, 'Tech Academy');
+      assert(courseSchema.offers, 'offers should exist');
+      assert.strictEqual(courseSchema.offers.price, '99.99');
+    });
   });
 
   describe('Custom Field Mappings', function () {
